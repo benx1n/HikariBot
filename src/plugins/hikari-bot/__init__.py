@@ -36,7 +36,7 @@ WWS_help ="""
     [待开发] wws rank
     以上指令参数顺序均无强制要求，即你完全可以发送wws eu 7 recent Test以查询欧服Test七天内的战绩
     搭建bot请加官方群：967546463，如果您觉得bot还可以的话请点个star哦~
-    仓库地址：https://github.com/benx1n/wows-stats-bot
+    仓库地址：https://github.com/benx1n/HikariBot
 """
 
 bot = on_command("wws", block=True, priority=1)
