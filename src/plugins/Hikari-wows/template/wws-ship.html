@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body {
+        font-size: 26px;
+        font-family: "Microsoft YaHei UI";
+    }
+
+    .font-data {
+        font-weight: bold;
+    }
+
+    .greyColor {
+        color: #696969;
+    }
+
+    .blueColor {
+        font-weight: bold;
+        color: #000080;
+    }
+
+
+    table {
+        border-spacing: 20px 15px;
+        text-align: center;
+    }
+
+</style>
+<body>
+<table id="ship-data" width="640">
+    <tr>
+        <td class="font-data" colspan="3" style="text-align: center;"><span>{{shipNameEn}}</span>&nbsp;&nbsp;<span>{{shipNameCn}}</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="font-data greyColor">伤害</td>
+        <td class="font-data greyColor">胜率</td>
+        <td class="font-data greyColor">PR</td>
+    </tr>
+    <tr>
+        <td style="color: {{damageTopColor}}">{{damageTop}}</td>
+        <td style="color: {{winsTopColor}}">{{winsTop}}%</td>
+        <td style="color: {{prTopColor}}">{{prTop}}</td>
+    </tr>
+    <tr>
+        <td colspan="3" style="text-align: center;background-color: {{prColor}}">{{prValue}}</td>
+    </tr>
+    <tr>
+        <td colspan="3" style="text-align: center;">最后战斗时间</td>
+    </tr>
+    <tr>
+        <td colspan="3" style="text-align: center;">{{lastTime}}</td>
+    </tr>
+    <tr>
+        <td class="greyColor">场次</td>
+        <td class="greyColor">胜率</td>
+        <td class="greyColor">场均</td>
+    </tr>
+    <tr>
+        <td class="blueColor">{{battles}}</td>
+        <td class="blueColor">{{wins}}%</td>
+        <td class="blueColor">{{damage}}</td>
+    </tr>
+    <tr>
+        <td class="greyColor">经验</td>
+        <td class="greyColor">K/D</td>
+        <td class="greyColor">命中</td>
+    </tr>
+    <tr>
+        <td class="blueColor">{{xp}}</td>
+        <td class="blueColor">{{kda}}</td>
+        <td class="blueColor">{{hit}}%</td>
+    </tr>
+    <tr>
+        <td class="font-data" colspan="3">最高记录</td>
+    </tr>
+    <tr>
+        <td class="greyColor">最高伤害</td>
+        <td class="greyColor">侦查伤害</td>
+        <td class="greyColor">最高潜在</td>
+    </tr>
+    <tr>
+        <td>{{maxDamage}}</td>
+        <td>{{maxDamageScouting}}</td>
+        <td>{{maxTotalAgro}}</td>
+    </tr>
+    <tr>
+        <td class="greyColor">经验</td>
+        <td class="greyColor">击杀</td>
+        <td class="greyColor">飞机击落</td>
+    </tr>
+    <tr>
+        <td>{{maxXp}}</td>
+        <td>{{maxFragsBattle}}</td>
+        <td>{{maxPlanesKilled}}</td>
+    </tr>
+    <tr>
+        <td colspan="3" class="font-data greyColor" style="text-align: center;">
+            <span>© 西行寺雨季</span>&nbsp;&nbsp;<span>© 本心</span></td>
+    </tr>
+    <tr>
+        <td colspan="3" class="font-data greyColor" style="text-align: center;">
+            <span>https://github.com/benx1n/wows-stats-bot</span></td>
+    </tr>
+</table>
+</body>
+</html>

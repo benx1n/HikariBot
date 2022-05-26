@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body {
+        font-size: 26px;
+        font-family: "Microsoft YaHei UI";
+    }
+
+    .font-size {
+        font-weight: bold;
+        font-size: 28px;
+    }
+
+    .font-data {
+        font-weight: bold;
+    }
+
+    .greyColor {
+        color: #696969;
+    }
+
+    .greyColor2 {
+        color: #404040;
+    }
+
+    .blueColor {
+        font-weight: bold;
+        color: #000080;
+    }
+
+    .blackColor {
+        font-weight: bold;
+        color: black;
+    }
+
+    .bold-data {
+        font-weight: bold;
+    }
+
+
+    table {
+        border-spacing: 20px 15px;
+        text-align: center;
+    }
+
+</style>
+<body>
+   <div>
+    <table id="ship-data" width="920">
+        <tr>
+            <td colspan="6" class="font-data" style="text-align: center;">
+                <span style="color:#87CEEB">[{{guild}}]</span>&nbsp;<span>{{userName}}</span><sup style="color:green">+{{karma}}</sup>&nbsp;&nbsp;&nbsp;<span>{{serverName}}</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="font-data greyColor">场均</td>
+            <td colspan="2" class="font-data greyColor">胜率</td>
+            <td colspan="2" class="font-data greyColor">PR</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="color: {{newDamageColor}}">{{newDamage}}</td>
+            <td colspan="2" style="color: {{newWinsColor}}">{{newWins}}%</td>
+            <td colspan="2" style="color: {{newPrColor}}">{{newPr}}</td>
+        </tr>
+        <tr>
+            <td colspan="6" style="text-align: center;background-color: {{prValueColor}}">{{prValue}}</td>
+        </tr>
+        <tr>
+            <td colspan="6" style="text-align: center;">最后战斗时间</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="greyColor" style="text-align: center;">{{time}}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="greyColor2 font-size">场次</td>
+            <td colspan="2" class="greyColor2 font-size">胜率</td>
+            <td colspan="2" class="greyColor2 font-size">场均</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="blueColor font-size">{{battles}}</td>
+            <td colspan="2" class="blueColor font-size" style="color: {{winsColor}}">{{wins}}%</td>
+            <td colspan="2" class="blueColor font-size" style="color: {{damageColor}}">{{damage}}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="greyColor2 font-size">经验</td>
+            <td colspan="2" class="greyColor2 font-size">K/D</td>
+            <td colspan="2" class="greyColor2 font-size">命中</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="blueColor font-size">{{xp}}</td>
+            <td colspan="2" class="blueColor font-size">{{kd}}</td>
+            <td colspan="2" class="blueColor font-size">{{hit}}%</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="blackColor" style="text-align: center;"></td>
+        </tr>
+        <tr>
+            <td colspan="6" class="bold-data greyColor2" style="text-align: center;">Warships stats by type</td>
+        </tr>
+        <tr>
+            <td class="greyColor">类型</td>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">PR</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        <tr>
+            <td class="bold-data greyColor">战列舰</td>
+            <td class="blueColor">{{bb_battles}}</td>
+            <td class="blueColor" style="color: {{bb_prColor}}">{{bb_pr}}</td>
+            <td class="blueColor" style="color: {{bb_winsColor}}">{{bb_wins}}%</td>
+            <td class="blueColor" style="color: {{bb_damageColor}}">{{bb_damage}}</td>
+            <td class="blueColor">{{bb_hit}}%</td>
+        </tr>
+        <tr>
+            <td class="bold-data greyColor">巡洋舰</td>
+            <td class="blueColor">{{ca_battles}}</td>
+            <td class="blueColor" style="color: {{ca_prColor}}">{{ca_pr}}</td>
+            <td class="blueColor" style="color: {{ca_winsColor}}">{{ca_wins}}%</td>
+            <td class="blueColor" style="color: {{ca_damageColor}}">{{ca_damage}}</td>
+            <td class="blueColor">{{ca_hit}}%</td>
+        </tr>
+        <tr>
+            <td class="bold-data greyColor">驱逐舰</td>
+            <td class="blueColor">{{dd_battles}}</td>
+            <td class="blueColor" style="color: {{dd_prColor}}">{{dd_pr}}</td>
+            <td class="blueColor" style="color: {{dd_winsColor}}">{{dd_wins}}%</td>
+            <td class="blueColor" style="color: {{dd_damageColor}}">{{dd_damage}}</td>
+            <td class="blueColor">{{dd_hit}}%</td>
+        </tr>
+        <tr>
+            <td class="bold-data greyColor">航空母舰</td>
+            <td class="blueColor">{{cv_battles}}</td>
+            <td class="blueColor" style="color: {{cv_prColor}}">{{cv_pr}}</td>
+            <td class="blueColor" style="color: {{cv_winsColor}}">{{cv_wins}}%</td>
+            <td class="blueColor" style="color: {{cv_damageColor}}">{{cv_damage}}</td>
+            <td class="blueColor">N/A</td>
+        </tr>
+        <!--        单野、两个人、三人数据-->
+        <tr>
+            <td colspan="6" class="bold-data greyColor" style="text-align: center;">单野</td>
+        </tr>
+        <!--        <tr>-->
+        <!--            <td colspan="6" style="text-align: center;background-color: ${solo_prValueColor}">${solo_prValue}</td>-->
+        <!--        </tr>-->
+        <tr>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">经验</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">K/D</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        <tr>
+            <td class="blueColor">{{solo_battles}}</td>
+            <td class="blueColor" style="color: {{solo_winsColor}}">{{solo_wins}}%</td>
+            <td class="blueColor">{{solo_xp}}</td>
+            <td class="blueColor" style="color: {{solo_damageColor}}">{{solo_damage}}</td>
+            <td class="blueColor">{{solo_kd}}</td>
+            <td class="blueColor">{{solo_hit}}%</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="bold-data greyColor" style="text-align: center;">自行车</td>
+        </tr>
+        <!--        <tr>-->
+        <!--            <td colspan="6" style="text-align: center;background-color: {{div2_prValueColor}}">{{div2_prValue}}</td>-->
+        <!--        </tr>-->
+        <tr>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">经验</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">K/D</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        <tr>
+            <td class="blueColor">{{div2_battles}}</td>
+            <td class="blueColor" style="color: {{div2_winsColor}}">{{div2_wins}}%</td>
+            <td class="blueColor">{{div2_xp}}</td>
+            <td class="blueColor" style="color: {{div2_damageColor}}">{{div2_damage}}</td>
+            <td class="blueColor">{{div2_kd}}</td>
+            <td class="blueColor">{{div2_hit}}%</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="bold-data greyColor" style="text-align: center;">三轮车</td>
+        </tr>
+        <!--        <tr>-->
+        <!--            <td colspan="6" style="text-align: center;background-color: {{div3_prValueColor}}">{{div3_prValue}}</td>-->
+        <!--        </tr>-->
+        <tr>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">经验</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">K/D</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        <tr>
+            <td class="blueColor">{{div3_battles}}</td>
+            <td class="blueColor" style="color: {{div3_winsColor}}">{{div3_wins}}%</td>
+            <td class="blueColor">{{div3_xp}}</td>
+            <td class="blueColor" style="color: {{div3_damageColor}}">{{div3_damage}}</td>
+            <td class="blueColor">{{div3_kd}}</td>
+            <td class="blueColor">{{div3_hit}}%</td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <div>
+                    <canvas id="myChart" width="800"
+                            height="331"></canvas>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" class="font-data greyColor" style="text-align: center;">
+                <span>© 西行寺雨季</span>&nbsp;&nbsp;<span>© 本心</span></td>
+        </tr>
+        <tr>
+            <td colspan="6" class="font-data greyColor" style="text-align: center;">
+                <span>https://github.com/benx1n/wows-stats-bot</span></td>
+        </tr>
+    </table>
+</div>
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@1.0.0"></script>-->
+<script src="https://wows.linxun.link/js/http_cdn.jsdelivr.net_npm_chart.js@2.9.4_dist_Chart.js"></script>
+<script src="https://wows.linxun.link/js/http_cdn.jsdelivr.net_npm_chartjs-plugin-datalabels@1.0.0.js"></script>
+<script>
+    window.onload = function () {
+        drawGraphs();
+    };
+
+    function drawGraphs() {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        Chart.plugins.register(ChartDataLabels);
+        const labels = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ"];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: '场次',
+                data: [{{lv1}}, {{lv2}}, {{lv3}}, {{lv4}}, {{lv5}}, {{lv6}}, {{lv7}}, {{lv8}}, {{lv9}}, {{lv10}}, {{lv11}}],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderWidth: 1
+            }]
+        };
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                animation: {
+                    duration: 0
+                },
+                responsive: false,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            },
+        };
+        var myChart = new Chart(
+            ctx,
+            config
+        );
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body {
+        font-size: 26px;
+        font-family: "Microsoft YaHei UI";
+    }
+
+    .font-size {
+        font-weight: bold;
+        font-size: 28px;
+    }
+
+    .font-data {
+        font-weight: bold;
+    }
+
+    .greyColor {
+        color: #696969;
+    }
+
+    .greyColor2 {
+        color: #404040;
+    }
+
+    .blueColor {
+        font-weight: bold;
+        color: #000080;
+    }
+
+    .blackColor {
+        font-weight: bold;
+        color: black;
+    }
+
+    .bold-data {
+        font-weight: bold;
+    }
+
+
+    table {
+        border-spacing: 20px 15px;
+        text-align: center;
+    }
+
+</style>
+<body>
+<div>
+    <table id="ship-data" width="1200">
+        <tr>
+            <td colspan="8" class="font-data" style="text-align: center;">
+                <span>[{{guild}}]</span>&nbsp;<span>{{userName}}</span>&nbsp;&nbsp;&nbsp;<span>{{serverName}}</span></td>
+        </tr>
+        <tr>
+            <td colspan="8" style="text-align: center;background-color: {{prValueColor}}">{{prValue}}</td>
+        </tr>
+        <tr>
+            <td colspan="8" class="greyColor" style="text-align: center;">记录时间:{{reTime}}</td>
+        </tr>
+<!--        <tr>-->
+<!--            <td colspan="8" class="greyColor" style="text-align: center;">最近战斗:${time}</td>-->
+<!--        </tr>-->
+        <tr>
+            <td colspan="1" class="greyColor2 font-size"></td>
+            <td colspan="2" class="greyColor2 font-size">场次</td>
+            <td colspan="2" class="greyColor2 font-size">胜率</td>
+            <td colspan="2" class="greyColor2 font-size">场均</td>
+            <td colspan="1" class="greyColor2 font-size"></td>
+        </tr>
+        <tr>
+            <td colspan="1" class="greyColor2 font-size"></td>
+            <td colspan="2" class="blueColor font-size">{{battles}}</td>
+            <td colspan="2" class="blueColor font-size" style="color: {{winsColor}}">{{wins}}%</td>
+            <td colspan="2" class="blueColor font-size" style="color: {{damageColor}}">{{damage}}</td>
+            <td colspan="1" class="greyColor2 font-size"></td>
+        </tr>
+        <tr>
+            <td colspan="1" class="greyColor2 font-size"></td>
+            <td colspan="2" class="greyColor2 font-size">经验</td>
+            <td colspan="2" class="greyColor2 font-size">K/D</td>
+            <td colspan="2" class="greyColor2 font-size">命中</td>
+            <td colspan="1" class="greyColor2 font-size"></td>
+        </tr>
+        <tr>
+            <td colspan="1" class="greyColor2 font-size"></td>
+            <td colspan="2" class="blueColor font-size">{{xp}}</td>
+            <td colspan="2" class="blueColor font-size">{{kd}}</td>
+            <td colspan="2" class="blueColor font-size">{{hit}}</td>
+            <td colspan="1" class="greyColor2 font-size"></td>
+        </tr>
+        <tr>
+            <td colspan="8" class="blackColor" style="text-align: center;"></td>
+        </tr>
+        <tr>
+            <td colspan="8" class="blackColor" style="text-align: center;"></td>
+        </tr>
+        <tr>
+            <td colspan="8" class="bold-data greyColor2" style="text-align: center;">Warships stats by type</td>
+        </tr>
+        <tr>
+            <td class="greyColor">战舰</td>
+            <td class="greyColor">等级</td>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">PR</td>
+            <td class="greyColor">经验</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        {{historyData}}
+        <tr>
+            <td colspan="8" class="font-data greyColor" style="text-align: center;">
+                <span>© 西行寺雨季</span>&nbsp;&nbsp;<span>© 本心</span></td>
+        </tr>
+        <tr>
+            <td colspan="8" class="font-data greyColor" style="text-align: center;">
+                <span>https://github.com/benx1n/wows-stats-bot</span></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
