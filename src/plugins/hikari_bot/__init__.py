@@ -1,6 +1,6 @@
 import traceback
 from loguru import logger
-from nonebot import on_command, on_message
+from nonebot import on_command, on_message, get_driver
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent
 from nonebot.log import logger
@@ -10,19 +10,13 @@ from .wws_recent import get_RecentInfo
 from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo
 from .wws_ship import get_ShipInfo,SecletProcess
 from .data_source import command_list
-from .utils import match_keywords,find_and_replace_keywords
-import base64
+from .utils import find_and_replace_keywords
+from nonebot_plugin_apscheduler import scheduler
+import httpx
+import json
 
-__help__plugin_name__ = "wows"
-__des__ = "Hikari"
-__cmd__ = """
-wws
-""".strip()
-__short_cmd__ = __cmd__
-__example__ = """
-wws me recent
-""".strip()
-__usage__ = f"{__des__}\nUsage:\n{__cmd__}\nExample:\n{__example__}"
+__version__ = '0.1.1'
+
 WWS_help ="""
     帮助列表
     wws set/bind/绑定 服务器 游戏昵称：绑定QQ与游戏账号
@@ -41,6 +35,7 @@ WWS_help ="""
 
 bot = on_command("wws", block=True, priority=1)
 bot_listen = on_message(priority=2)
+bot_help = on_command("wws help",priority=1)
 
 @bot.handle()
 async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
@@ -116,6 +111,10 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         else:
             await bot.finish(MessageSegment.image(msg))
             
+@bot_help.handle()      
+async def send_bot_help():
+    await bot.finish(WWS_help)
+    
 @bot_listen.handle()
 async def change_select_state(ev:MessageEvent):
     msg = str(ev.message)
@@ -124,3 +123,32 @@ async def change_select_state(ev:MessageEvent):
         SecletProcess[qqid] = SecletProcess[qqid]._replace(state = True)
         SecletProcess[qqid] = SecletProcess[qqid]._replace(SlectIndex = int(msg))
     return
+
+async def check_version():
+    try:
+        url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, timeout=10)
+            result = json.loads(resp.text)
+        superid = get_driver().config.SUPERUSERS[0]
+        match,msg = False,f'发现新版本'
+        for each in result['data']:
+            if each['version'] > __version__:
+                match = True
+                msg += f"\n{each['date']} v{each['version']}\n"
+                for i in each['description']:
+                    msg += f"{i}\n"
+        if match:
+            await bot.send(msg)
+        return
+    except Exception:
+        logger.warning(traceback.format_exc())
+        return
+        
+scheduler.add_job(
+    check_version,
+    "cron",
+    hour=4,
+    id="check_version",
+)
+

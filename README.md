@@ -10,12 +10,49 @@
 - [x] 快速切换绑定账号
 - [x] 支持@快速查询
 
-## 快速部署
+## 快速部署（作为独立bot）
+1. 下载[notepad++](https://notepad-plus-plus.org/downloads/)和[Git](https://git-scm.com/download/win)并安装
 
+2. 执行下列两条命令安装nonebot2和hikari-bot插件
     ```
     pip install nb-cli
-
+    pip install hikari-bot
     ```
+3. 打开一个合适的文件夹，鼠标右键——Git Bash here，输入以下命令克隆本Hoshino仓库
+    ```
+    git clone https://github.com/benx1n/HikariBot.git
+    cd HikariBot
+    ```
+4. 编辑.env.prod文件
+    ```
+    API_TOKEN = xxxxxxxx #无需引号
+    ```
+4. 运行bot
+    ```
+    nb run
+    ```
+    >此时若没有报错，您可以打开http://127.0.0.1:8080/go-cqhttp/
+    >
+    >点击左侧添加账号，重启bot即可在网页上看到相应信息（大概率需要扫码）
+
+## 快速部署（作为插件）
+1. 如果您已经有了一个基于Nonebot2的机器人（例如真寻），您可以直接
+    ```
+    pip install hikari-bot
+    ```
+2. 在bot的bot.py中加入
+    ```
+    nonebot.load_plugin('hikari-bot')
+    ```
+3. 重启bot
+
+## 更新
+
+```
+pip install --upgrade hikari-bot
+cd HikariBot
+git pull
+```
 
 ## 感谢
 

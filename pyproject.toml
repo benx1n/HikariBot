@@ -1,12 +1,16 @@
 [tool.poetry]
-name = "HikariBot"
-version = "0.1.0"
+name = "hikari-bot"
+version = "0.1.1"
 description = "Nonebot2 HikariBot,支持战舰世界水表查询"
 authors = ["benx1n <shirakamikanade@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/benx1n/HikariBot"
 repository = "https://github.com/benx1n/HikariBot"
+keywords = ["nonebot", "nonebot2", "qqbot", "wows", "wws","bot","stats"]
+packages = [
+    { include = "hikari_bot", from = "./src/plugins/"}
+]
 
 [tool.poetry.dependencies]
 python = ">=3.8.0,<4.0"
@@ -14,6 +18,7 @@ nonebot2 = "^2.0.0-beta.1"
 nonebot-adapter-onebot = "^2.0.0-beta.1"
 nonebot-plugin-htmlrender = ">=0.0.4"
 nonebot-plugin-gocqhttp = "^0.5.5"
+nonebot-plugin-apscheduler = "^0.1.2"
 httpx = ">=0.19.0"
 Jinja2 = "^3.0.0"
 
@@ -24,6 +29,11 @@ black = "^22.1.0"
 [tool.nonebot]
 plugins = ["nonebot_plugin_gocqhttp"]
 plugin_dirs = ["src/plugins"]
+
+[[tool.poetry.source]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+# default = true
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
