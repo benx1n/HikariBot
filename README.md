@@ -1,9 +1,40 @@
-# HikariBot
-战舰世界水表Bot，基于Nonebot2<br>
+<!-- markdownlint-disable MD033 MD041 -->
+<p align="center">
+  <a href="https://github.com/benx1n/HikariBot"><img src="https://s2.loli.net/2022/05/27/6lsND3dA5GxQjMg.png" alt="Hikari " style="width:200px; height:200px; border-radius:100%" ></a>
+</p>
+
+<div align="center">
+
+# Hikari
+
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable-next-line MD036 -->
+战舰世界水表BOT
+<!-- prettier-ignore-end -->
+
+</div>
+
+<p align="center">
+  <a href="https://github.com/benx1n/HikariBot">
+    <img src="https://img.shields.io/github/license/benx1n/HikariBot" alt="license">
+  </a>
+  <a href="https://pypi.python.org/pypi/hikari-bot">
+    <img src="https://img.shields.io/pypi/v/hikari-bot" alt="pypi">
+  </a>
+  <img src="https://img.shields.io/badge/python-3.8.0+-blue" alt="python">
+  <a href="https://jq.qq.com/?_wv=1027&k=S2WcTKi5">
+    <img src="https://img.shields.io/badge/QQ%E7%BE%A4-967546463-orange?style=flat-square" alt="QQ Chat Group">
+  </a>
+</p>
+
+## 简介
+
+战舰世界水表BOT，基于Nonebot2<br>
 水表人，出击！wws me recent！！！<br>
 如果觉得本插件还不错的话请点个Star哦~<br>
 [Hoshino版插件](https://github.com/benx1n/wows-stats-bot)
-## 特点
+
+## 特色
 
 - [x] 账号总体、单船、近期战绩
 - [x] 全指令支持参数乱序
@@ -56,6 +87,8 @@
 >config = nonebot.get_driver().config
 >config.api_token = "xxxxxxxxxxxx"
 >```
+>请点击页面顶部链接加群获取Token哦~
+>
 4. 重启bot
 
 ## 更新
