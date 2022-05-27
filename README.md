@@ -60,6 +60,7 @@
 4. 编辑.env.prod文件
    > ```
    > API_TOKEN = xxxxxxxx #无需引号，格式为您的KEY:TOKEN,半角冒号相连
+   >SUPERUSERS=["QQ号"] 
    > ```
 
 5. 双击`启动.bat`
@@ -80,7 +81,11 @@
     ```
     nonebot.load_plugin('hikari_bot')
     ```
-3. 在环境文件中加入API_TOKEN = xxxxxxxxxxxx
+3. 在环境文件中加入
+    ```
+    API_TOKEN = xxxxxxxxxxxx
+    SUPERUSERS=["QQ号"] 
+    ```
 >一般来说该文件为.env.dev
 >
 >也有可能是.env.pord，具体需要看.env中是否有指定

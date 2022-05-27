@@ -1,6 +1,6 @@
 import traceback
 from loguru import logger
-from nonebot import on_command, on_message, get_driver
+from nonebot import get_bot, on_command, on_message, get_driver
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot
 from nonebot.log import logger
@@ -14,8 +14,9 @@ from .utils import find_and_replace_keywords
 from nonebot_plugin_apscheduler import scheduler
 import httpx
 import json
+import nonebot
 
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 
 WWS_help ="""
     帮助列表
@@ -26,6 +27,7 @@ WWS_help ="""
     wws [服务器+游戏昵称][@群友][me] recent [日期]：查询账号近期战绩，默认1天
     wws [服务器+游戏昵称][@群友][me] ship 船名：查询单船总体战绩
     wws [搜/查船名] [国家][等级][类型]：查找符合条件的舰船中英文名称
+    wws 检查更新
     [待开发] wws ship recent
     [待开发] wws rank
     以上指令参数顺序均无强制要求，即你完全可以发送wws eu 7 recent Test以查询欧服Test七天内的战绩
@@ -114,7 +116,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             
 @bot_help.handle()      
 async def send_bot_help():
-    await bot.finish(WWS_help)
+    await bot_help.finish(WWS_help)
     
 @bot_listen.handle()
 async def change_select_state(ev:MessageEvent):
@@ -125,8 +127,9 @@ async def change_select_state(ev:MessageEvent):
         SecletProcess[qqid] = SecletProcess[qqid]._replace(SlectIndex = int(msg))
 
 @bot_checkversion.handle()
-async def check_version(bot:Bot):
+async def check_version():
     try:
+        bot = get_bot()
         url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, timeout=10)
@@ -143,6 +146,10 @@ async def check_version(bot:Bot):
         if match:
             for each in superid:
                 await bot.send_private_msg(user_id=int(each),message=msg)
+            try:
+                await bot_checkversion.send(msg)
+            except Exception:
+                return
         return
     except Exception:
         logger.warning(traceback.format_exc())
@@ -151,7 +158,6 @@ async def check_version(bot:Bot):
 scheduler.add_job(
     check_version,
     "interval",
-    hours=12,
-    id="check_version",
-    args=[Bot]
+    hours = 12,
+    id="check_version"
 )
