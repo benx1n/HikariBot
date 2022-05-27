@@ -109,10 +109,13 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
                 await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
         else:
             msg = '看不懂指令QAQ'
-        if isinstance(msg,str):
-            await bot.finish(msg)
+        if msg:
+            if isinstance(msg,str):
+                await bot.finish(msg)
+            else:
+                await bot.finish(MessageSegment.image(msg))
         else:
-            await bot.finish(MessageSegment.image(msg))
+            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
             
 @bot_help.handle()      
 async def send_bot_help():

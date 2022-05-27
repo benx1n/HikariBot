@@ -63,7 +63,7 @@
    >SUPERUSERS=["QQ号"] 
    > ```
 
-5. 双击`启动.bat`
+5. 双击`启动.bat`，在打开的浏览器中添加bot账号密码，重新启动Hikari
     >打开终端，进入HikariBot文件夹下，输入下方命令运行bot
     >```
     >nb run
@@ -71,6 +71,9 @@
     >此时若没有报错，您可以打开http://127.0.0.1:8080/go-cqhttp/
     >
     >点击左侧添加账号，重启bot即可在网页上看到相应信息（大概率需要扫码）
+    >
+    >如果重启后go-cqhhtp一直卡在扫码或无限重启，请继续往下阅读
+
 
 ## 快速部署（作为插件）
 1. 如果您已经有了一个基于Nonebot2的机器人（例如真寻），您可以直接
@@ -117,6 +120,42 @@
 >
 >git pull
 >```
+
+## 可能会遇到的问题
+
+### 无法使用内嵌go-cqhttp登录bot
+
+1. 下载 go-cqhttp 至合适的文件夹
+
+    - github 发布页：https://github.com/Mrs4s/go-cqhttp/releases
+
+    > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_386.exe](https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc1/go-cqhttp_windows_386.exe)
+
+2. 双击go-cqhttp，提示释出bat，重新运行bat，选择websocket反向代理，go-cqhttp将会在同文件夹内自动创建一个`config.yml`，右键使用notepad++打开，根据注释填写QQ账号密码，并将以下内容写入文件结尾：
+
+    ```yaml
+      - ws-reverse:
+          universal: ws://127.0.0.1:8080/onebot/v11/ws
+          reconnect-interval: 5000
+          middlewares:
+            <<: *default
+    ```
+    
+    > 关于go-cqhttp的配置，你可以在[这里](https://docs.go-cqhttp.org/guide/config.html#%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF)找到更多说明。
+
+3. 启动go-cqhttp，按照提示登录。
+
+
+4. 修改Hikari文件夹下.env.prod中`USE_PLUGIN_GO_CQHTTP`的值为`false`
+    ```
+    USE_PLUGIN_GO_CQHTTP = false
+    ```
+5. 在文件夹下打开终端，输入`nb run`启动bot
+
+### 外置go-cqhttp也无法登录
+>一般提示需要扫码，扫码后提示异地无法登录
+>
+>关于该问题，您可以查看[#1469](https://github.com/Mrs4s/go-cqhttp/issues/1469)获得相应解决办法
 ## 感谢
 
 [Nonebot2](https://github.com/nonebot/nonebot2)<br>
