@@ -44,7 +44,7 @@
     ```
 2. 在bot的bot.py中加入
     ```
-    nonebot.load_plugin('hikari-bot')
+    nonebot.load_plugin('hikari_bot')
     ```
 3. 重启bot
 
