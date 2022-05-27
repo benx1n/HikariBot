@@ -62,6 +62,10 @@
 
 ```
 pip install --upgrade hikari-bot
+install结束后会打印当前版本
+您也可以通过pip show hikari-bot查看
+如果没有更新到最新版请等待一会儿，镜像站一般每五分钟同步
+(插件版无需下列两步)
 cd HikariBot
 git pull
 ```

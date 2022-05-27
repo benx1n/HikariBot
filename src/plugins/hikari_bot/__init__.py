@@ -2,7 +2,7 @@ import traceback
 from loguru import logger
 from nonebot import on_command, on_message, get_driver
 from nonebot.params import CommandArg
-from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent
+from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot
 from nonebot.log import logger
 from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
 from .wws_info import get_AccountInfo
@@ -15,7 +15,7 @@ from nonebot_plugin_apscheduler import scheduler
 import httpx
 import json
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 WWS_help ="""
     帮助列表
@@ -33,9 +33,10 @@ WWS_help ="""
     仓库地址：https://github.com/benx1n/HikariBot
 """
 
-bot = on_command("wws", block=True, priority=1)
-bot_listen = on_message(priority=2)
-bot_help = on_command("wws help",priority=1)
+bot = on_command("wws", block=True, priority=5)
+bot_listen = on_message(priority=5)
+bot_help = on_command("wws help",priority=5)
+bot_checkversion = on_command("wws 检查更新",priority=5)
 
 @bot.handle()
 async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
@@ -122,15 +123,16 @@ async def change_select_state(ev:MessageEvent):
     if SecletProcess[qqid].SelectList and str(msg).isdigit():
         SecletProcess[qqid] = SecletProcess[qqid]._replace(state = True)
         SecletProcess[qqid] = SecletProcess[qqid]._replace(SlectIndex = int(msg))
-    return
 
-async def check_version():
+@bot_checkversion.handle()
+async def check_version(bot:Bot):
     try:
         url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, timeout=10)
             result = json.loads(resp.text)
-        superid = get_driver().config.SUPERUSERS[0]
+        superid = get_driver().config.superusers
+        print(result,superid)
         match,msg = False,f'发现新版本'
         for each in result['data']:
             if each['version'] > __version__:
@@ -139,7 +141,8 @@ async def check_version():
                 for i in each['description']:
                     msg += f"{i}\n"
         if match:
-            await bot.send(msg)
+            for each in superid:
+                await bot.send_private_msg(user_id=int(each),message=msg)
         return
     except Exception:
         logger.warning(traceback.format_exc())
@@ -147,8 +150,8 @@ async def check_version():
         
 scheduler.add_job(
     check_version,
-    "cron",
-    hour=4,
+    "interval",
+    hours=12,
     id="check_version",
+    args=[Bot]
 )
-
