@@ -46,7 +46,17 @@
     ```
     nonebot.load_plugin('hikari_bot')
     ```
-3. 重启bot
+3. 在环境文件中加入API_TOKEN = xxxxxxxxxxxx
+>一般来说该文件为.env.dev
+>
+>也有可能是.env.pord，具体需要看.env中是否有指定
+>
+>如果啥都不懂，bot.py里,在`nonebot.init()`下面加上
+>```
+>config = nonebot.get_driver().config
+>config.api_token = "xxxxxxxxxxxx"
+>```
+4. 重启bot
 
 ## 更新
 
