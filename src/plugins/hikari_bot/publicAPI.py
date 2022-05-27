@@ -71,7 +71,7 @@ async def get_ship_byName(shipname:str):
         List = []
         if result['code'] == 200 and result['data']:
             for each in result['data']:
-                List.append([each['id'],each['shipNameCn'],each['shipNameNumbers']])
+                List.append([each['id'],each['shipNameCn'],each['shipNameNumbers'],each['tier']])
             return List
         else:
             return None

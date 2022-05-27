@@ -6,7 +6,7 @@ import jinja2
 import re
 import asyncio
 from pathlib import Path
-from .data_source import servers,set_shipparams
+from .data_source import servers,set_shipparams,tiers
 from .utils import html_to_pic,match_keywords
 from .wws_info import get_AccountIdByName
 from.publicAPI import get_ship_byName
@@ -80,7 +80,7 @@ async def get_ShipInfo(qqid,info,bot,ev):
                     flag = 0
                     for each in shipList:
                         flag += 1
-                        msg += f"{flag}：{each[1]}：{each[2]}\n"
+                        msg += f"{flag}：{tiers[each[3]-1]} {each[1]}：{each[2]}\n"
                     SecletProcess[qqid] = ShipSlectState(False, None, shipList)
                     await bot.send(msg)
                     a = 0

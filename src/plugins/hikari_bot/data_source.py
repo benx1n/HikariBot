@@ -66,6 +66,8 @@ servers = [
     matching(("cn","国服","china"),"cn"),
 ]
 
+tiers = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ"]
+
 pr_select = [
     {
         "value": 0,
