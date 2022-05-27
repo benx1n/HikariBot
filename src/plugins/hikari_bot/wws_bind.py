@@ -128,8 +128,10 @@ async def change_BindInfo(user,info):
             result = resp.json()
         if result['code'] == 200 and result['message'] == "success":
             return f'切换绑定成功,当前绑定账号{account_name}'
+        elif result['code'] == 404:
+            return f"{result['message']}"
         elif result['code'] == 500:
-            return result['message']
+            return f"{result['message']}"
         else:
             return 'wuwuwu出了点问题，请联系麻麻解决'
     except Exception:
