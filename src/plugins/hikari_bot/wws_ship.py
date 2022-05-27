@@ -67,7 +67,7 @@ async def get_ShipInfo(qqid,info,bot,ev):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                print(params)
+                print('下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦')
             else:
                 return '您似乎准备用游戏昵称查询单船战绩，请检查参数中是否包含服务器、游戏昵称和船名，以空格区分'
             shipList = await get_ship_byName(str(info[0]))
@@ -96,7 +96,7 @@ async def get_ShipInfo(qqid,info,bot,ev):
                 return '找不到船'
         else:
             return '参数似乎出了问题呢'
-        print(params)
+        print(f"print('下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦')\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
             result = resp.json()

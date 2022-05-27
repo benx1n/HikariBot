@@ -54,13 +54,12 @@
 3. 打开一个合适的文件夹，鼠标右键——Git Bash here，输入以下命令克隆本Hoshino仓库
     ```
     git clone https://github.com/benx1n/HikariBot.git
-    cd HikariBot
     ```
 4. 编辑.env.prod文件
     ```
     API_TOKEN = xxxxxxxx #无需引号
     ```
-4. 运行bot
+4. 打开终端，进入HikariBot文件夹下，输入下方命令运行bot
     ```
     nb run
     ```

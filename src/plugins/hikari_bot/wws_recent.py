@@ -27,7 +27,7 @@ async def get_RecentInfo(qqid,info):
         params,day = None,1
         if isinstance(info,List):
             for i in info:              #查找日期,没找到默认一天
-                if str(i).isdigit():
+                if str(i).isdigit() and len(i) <= 3:
                     day = str(i)
                     info.remove(i)
             for i in info:              #是否包含me或@，包含则调用平台接口
@@ -63,7 +63,7 @@ async def get_RecentInfo(qqid,info):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                print(params)
+                print('下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦')
             else:
                 return '您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格区分'
         else:
