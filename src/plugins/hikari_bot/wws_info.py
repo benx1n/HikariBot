@@ -31,6 +31,7 @@ async def get_AccountIdByName(server:str,name:str):
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=10)
             result = resp.json()
+        print(result)
         if result['data']:
             return result['data']['accountId']
         else:
@@ -46,18 +47,18 @@ async def get_AccountInfo(qqid,info):
         if isinstance(info,List):
             for i in info:
                 if i == 'me':
-                    url = 'https://api.wows.linxun.link/public/wows/account/platform/user/info'
+                    url = 'https://api.wows.linxun.link/public/wows/account/user/info'
                     params = {
-                    "platformType": "QQ",
-                    "platformId": qqid
+                    "server": "QQ",
+                    "accountId": str(qqid)
                     }
                     break
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
-                    url = 'https://api.wows.linxun.link/public/wows/account/platform/user/info'
+                    url = 'https://api.wows.linxun.link/public/wows/account/user/info'
                     params = {
-                    "platformType": "QQ",
-                    "platformId": match.group(1)
+                    "server": "QQ",
+                    "accountId": match.group(1)
                     }
                     break
             if not params and len(info) == 2:
@@ -84,11 +85,16 @@ async def get_AccountInfo(qqid,info):
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=10)
             result = resp.json()
-        if result['data']:
+        print(result)
+        if result['code'] == 200 and result['data']:
             template = env.get_template("wws-info.html")
             template_data = await set_infoparams(result['data'])
             content = await template.render_async(template_data)
             return await html_to_pic(content, wait=0, viewport={"width": 920, "height": 1000})
+        elif result['code'] == 404:
+            return result['message']
+        elif result['code'] == 500:
+            return f"{result['message']}"
         else:
             return '查询不到对应信息哦~可能是游戏昵称不正确或QQ未绑定'
     except Exception:
