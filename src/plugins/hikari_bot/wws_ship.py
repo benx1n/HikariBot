@@ -106,7 +106,7 @@ async def get_ShipInfo(qqid,info,bot,ev):
             content = await template.render_async(template_data)
             return await html_to_pic(content, wait=0, viewport={"width": 640, "height": 100})
         elif result['code'] == 404:
-            return result['message']
+            return f"{result['message']}"
         elif result['code'] == 500:
             return f"{result['message']}"
         else:
