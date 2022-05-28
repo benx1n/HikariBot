@@ -6,7 +6,7 @@ import jinja2
 import re
 import asyncio
 from pathlib import Path
-from .data_source import servers,set_shipparams,tiers
+from .data_source import servers,set_shipparams
 from .utils import html_to_pic,match_keywords
 from .wws_info import get_AccountIdByName
 from.publicAPI import get_ship_byName
@@ -80,14 +80,13 @@ async def get_ShipInfo(qqid,info,bot):
                     flag = 0
                     for each in shipList:
                         flag += 1
-                        msg += f"{flag}：{tiers[each[3]-1]} {each[1]}：{each[2]}\n"
+                        msg += f"{flag}：({each[3]}级) {each[1]}\n"
                     SecletProcess[qqid] = ShipSlectState(False, None, shipList)
                     await bot.send(msg)
                     a = 0
                     while a < 200 and not SecletProcess[qqid].state:
                         a += 1
                         await asyncio.sleep(0.1)
-                        #print(SecletProcess[qqid].SelectList)
                     if SecletProcess[qqid].state and SecletProcess[qqid].SlectIndex <= len(shipList):
                         params["shipId"] = shipList[SecletProcess[qqid].SlectIndex-1][0]
                     else:
@@ -96,7 +95,7 @@ async def get_ShipInfo(qqid,info,bot):
                 return '找不到船'
         else:
             return '参数似乎出了问题呢'
-        print(f"print('下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦')\n{params}")
+        print(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
             result = resp.json()
@@ -113,4 +112,4 @@ async def get_ShipInfo(qqid,info,bot):
             return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'
     except Exception:
         traceback.print_exc()
-        return    
+        return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'

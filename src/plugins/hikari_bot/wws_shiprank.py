@@ -13,6 +13,7 @@ from .wws_ship import SecletProcess,ShipSlectState
 from.publicAPI import get_ship_byName
 from bs4 import BeautifulSoup
 from nonebot import get_driver
+import json
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -41,14 +42,14 @@ async def get_ShipRank(qqid,info,bot):
         print(shipList)
         if shipList:
             if len(shipList) < 2:
-                select_shipId = shipList[0]
-                number_url += f"{select_shipId},{shipList[2]}"
+                select_shipId = shipList[0][0]
+                number_url += f"{select_shipId},{shipList[0][2]}"
             else:
                 msg = f'存在多条名字相似的船，请在二十秒内选择对应的序号\n'
                 flag = 0
                 for each in shipList:
                     flag += 1
-                    msg += f"{flag}：{tiers[each[3]-1]} {each[1]}：{each[2]}\n"
+                    msg += f"{flag}：({each[3]}级) {each[1]}\n"
                 SecletProcess[qqid] = ShipSlectState(False, None, shipList)
                 await bot.send(msg)
                 a = 0
@@ -64,34 +65,36 @@ async def get_ShipRank(qqid,info,bot):
                     return '已超时退出'
         else:
             return '找不到船'
-        content = await search_ShipRank_Yuyuko(select_shipId)
+        content = await search_ShipRank_Yuyuko(select_shipId,param_server)
         if content:                                         #存在缓存，直接出图
+            print('存在缓存')
             return await html_to_pic(content, wait=0, viewport={"width": 1800, "height": 100})
         else:                                               #无缓存，去Number爬
             content,numbers_data = await search_ShipRank_Numbers(number_url)
             if content:
-                await post_ShipRank(select_shipId,numbers_data)     #上报Yuyuko
+                await post_ShipRank(select_shipId,param_server,numbers_data)     #上报Yuyuko
                 return await html_to_pic(content, wait=0, viewport={"width": 1800, "height": 100})
             else:
                 return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'   
     except Exception:
         traceback.print_exc()
-        return    
+        return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~' 
    
-async def search_ShipRank_Yuyuko(shipId):
+async def search_ShipRank_Yuyuko(shipId,server):
     try:
         content = None
         async with httpx.AsyncClient(headers=headers) as client:        #查询是否有缓存
             url = 'https://api.wows.linxun.link/upload/numbers/data/upload/ship/rank'
             params = {
-                "shipId":int(shipId)
+                "shipId":int(shipId),
+                "server":server
             }
             resp = await client.get(url, params=params,timeout=20)
             result = resp.json()
             if result['code'] == 200 and result['data']:
-                template = env.get_template("wws-ship.html")
-                template_data = await set_shipparams(result['data'])
-                content = await template.render_async(template_data)
+                template = env.get_template("ship-rank.html")
+                result_data = {"data":result['data']}
+                content = await template.render_async(result_data)
                 return content
             else:
                 return None
@@ -117,15 +120,17 @@ async def search_ShipRank_Numbers(url):
         traceback.print_exc()
         return None,None
             
-async def post_ShipRank(shipId,data):
+async def post_ShipRank(shipId,server,data):
     try:
         async with httpx.AsyncClient(headers=headers) as client:
             url = 'https://api.wows.linxun.link/upload/numbers/data/upload/ship/rank'
+            result = f'''{data}'''
             post_data = {
-                "bodyHtml": str(data),
+                "bodyHtml": result,
+                "server": server,
                 "shipId": int(shipId)
             }
-            resp = await client.post(url, data = post_data, timeout=20)
+            resp = await client.post(url, json = post_data, timeout=20)
             result = resp.json()
             print(result)
     except Exception:
