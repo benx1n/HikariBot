@@ -9,6 +9,7 @@ from .wws_info import get_AccountInfo
 from .wws_recent import get_RecentInfo
 from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo
 from .wws_ship import get_ShipInfo,SecletProcess
+from .wws_shiprank import get_ShipRank
 from .data_source import command_list
 from .utils import find_and_replace_keywords
 from nonebot_plugin_apscheduler import scheduler
@@ -16,7 +17,7 @@ import httpx
 import json
 import nonebot
 
-__version__ = '0.1.5'
+__version__ = '0.1.6'
 
 WWS_help ="""
     帮助列表
@@ -26,6 +27,7 @@ WWS_help ="""
     wws [服务器+游戏昵称][@群友][me]：查询账号总体战绩
     wws [服务器+游戏昵称][@群友][me] recent [日期]：查询账号近期战绩，默认1天
     wws [服务器+游戏昵称][@群友][me] ship 船名：查询单船总体战绩
+    wws rank/ship.rank [服务器][战舰名]：查询单船排行榜
     wws [搜/查船名] [国家][等级][类型]：查找符合条件的舰船中英文名称
     wws 检查更新
     [待开发] wws ship recent
@@ -62,7 +64,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
             if not select_command:
                 try:
-                    msg = await get_ShipInfo(qqid,search_list,bot,ev)
+                    msg = await get_ShipInfo(qqid,search_list,bot)
                 except Exception:
                     logger.warning(traceback.format_exc())
                     await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
@@ -83,6 +85,12 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
                 msg = '待开发：查单船近期战绩'
             else:
                 msg = '：看不懂指令QAQ'
+        elif select_command == 'ship_rank':
+            try:
+                msg = await get_ShipRank(qqid,search_list,bot)
+            except Exception:
+                logger.warning(traceback.format_exc())
+                await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')    
         elif select_command == 'bind':
             try:
                 msg = await set_BindInfo(qqid,search_list)
@@ -160,7 +168,7 @@ async def check_version():
         
 scheduler.add_job(
     check_version,
-    "interval",
-    hours = 12,
+    "cron",
+    hour = 12,
     id="check_version"
 )

@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD033 MD041 -->
 <p align="center">
-  <a href="https://github.com/benx1n/HikariBot"><img src="https://s2.loli.net/2022/05/27/6lsND3dA5GxQjMg.png" alt="Hikari " style="width:200px; height:200px; border-radius:100%" ></a>
+  <a href="https://github.com/benx1n/HikariBot"><img src="https://s2.loli.net/2022/05/28/SFsER8m6TL7jwJ2.png" alt="Hikari " style="width:200px; height:200px" ></a>
 </p>
 
 <div align="center">
@@ -15,9 +15,6 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/benx1n/HikariBot">
-    <img src="https://img.shields.io/github/license/benx1n/HikariBot" alt="license">
-  </a>
   <a href="https://pypi.python.org/pypi/hikari-bot">
     <img src="https://img.shields.io/pypi/v/hikari-bot" alt="pypi">
   </a>
@@ -44,6 +41,10 @@
 ## 快速部署（作为独立bot）
 1. 下载[notepad++](https://notepad-plus-plus.org/downloads/)、[Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
     >Python版本需>3.8，或参考[Hoshino版插件](https://github.com/benx1n/wows-stats-bot)中使用Conda虚拟环境
+    >
+    >请注意python安装时勾选或点击`添加到环境变量`，可以安装后cmd中输入`python --version`来验证是否成功
+    >
+    >否则请自行百度如何添加python到环境变量
 
 3. 打开一个合适的文件夹，鼠标右键——Git Bash here，输入以下命令克隆本Hoshino仓库
    > ```
@@ -59,9 +60,12 @@
    >
 4. 编辑.env.prod文件
    > ```
-   > API_TOKEN = xxxxxxxx #无需引号，格式为您的KEY:TOKEN,半角冒号相连
+   > API_TOKEN = xxxxxxxx #无需引号，格式为您的KEY:TOKEN,半角冒号相连,KEY即您申请TOKEN时使用的QQ号，TOKEN即回复您的邮件
    >SUPERUSERS=["QQ号"] 
    > ```
+   >总之最后应该长这样
+   >
+   >API_TOKEN = 123764323:ba1f2511fc30423bdbb183fe33
 
 5. 双击`启动.bat`，在打开的浏览器中添加bot账号密码，重新启动Hikari
     >打开终端，进入HikariBot文件夹下，输入下方命令运行bot
@@ -114,12 +118,20 @@
 >
 >如果没有更新到最新版请等待一会儿，镜像站一般每五分钟同步
 >
->(插件版无需下列两步)
+>(插件版无需下列步骤，Bot版在更新说明中没有提到git pull也不需要)
 >```
 >cd HikariBot
 >
+>git fetch --all
+>
+>git reset --hard origin/master
+>
 >git pull
 >```
+>
+>重新编辑您的.env.prod文件
+>
+>(如果您会自己解决分支冲突不看也可以.jpg
 
 ## 可能会遇到的问题
 

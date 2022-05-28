@@ -9,9 +9,10 @@ class matching:
     keywords: Tuple[str, ...]
     match_keywords : str
     
-command_list = [
+command_list = [        #同指令中越长的匹配词越靠前
     matching(("切换绑定","更换绑定","更改绑定"),"changebind"),
     matching(("查询绑定","绑定查询","绑定列表","查绑定"),"bindlist"),
+    matching(("ship.rank","rank"),"ship_rank"),
     matching(("bind","绑定","set"),"bind"),
     matching(("recent","近期",),"recent"),
     matching(("ship","单船",),"ship"),
@@ -67,6 +68,14 @@ servers = [
 ]
 
 tiers = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ"]
+
+number_url_homes={
+    "asia":"https://asia.wows-numbers.com",
+    "eu":"https://wows-numbers.com",
+    "na":"https://na.wows-numbers.com",
+    "ru":"https://ru.wows-numbers.com",
+    "cn": None
+}
 
 pr_select = [
     {

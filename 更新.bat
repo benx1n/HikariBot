@@ -4,8 +4,4 @@ chcp 65001
 echo 正在获取最新版本HikariBot
 python -m pip install --upgrade hikari-bot
 echo.
-echo 正在获取最新git代码
-cd /d %~dp0
-git pull
-echo.
 pause

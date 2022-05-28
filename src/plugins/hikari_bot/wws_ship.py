@@ -26,7 +26,7 @@ headers = {
 ShipSlectState = namedtuple("ShipSlectState", ['state','SlectIndex','SelectList'])
 SecletProcess = defaultdict(lambda: ShipSlectState(False, None, None))
 
-async def get_ShipInfo(qqid,info,bot,ev):
+async def get_ShipInfo(qqid,info,bot):
     try:
         params = None
         if isinstance(info,List):
