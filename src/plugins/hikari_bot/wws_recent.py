@@ -10,6 +10,7 @@ from .data_source import servers,set_recentparams
 from .utils import html_to_pic,match_keywords
 from .wws_info import get_AccountIdByName
 from nonebot import get_driver
+from nonebot.log import logger
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -63,14 +64,15 @@ async def get_RecentInfo(qqid,info):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                print('下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦')
+                print(params)
             else:
                 return '您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格区分'
         else:
             return '参数似乎出了问题呢'
-        print(params)
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
             result = resp.json()
         if result['code'] == 200 and result['data']:
             template = env.get_template("wws-info-recent.html")
@@ -84,5 +86,5 @@ async def get_RecentInfo(qqid,info):
         else:
             return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return

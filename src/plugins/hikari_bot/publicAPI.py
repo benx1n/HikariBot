@@ -4,6 +4,7 @@ import traceback
 from .data_source import nations,shiptypes,levels
 from .utils import match_keywords
 from nonebot import get_driver
+from nonebot.log import logger
 
 headers = {
     'Authorization': get_driver().config.api_token
@@ -20,7 +21,7 @@ async def get_nation_list():
             msg: str = msg + f"{nation['cn']}：{nation['nation']}\n"
         return msg
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         
 async def get_ship_name(infolist:List):
     msg = ''
@@ -43,8 +44,10 @@ async def get_ship_name(infolist:List):
             "shipType":param_shiptype
         }
         url = 'https://api.wows.linxun.link/public/wows/encyclopedia/ship/search'
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=10)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
             result = resp.json()
         if result['data']:
             for ship in result['data']:
@@ -53,7 +56,7 @@ async def get_ship_name(infolist:List):
             msg = '没有符合的船只'
         return msg
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return msg
     
 async def get_ship_byName(shipname:str):
@@ -65,8 +68,10 @@ async def get_ship_byName(shipname:str):
         "shipName":shipname,
         "shipType":''
     }
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=10)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
             result = resp.json()
         List = []
         if result['code'] == 200 and result['data']:
@@ -76,5 +81,5 @@ async def get_ship_byName(shipname:str):
         else:
             return None
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return None

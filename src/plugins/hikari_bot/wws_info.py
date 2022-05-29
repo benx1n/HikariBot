@@ -9,6 +9,7 @@ from pathlib import Path
 from .data_source import servers,set_infoparams
 from .utils import html_to_pic,match_keywords
 from nonebot import get_driver
+from nonebot.log import logger
 
 
 dir_path = Path(__file__).parent
@@ -28,16 +29,17 @@ async def get_AccountIdByName(server:str,name:str):
             "server": server,
             "userName": name
         }
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
             result = resp.json()
-        print(result)
         if result['data']:
             return result['data']['accountId']
         else:
             return None
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return None
     
 
@@ -76,14 +78,15 @@ async def get_AccountInfo(qqid,info):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                print('下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦')
+                print(params)
             else:
                 return '您似乎准备用游戏昵称查询水表，请检查参数中时候包含服务器和游戏昵称，以空格区分'
         else:
             return '参数似乎出了问题呢'
-        print(params)
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
             result = resp.json()
         if result['code'] == 200 and result['data']:
             template = env.get_template("wws-info.html")
@@ -97,5 +100,5 @@ async def get_AccountInfo(qqid,info):
         else:
             return '查询不到对应信息哦~可能是游戏昵称不正确或QQ未绑定'
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'

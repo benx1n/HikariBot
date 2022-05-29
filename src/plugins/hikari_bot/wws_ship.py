@@ -12,6 +12,7 @@ from .wws_info import get_AccountIdByName
 from.publicAPI import get_ship_byName
 from collections import defaultdict, namedtuple
 from nonebot import get_driver
+from nonebot.log import logger
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -46,10 +47,8 @@ async def get_ShipInfo(qqid,info,bot):
                     "accountId": match.group(1),
                     }
                     info[flag] = str(i).replace(f"[{match.group(0)}]",'')
-                    print(f"info删除前{info}")
                     if not info[flag]:
                         info.remove('')
-                        print(f"info删除后{info}")
                     break
             if not params and len(info) == 3:
                 param_server,info = await match_keywords(info,servers)
@@ -67,7 +66,7 @@ async def get_ShipInfo(qqid,info,bot):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                print('下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦')
+                print(params)
             else:
                 return '您似乎准备用游戏昵称查询单船战绩，请检查参数中是否包含服务器、游戏昵称和船名，以空格区分'
             shipList = await get_ship_byName(str(info[0]))
@@ -95,9 +94,10 @@ async def get_ShipInfo(qqid,info,bot):
                 return '找不到船'
         else:
             return '参数似乎出了问题呢'
-        print(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
             result = resp.json()
         if result['code'] == 200 and result['data']:
             template = env.get_template("wws-ship.html")
@@ -111,5 +111,5 @@ async def get_ShipInfo(qqid,info,bot):
         else:
             return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'

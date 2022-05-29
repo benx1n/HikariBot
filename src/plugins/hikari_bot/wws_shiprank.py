@@ -13,6 +13,7 @@ from .wws_ship import SecletProcess,ShipSlectState
 from.publicAPI import get_ship_byName
 from bs4 import BeautifulSoup
 from nonebot import get_driver
+from nonebot.log import logger
 import json
 
 dir_path = Path(__file__).parent
@@ -60,7 +61,6 @@ async def get_ShipRank(qqid,info,bot):
                 if SecletProcess[qqid].state and SecletProcess[qqid].SlectIndex <= len(shipList):
                     select_shipId = int(shipList[SecletProcess[qqid].SlectIndex-1][0])
                     number_url += f"{select_shipId},{shipList[SecletProcess[qqid].SlectIndex-1][2]}"
-                    print(number_url)
                 else:
                     return '已超时退出'
         else:
@@ -77,7 +77,7 @@ async def get_ShipRank(qqid,info,bot):
             else:
                 return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'   
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~' 
    
 async def search_ShipRank_Yuyuko(shipId,server):
@@ -89,7 +89,9 @@ async def search_ShipRank_Yuyuko(shipId,server):
                 "shipId":int(shipId),
                 "server":server
             }
+            logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
             resp = await client.get(url, params=params,timeout=20)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
             result = resp.json()
             if result['code'] == 200 and result['data']:
                 template = env.get_template("ship-rank.html")
@@ -99,14 +101,16 @@ async def search_ShipRank_Yuyuko(shipId,server):
             else:
                 return None
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return None 
         
 async def search_ShipRank_Numbers(url):
     try:
         content = None
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}")
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, timeout=20)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
         soup = BeautifulSoup(resp.content, 'html.parser')
         data = soup.select_one('div[style="clear:both;"]')
         if data:
@@ -117,7 +121,7 @@ async def search_ShipRank_Numbers(url):
         else:
             return None,None
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return None,None
             
 async def post_ShipRank(shipId,server,data):
@@ -134,4 +138,4 @@ async def post_ShipRank(shipId,server,data):
             result = resp.json()
             print(result)
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
