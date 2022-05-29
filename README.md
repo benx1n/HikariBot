@@ -63,7 +63,7 @@
    >
 4. 编辑.env.prod文件
    > ```
-   > API_TOKEN = xxxxxxxx #无需引号，格式为您的KEY:TOKEN,半角冒号相连,KEY即您申请TOKEN时使用的QQ号，TOKEN即回复您的邮件
+   > API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
    >SUPERUSERS=["QQ号"] 
    > ```
    >总之最后应该长这样
