@@ -63,7 +63,7 @@ async def get_ShipInfo(qqid,info,bot):
                         "accountId": param_accountid,
                         }
                     else:
-                        return '无法查询该游戏昵称Orz，请检查昵称是否存在，或尝试将船名放在最后'
+                        return '无法查询该游戏昵称Orz，请检查昵称是否存在，也有可能是网络波动，请稍后再试，或尝试将船名放在最后'
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
@@ -107,7 +107,7 @@ async def get_ShipInfo(qqid,info,bot):
         elif result['code'] == 404:
             return f"{result['message']}"
         elif result['code'] == 500:
-            return f"{result['message']}"
+            return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'
     except Exception:

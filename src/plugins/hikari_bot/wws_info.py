@@ -29,7 +29,7 @@ async def get_AccountIdByName(server:str,name:str):
             "userName": name
         }
         async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, params=params, timeout=10)
+            resp = await client.get(url, params=params, timeout=20)
             result = resp.json()
         print(result)
         if result['data']:
@@ -72,7 +72,7 @@ async def get_AccountInfo(qqid,info):
                         "accountId": param_accountid
                         }
                     else:
-                        return '无法查询该游戏昵称Orz，请检查昵称是否存在'
+                        return '无法查询该游戏昵称Orz，请检查昵称是否存在，也有可能是网络波动，请稍后再试'
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
@@ -83,7 +83,7 @@ async def get_AccountInfo(qqid,info):
             return '参数似乎出了问题呢'
         print(params)
         async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, params=params, timeout=10)
+            resp = await client.get(url, params=params, timeout=20)
             result = resp.json()
         if result['code'] == 200 and result['data']:
             template = env.get_template("wws-info.html")
@@ -93,7 +93,7 @@ async def get_AccountInfo(qqid,info):
         elif result['code'] == 404:
             return f"{result['message']}"
         elif result['code'] == 500:
-            return f"{result['message']}"
+            return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return '查询不到对应信息哦~可能是游戏昵称不正确或QQ未绑定'
     except Exception:

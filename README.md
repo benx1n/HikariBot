@@ -39,6 +39,7 @@
 - [x] 支持@快速查询
 
 ## 快速部署（作为独立bot）
+[视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
 1. 下载[notepad++](https://notepad-plus-plus.org/downloads/)、[Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
     >Python版本需>3.8，或参考[Hoshino版插件](https://github.com/benx1n/wows-stats-bot)中使用Conda虚拟环境
     >
@@ -46,9 +47,11 @@
     >
     >否则请自行百度如何添加python到环境变量
 
-3. 打开一个合适的文件夹，鼠标右键——Git Bash here，输入以下命令克隆本Hoshino仓库
+3. 打开一个合适的文件夹，鼠标右键——Git Bash here，输入以下命令（任选一条）克隆本Hikari仓库
    > ```
    > git clone https://github.com/benx1n/HikariBot.git
+   >
+   > git clone https://gitee.com/benx1n/HikariBot.git
    > ```
 3. 双击`一键安装.bat` 
 
