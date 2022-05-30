@@ -1,7 +1,6 @@
 from typing import List
 import httpx
 import traceback
-import json
 import re
 from requests import head
 from .data_source import servers
@@ -16,6 +15,7 @@ headers = {
 
 async def get_BindInfo(user,info):
     try:
+        url,params = '',''
         if isinstance(info,List) and len(info) == 1:
             for i in info:              #是否包含me或@
                 if i == 'me':
@@ -32,6 +32,8 @@ async def get_BindInfo(user,info):
                     "platformId": match.group(1),
                     }
                     break
+            if not url or not params:
+                return '参数似乎出了问题呢，请使用me或@群友'
         else:
             return '参数似乎出了问题呢，请使用me或@群友'
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")

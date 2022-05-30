@@ -17,7 +17,7 @@ import httpx
 import json
 import nonebot
 
-__version__ = '0.1.8'
+__version__ = '0.1.9'
 
 WWS_help ="""
     帮助列表

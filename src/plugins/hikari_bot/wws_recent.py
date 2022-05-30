@@ -1,13 +1,13 @@
 from typing import List
 import httpx
 import traceback
-import json
 import jinja2
 import time
 import re
 from pathlib import Path
 from .data_source import servers,set_recentparams
-from .utils import html_to_pic,match_keywords
+from .utils import match_keywords
+from nonebot_plugin_htmlrender import html_to_pic
 from .wws_info import get_AccountIdByName
 from nonebot import get_driver
 from nonebot.log import logger
@@ -25,6 +25,7 @@ headers = {
 
 async def get_RecentInfo(qqid,info):
     try:
+        url,params = '',''
         params,day = None,1
         if isinstance(info,List):
             for i in info:              #查找日期,没找到默认一天

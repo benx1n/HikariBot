@@ -1,13 +1,14 @@
 from typing import List
 import httpx
 import traceback
-import json
 import jinja2
 import re
 import asyncio
 from pathlib import Path
-from .data_source import servers,set_shipparams
-from .utils import html_to_pic,match_keywords
+from .data_source import servers,set_shipparams,tiers
+from .utils import match_keywords
+from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
+from nonebot.adapters.onebot.v11 import MessageSegment
 from .wws_info import get_AccountIdByName
 from.publicAPI import get_ship_byName
 from collections import defaultdict, namedtuple
@@ -29,7 +30,7 @@ SecletProcess = defaultdict(lambda: ShipSlectState(False, None, None))
 
 async def get_ShipInfo(qqid,info,bot):
     try:
-        params = None
+        url,params = '',''
         if isinstance(info,List):
             for flag,i in enumerate(info):              #是否包含me或@，包含则调用平台接口
                 if i == 'me':
@@ -75,13 +76,14 @@ async def get_ShipInfo(qqid,info,bot):
                 if len(shipList) < 2:
                     params["shipId"] = shipList[0][0]
                 else:
-                    msg = f'存在多条名字相似的船，请在二十秒内选择对应的序号\n'
+                    msg = f'存在多条名字相似的船\n请在20秒内选择对应的序号\n=================\n'
                     flag = 0
                     for each in shipList:
                         flag += 1
-                        msg += f"{flag}：({each[3]}级) {each[1]}\n"
+                        msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
                     SecletProcess[qqid] = ShipSlectState(False, None, shipList)
-                    await bot.send(msg)
+                    img = await text_to_pic(text=msg,width=230)
+                    await bot.send(MessageSegment.image(img))
                     a = 0
                     while a < 200 and not SecletProcess[qqid].state:
                         a += 1

@@ -2,12 +2,12 @@ from sqlite3 import paramstyle
 from typing import List
 import httpx
 import traceback
-import json
 import jinja2
 import re
 from pathlib import Path
 from .data_source import servers,set_infoparams
-from .utils import html_to_pic,match_keywords
+from .utils import match_keywords
+from nonebot_plugin_htmlrender import html_to_pic
 from nonebot import get_driver
 from nonebot.log import logger
 
@@ -45,7 +45,7 @@ async def get_AccountIdByName(server:str,name:str):
 
 async def get_AccountInfo(qqid,info):
     try:
-        params = None
+        url,params = '',''
         if isinstance(info,List):
             for i in info:
                 if i == 'me':

@@ -40,7 +40,7 @@
 
 ## 快速部署（作为独立bot）
 [视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
-1. 下载[notepad++](https://notepad-plus-plus.org/downloads/)、[Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
+1. [Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
     >Python版本需>3.8，或参考[Hoshino版插件](https://github.com/benx1n/wows-stats-bot)中使用Conda虚拟环境
     >
     >请注意python安装时勾选或点击`添加到环境变量`，可以安装后cmd中输入`python --version`来验证是否成功
