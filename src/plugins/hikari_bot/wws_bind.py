@@ -69,15 +69,17 @@ async def set_BindInfo(user,info):
                 param_server,info = await match_keywords(info,servers)
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))
-                    if param_accountid:
+                    if param_accountid and param_accountid != 404:
                         url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
                         params = {
                         "platformType": "QQ",
                         "platformId": str(user),
                         "accountId": param_accountid
                         }
+                    elif param_accountid == 404:
+                        return '无法查询该游戏昵称Orz，请检查昵称是否存在'
                     else:
-                        return '无法查询该游戏昵称Orz，请检查昵称是否存在，也有可能是网络波动，请稍后再试'
+                        return '发生了错误，有可能是网络波动，请稍后再试'
                 else:
                     return '服务器参数似乎输错了呢'
             else:
@@ -119,15 +121,17 @@ async def change_BindInfo(user,info):
                 account_name = result['data'][int(info[0])-1]['userName']
                 param_server = result['data'][int(info[0])-1]['serverType']
                 param_accountid = await get_AccountIdByName(param_server,account_name)
-                if param_accountid:
+                if param_accountid and param_accountid != 404:
                     url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
                     params = {
                     "platformType": "QQ",
                     "platformId": str(user),
                     "accountId": param_accountid
                     }
+                elif param_accountid == 404:
+                        return '无法查询该游戏昵称Orz，请检查昵称是否存在'
                 else:
-                    return '无法查询该游戏昵称Orz，请检查昵称是否存在'
+                    return '发生了错误，有可能是网络波动，请稍后再试'
             else:
                 return '没有对应序号的绑定记录'
         else:
@@ -137,6 +141,8 @@ async def change_BindInfo(user,info):
             result = resp.json()
         if result['code'] == 200 and result['message'] == "success":
             return f'切换绑定成功,当前绑定账号{account_name}'
+        elif result['code'] == 403:
+            return f"{result['message']}\n请先绑定账号"
         elif result['code'] == 404:
             return f"{result['message']}"
         elif result['code'] == 500:

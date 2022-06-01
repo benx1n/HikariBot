@@ -11,31 +11,21 @@ from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo
 from .wws_ship import get_ShipInfo,SecletProcess
 from .wws_shiprank import get_ShipRank
 from .data_source import command_list
-from .utils import find_and_replace_keywords
-from nonebot_plugin_apscheduler import scheduler
+from .utils import find_and_replace_keywords,DailyNumberLimiter,FreqLimiter
+from nonebot_plugin_htmlrender import text_to_pic
+from pathlib import Path
 import httpx
 import json
-import nonebot
+from nonebot import require
+scheduler = require("nonebot_plugin_apscheduler").scheduler
 
-__version__ = '0.1.9'
-
-WWS_help ="""
-    帮助列表
-    wws set/bind/绑定 服务器 游戏昵称：绑定QQ与游戏账号
-    wws 查询绑定/查绑定/绑定列表[me][@]：查询指定用户的绑定账号
-    wws 切换绑定[id]：使用查绑定中的序号快速切换绑定账号
-    wws [服务器+游戏昵称][@群友][me]：查询账号总体战绩
-    wws [服务器+游戏昵称][@群友][me] recent [日期]：查询账号近期战绩，默认1天
-    wws [服务器+游戏昵称][@群友][me] ship 船名：查询单船总体战绩
-    wws rank/ship.rank [服务器][战舰名]：查询单船排行榜
-    wws [搜/查船名] [国家][等级][类型]：查找符合条件的舰船中英文名称
-    wws 检查更新
-    [待开发] wws ship recent
-    [待开发] wws rank
-    以上指令参数顺序均无强制要求，即你完全可以发送wws eu 7 recent Test以查询欧服Test七天内的战绩
-    搭建bot请加官方群：967546463，如果您觉得bot还可以的话请点个star哦~
-    仓库地址：https://github.com/benx1n/HikariBot
-"""
+_max = 100
+EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
+_nlmt = DailyNumberLimiter(_max)
+_flmt = FreqLimiter(3)
+__version__ = '0.2.0'
+dir_path = Path(__file__).parent
+css_path = dir_path / "template"/"text.css"
 
 bot = on_command("wws", block=True, priority=5)
 bot_listen = on_message(priority=5)
@@ -44,90 +34,109 @@ bot_checkversion = on_command("wws 检查更新",priority=5)
 
 @bot.handle()
 async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
-        msg = ''
-        qqid = ev.user_id
+    msg = ''
+    qqid = ev.user_id
+    select_command = None
+    if not _nlmt.check(qqid):
+        await bot.send(EXCEED_NOTICE, at_sender=True)
+        return
+    if not _flmt.check(qqid):
+        await bot.send('您冲得太快了，请稍候再冲', at_sender=True)
+        return
+    _flmt.start_cd(qqid)
+    _nlmt.increase(qqid) 
+    searchtag = str(matchmsg).strip()
+    if not searchtag or searchtag=="":
+        await send_bot_help()
+    search_list = str(matchmsg).split()
+    
+    select_command,search_list = await find_and_replace_keywords(search_list,command_list)
+    if not select_command:
+        try:
+            msg = await get_AccountInfo(qqid,search_list)
+        except Exception:
+            logger.warning(traceback.format_exc())
+            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+    elif select_command == 'ship':
         select_command = None
-        searchtag = str(matchmsg).strip()
-        if not searchtag or searchtag=="":
-            await bot.finish(WWS_help.strip())
-        search_list = str(matchmsg).split()
-        
-        select_command,search_list = await find_and_replace_keywords(search_list,command_list)
+        select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
         if not select_command:
             try:
-                msg = await get_AccountInfo(qqid,search_list)
+                msg = await get_ShipInfo(qqid,search_list,bot)
+            except Exception:
+                logger.warning(traceback.format_exc())
+                await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+        elif select_command == 'recent':
+            msg = "待开发：查单船近期战绩"
+        else:
+            msg = '看不懂指令QAQ'
+    elif select_command == 'recent':
+        select_command = None
+        select_command,search_list = await find_and_replace_keywords(search_list,command_list)             #第二次匹配
+        if not select_command:
+            try:
+                msg = await get_RecentInfo(qqid,search_list)
             except Exception:
                 logger.warning(traceback.format_exc())
                 await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
         elif select_command == 'ship':
-            select_command = None
-            select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
-            if not select_command:
-                try:
-                    msg = await get_ShipInfo(qqid,search_list,bot)
-                except Exception:
-                    logger.warning(traceback.format_exc())
-                    await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-            elif select_command == 'recent':
-                msg = "待开发：查单船近期战绩"
-            else:
-                msg = '看不懂指令QAQ'
-        elif select_command == 'recent':
-            select_command = None
-            select_command,search_list = await find_and_replace_keywords(search_list,command_list)             #第二次匹配
-            if not select_command:
-                try:
-                    msg = await get_RecentInfo(qqid,search_list)
-                except Exception:
-                    logger.warning(traceback.format_exc())
-                    await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-            elif select_command == 'ship':
-                msg = '待开发：查单船近期战绩'
-            else:
-                msg = '：看不懂指令QAQ'
-        elif select_command == 'ship_rank':
-            try:
-                msg = await get_ShipRank(qqid,search_list,bot)
-            except Exception:
-                logger.warning(traceback.format_exc())
-                await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')    
-        elif select_command == 'bind':
-            try:
-                msg = await set_BindInfo(qqid,search_list)
-            except Exception:
-                logger.warning(traceback.format_exc())
-                await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-        elif select_command == 'bindlist':
-            try:
-                msg = await get_BindInfo(qqid,search_list)
-            except Exception:
-                logger.warning(traceback.format_exc())
-                await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-        elif select_command == 'changebind':
-            try:
-                msg = await change_BindInfo(qqid,search_list)
-            except Exception:
-                logger.warning(traceback.format_exc())
-                await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-        elif select_command == 'searchship':
-            try:
-                msg = await get_ship_name(search_list)
-            except Exception:
-                logger.warning(traceback.format_exc())
-                await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+            msg = '待开发：查单船近期战绩'
         else:
-            msg = '看不懂指令QAQ'
-        if msg:
-            if isinstance(msg,str):
-                await bot.finish(msg)
-            else:
-                await bot.finish(MessageSegment.image(msg))
-        else:
+            msg = '：看不懂指令QAQ'
+    elif select_command == 'ship_rank':
+        try:
+            msg = await get_ShipRank(qqid,search_list,bot)
+        except Exception:
+            logger.warning(traceback.format_exc())
+            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')    
+    elif select_command == 'bind':
+        try:
+            msg = await set_BindInfo(qqid,search_list)
+        except Exception:
+            logger.warning(traceback.format_exc())
             await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+    elif select_command == 'bindlist':
+        try:
+            msg = await get_BindInfo(qqid,search_list)
+        except Exception:
+            logger.warning(traceback.format_exc())
+            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+    elif select_command == 'changebind':
+        try:
+            msg = await change_BindInfo(qqid,search_list)
+        except Exception:
+            logger.warning(traceback.format_exc())
+            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+    elif select_command == 'searchship':
+        try:
+            msg = await get_ship_name(search_list)
+        except Exception:
+            logger.warning(traceback.format_exc())
+            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+    else:
+        msg = '看不懂指令QAQ'
+    if msg:
+        if isinstance(msg,str):
+            await bot.finish(msg)
+        else:
+            await bot.finish(MessageSegment.image(msg))
+    else:
+        await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
             
 @bot_help.handle()      
 async def send_bot_help():
-    await bot_help.finish(WWS_help)
+    url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url, timeout=10)
+        result = json.loads(resp.text)
+    latest_version = result['latest_version']
+    url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/wws_help.txt'
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url, timeout=10)
+        result = resp.text
+    result = f'''帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}'''
+    img = await text_to_pic(text = result,css_path= str(css_path), width = 800)
+    await bot.finish(MessageSegment.image(img))
     
 @bot_listen.handle()
 async def change_select_state(ev:MessageEvent):
@@ -170,5 +179,4 @@ scheduler.add_job(
     check_version,
     "cron",
     hour = 12,
-    id="check_version"
 )

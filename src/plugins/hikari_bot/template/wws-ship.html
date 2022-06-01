@@ -10,6 +10,11 @@
         font-family: "Microsoft YaHei UI";
     }
 
+    .font-size {
+        font-weight: bold;
+        font-size: 28px;
+    }
+
     .font-data {
         font-weight: bold;
     }
@@ -18,9 +23,22 @@
         color: #696969;
     }
 
+    .greyColor2 {
+        color: #404040;
+    }
+
     .blueColor {
         font-weight: bold;
         color: #000080;
+    }
+
+    .blackColor {
+        font-weight: bold;
+        color: black;
+    }
+
+    .bold-data {
+        font-weight: bold;
     }
 
 
@@ -31,81 +49,178 @@
 
 </style>
 <body>
-<table id="ship-data" width="640">
-    <tr>
-        <td class="font-data" colspan="3" style="text-align: center;"><span>{{shipNameEn}}</span>&nbsp;&nbsp;<span>{{shipNameCn}}</span>
-        </td>
-    </tr>
-    <tr>
-        <td class="font-data greyColor">伤害</td>
-        <td class="font-data greyColor">胜率</td>
-        <td class="font-data greyColor">PR</td>
-    </tr>
-    <tr>
-        <td style="color: {{damageTopColor}}">{{damageTop}}</td>
-        <td style="color: {{winsTopColor}}">{{winsTop}}%</td>
-        <td style="color: {{prTopColor}}">{{prTop}}</td>
-    </tr>
-    <tr>
-        <td colspan="3" style="text-align: center;background-color: {{prColor}}">{{prValue}}</td>
-    </tr>
-    <tr>
-        <td colspan="3" style="text-align: center;">最后战斗时间</td>
-    </tr>
-    <tr>
-        <td colspan="3" style="text-align: center;">{{lastTime}}</td>
-    </tr>
-    <tr>
-        <td class="greyColor">场次</td>
-        <td class="greyColor">胜率</td>
-        <td class="greyColor">场均</td>
-    </tr>
-    <tr>
-        <td class="blueColor">{{battles}}</td>
-        <td class="blueColor">{{wins}}%</td>
-        <td class="blueColor">{{damage}}</td>
-    </tr>
-    <tr>
-        <td class="greyColor">经验</td>
-        <td class="greyColor">K/D</td>
-        <td class="greyColor">命中</td>
-    </tr>
-    <tr>
-        <td class="blueColor">{{xp}}</td>
-        <td class="blueColor">{{kda}}</td>
-        <td class="blueColor">{{hit}}%</td>
-    </tr>
-    <tr>
-        <td class="font-data" colspan="3">最高记录</td>
-    </tr>
-    <tr>
-        <td class="greyColor">最高伤害</td>
-        <td class="greyColor">侦查伤害</td>
-        <td class="greyColor">最高潜在</td>
-    </tr>
-    <tr>
-        <td>{{maxDamage}}</td>
-        <td>{{maxDamageScouting}}</td>
-        <td>{{maxTotalAgro}}</td>
-    </tr>
-    <tr>
-        <td class="greyColor">经验</td>
-        <td class="greyColor">击杀</td>
-        <td class="greyColor">飞机击落</td>
-    </tr>
-    <tr>
-        <td>{{maxXp}}</td>
-        <td>{{maxFragsBattle}}</td>
-        <td>{{maxPlanesKilled}}</td>
-    </tr>
-    <tr>
-        <td colspan="3" class="font-data greyColor" style="text-align: center;">
-            <span>© 西行寺雨季</span>&nbsp;&nbsp;<span>© 本心</span></td>
-    </tr>
-    <tr>
-        <td colspan="3" class="font-data greyColor" style="text-align: center;">
-            <span>https://github.com/benx1n/HikariBot</span></td>
-    </tr>
-</table>
+   <div>
+    <table id="ship-data" width="800" style="table-layout: fixed;">
+        <tr>
+            <td colspan="6" class="font-data" style="text-align: center;">
+                <span style="color:#87CEEB">[{{guild}}]</span>&nbsp;<span>{{userName}}</span>&nbsp;&nbsp;&nbsp;<span>{{serverName}}</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="font-data" colspan="6" style="text-align: center; font-size: 30px;"><span>{{shipNameEn}}</span>&nbsp;&nbsp;<span>{{shipNameCn}}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="font-data greyColor">场均</td>
+            <td colspan="2" class="font-data greyColor">胜率</td>
+            <td colspan="2" class="font-data greyColor">PR</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="color: {{damageTopColor}}">{{damageTop}}</td>
+            <td colspan="2" style="color: {{winsTopColor}}">{{winsTop}}%</td>
+            <td colspan="2" style="color: {{prTopColor}}">{{prTop}}</td>
+        </tr>
+        <tr>
+            <td colspan="6" style="text-align: center;background-color: {{prColor}}">{{prValue}}</td>
+        </tr>
+        <tr>
+            <td colspan="6" style="text-align: center;">最后战斗时间</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="greyColor" style="text-align: center;">{{lastTime}}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="greyColor2 font-size">场次</td>
+            <td colspan="2" class="greyColor2 font-size">胜率</td>
+            <td colspan="2" class="greyColor2 font-size">场均</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="blueColor font-size">{{battles}}</td>
+            <td colspan="2" class="blueColor font-size" style="color: {{winsColor}}">{{wins}}%</td>
+            <td colspan="2" class="blueColor font-size" style="color: {{damageColor}}">{{damage}}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="greyColor2 font-size">经验</td>
+            <td colspan="2" class="greyColor2 font-size">K/D</td>
+            <td colspan="2" class="greyColor2 font-size">命中</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="blueColor font-size">{{xp}}</td>
+            <td colspan="2" class="blueColor font-size">{{kda}}</td>
+            <td colspan="2" class="blueColor font-size">{{hit}}%</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="blackColor" style="text-align: center;"></td>
+        </tr>
+        <!--        单野、两个人、三人数据-->
+        <tr>
+            <td colspan="6" class="bold-data greyColor" style="text-align: center;">单野</td>
+        </tr>
+        <!--        <tr>-->
+        <!--            <td colspan="6" style="text-align: center;background-color: ${solo_prValueColor}">${solo_prValue}</td>-->
+        <!--        </tr>-->
+        <tr>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">经验</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">K/D</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        <tr>
+            <td class="blueColor">{{solo_battles}}</td>
+            <td class="blueColor" style="color: {{solo_winsColor}}">{{solo_wins}}%</td>
+            <td class="blueColor">{{solo_xp}}</td>
+            <td class="blueColor" style="color: {{solo_damageColor}}">{{solo_damage}}</td>
+            <td class="blueColor">{{solo_kd}}</td>
+            <td class="blueColor">{{solo_hit}}%</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="bold-data greyColor" style="text-align: center;">自行车</td>
+        </tr>
+        <!--        <tr>-->
+        <!--            <td colspan="6" style="text-align: center;background-color: {{div2_prValueColor}}">{{div2_prValue}}</td>-->
+        <!--        </tr>-->
+        <tr>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">经验</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">K/D</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        <tr>
+            <td class="blueColor">{{div2_battles}}</td>
+            <td class="blueColor" style="color: {{div2_winsColor}}">{{div2_wins}}%</td>
+            <td class="blueColor">{{div2_xp}}</td>
+            <td class="blueColor" style="color: {{div2_damageColor}}">{{div2_damage}}</td>
+            <td class="blueColor">{{div2_kd}}</td>
+            <td class="blueColor">{{div2_hit}}%</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="bold-data greyColor" style="text-align: center;">三轮车</td>
+        </tr>
+        <!--        <tr>-->
+        <!--            <td colspan="6" style="text-align: center;background-color: {{div3_prValueColor}}">{{div3_prValue}}</td>-->
+        <!--        </tr>-->
+        <tr>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">经验</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">K/D</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        <tr>
+            <td class="blueColor">{{div3_battles}}</td>
+            <td class="blueColor" style="color: {{div3_winsColor}}">{{div3_wins}}%</td>
+            <td class="blueColor">{{div3_xp}}</td>
+            <td class="blueColor" style="color: {{div3_damageColor}}">{{div3_damage}}</td>
+            <td class="blueColor">{{div3_kd}}</td>
+            <td class="blueColor">{{div3_hit}}%</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="bold-data greyColor" style="text-align: center;">排位</td>
+        </tr>
+        <tr>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">经验</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">K/D</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        <tr>
+            <td class="blueColor">{{rank_battles}}</td>
+            <td class="blueColor" style="color: {{rank_winsColor}}">{{rank_wins}}%</td>
+            <td class="blueColor">{{rank_xp}}</td>
+            <td class="blueColor" style="color: {{rank_damageColor}}">{{rank_damage}}</td>
+            <td class="blueColor">{{rank_kd}}</td>
+            <td class="blueColor">{{rank_hit}}%</td>
+        </tr>
+        <tr>
+            <td class="font-data" colspan="6">最高记录</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="greyColor">最高伤害</td>
+            <td colspan="2" class="greyColor">侦查伤害</td>
+            <td colspan="2" class="greyColor">最高潜在</td>
+        </tr>
+        <tr>
+            <td colspan="2">{{maxDamage}}</td>
+            <td colspan="2">{{maxDamageScouting}}</td>
+            <td colspan="2">{{maxTotalAgro}}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="greyColor">经验</td>
+            <td colspan="2" class="greyColor">击杀</td>
+            <td colspan="2" class="greyColor">飞机击落</td>
+        </tr>
+        <tr>
+            <td colspan="2">{{maxXp}}</td>
+            <td colspan="2">{{maxFragsBattle}}</td>
+            <td colspan="2">{{maxPlanesKilled}}</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="font-data greyColor" style="text-align: center;">
+                <span>© 西行寺雨季</span>&nbsp;&nbsp;<span>© 本心</span></td>
+        </tr>
+        <tr>
+            <td colspan="6" class="font-data greyColor" style="text-align: center;">
+                <span>https://github.com/benx1n/HikariBot</span></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

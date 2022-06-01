@@ -53,15 +53,17 @@ async def get_RecentInfo(qqid,info):
                 param_server,info = await match_keywords(info,servers)
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))
-                    if param_accountid:
+                    if param_accountid and param_accountid != 404:
                         url = 'https://api.wows.linxun.link/api/wows/recent/recent/info'
                         params = {
                         "server": param_server,
                         "accountId": param_accountid,
                         "seconds": int(time.time())-86400*int(day)
                         }
+                    elif param_accountid == 404:
+                        return '无法查询该游戏昵称Orz，请检查昵称是否存在'
                     else:
-                        return '无法查询该游戏昵称Orz，请检查昵称是否存在，也有可能是网络波动，请稍后再试'
+                        return '发生了错误，有可能是网络波动，请稍后再试'
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
@@ -80,6 +82,8 @@ async def get_RecentInfo(qqid,info):
             template_data = await set_recentparams(result['data'])
             content = await template.render_async(template_data)
             return await html_to_pic(content, wait=0, viewport={"width": 1200, "height": 100})
+        elif result['code'] == 403:
+            return f"{result['message']}\n请先绑定账号"
         elif result['code'] == 404:
             return f"{result['message']}"
         elif result['code'] == 500:

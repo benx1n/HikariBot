@@ -50,7 +50,7 @@
 </style>
 <body>
    <div>
-    <table id="ship-data" width="920">
+    <table id="ship-data" width="920" style="table-layout: fixed;">
         <tr>
             <td colspan="6" class="font-data" style="text-align: center;">
                 <span style="color:#87CEEB">[{{guild}}]</span>&nbsp;<span>{{userName}}</span><sup style="color:green">+{{karma}}</sup>&nbsp;&nbsp;&nbsp;<span>{{serverName}}</span>
@@ -207,6 +207,24 @@
             <td class="blueColor" style="color: {{div3_damageColor}}">{{div3_damage}}</td>
             <td class="blueColor">{{div3_kd}}</td>
             <td class="blueColor">{{div3_hit}}%</td>
+        </tr>
+        <tr>
+            <td colspan="6" class="bold-data greyColor" style="text-align: center;">排位</td>
+        <tr>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">经验</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">K/D</td>
+            <td class="greyColor">命中</td>
+        </tr>
+        <tr>
+            <td class="blueColor">{{rank_battles}}</td>
+            <td class="blueColor" style="color: {{rank_winsColor}}">{{rank_wins}}%</td>
+            <td class="blueColor">{{rank_xp}}</td>
+            <td class="blueColor" style="color: {{rank_damageColor}}">{{rank_damage}}</td>
+            <td class="blueColor">{{rank_kd}}</td>
+            <td class="blueColor">{{rank_hit}}%</td>
         </tr>
         <tr>
             <td colspan="6">
