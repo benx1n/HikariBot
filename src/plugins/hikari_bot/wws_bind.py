@@ -17,7 +17,7 @@ async def get_BindInfo(user,info):
         url,params = '',''
         if isinstance(info,List) and len(info) == 1:
             for i in info:              #是否包含me或@
-                if i == 'me':
+                if str(i).lower() == 'me':
                     url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
                     params = {
                     "platformType": "QQ",

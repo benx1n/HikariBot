@@ -32,7 +32,7 @@ async def get_ShipInfo(qqid,info,bot):
         url,params = '',''
         if isinstance(info,List):
             for flag,i in enumerate(info):              #是否包含me或@，包含则调用平台接口
-                if i == 'me':
+                if str(i).lower() == 'me':
                     url = 'https://api.wows.linxun.link/public/wows/account/v2/ship/info'
                     params = {
                     "server": "QQ",

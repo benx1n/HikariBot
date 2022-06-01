@@ -27,9 +27,8 @@ __version__ = '0.2.2'
 dir_path = Path(__file__).parent
 css_path = dir_path / "template"/"text.css"
 
-bot = on_command("wws", block=True, priority=5)
+bot = on_command("wws", block=True, aliases={"WWS"},priority=5)
 bot_listen = on_message(priority=5)
-bot_help = on_command("wws help",priority=5)
 bot_checkversion = on_command("wws 检查更新",priority=5)
 
 @bot.handle()
@@ -113,6 +112,12 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         except Exception:
             logger.warning(traceback.format_exc())
             await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+    elif select_command == 'help':
+        try:
+            msg = await send_bot_help()
+        except Exception:
+            logger.warning(traceback.format_exc())
+            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
     else:
         msg = '看不懂指令QAQ'
     if msg:
@@ -122,8 +127,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             await bot.finish(MessageSegment.image(msg))
     else:
         await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-            
-@bot_help.handle()      
+                
 async def send_bot_help():
     url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
     async with httpx.AsyncClient() as client:
@@ -136,7 +140,7 @@ async def send_bot_help():
         result = resp.text
     result = f'''帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}'''
     img = await text_to_pic(text = result,css_path= str(css_path), width = 800)
-    await bot.finish(MessageSegment.image(img))
+    return img
     
 @bot_listen.handle()
 async def change_select_state(ev:MessageEvent):

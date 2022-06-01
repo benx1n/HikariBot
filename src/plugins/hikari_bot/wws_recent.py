@@ -33,7 +33,7 @@ async def get_RecentInfo(qqid,info):
                     day = str(i)
                     info.remove(i)
             for i in info:              #是否包含me或@，包含则调用平台接口
-                if i == 'me':
+                if str(i).lower() == 'me':
                     url = 'https://api.wows.linxun.link/api/wows/recent/recent/info'
                     params = {
                     "server": "QQ",
@@ -69,7 +69,7 @@ async def get_RecentInfo(qqid,info):
             elif params:
                 logger.info(f"{params}")
             else:
-                return '您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格区分'
+                return '您似乎准备用游戏昵称查询近期水表，请检查参数中是否包含服务器和游戏昵称，以空格区分'
         else:
             return '参数似乎出了问题呢'
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
