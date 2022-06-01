@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 from .data_source import servers,set_infoparams
 from .utils import match_keywords,encode_gzip
+from .publicAPI import get_AccountIdByName
 from nonebot_plugin_htmlrender import html_to_pic
 from nonebot import get_driver
 from nonebot.log import logger
@@ -22,25 +23,7 @@ headers = {
     'Authorization': get_driver().config.api_token
 }
   
-async def get_AccountIdByName(server:str,name:str):
-    try:
-        url = 'https://api.wows.linxun.link/public/wows/account/search/user'
-        params = {
-            "server": server,
-            "userName": name
-        }
-        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
-        async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, params=params, timeout=20)
-            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
-            result = resp.json()
-        if result['data']:
-            return result['data']['accountId']
-        else:
-            return None
-    except Exception:
-        logger.error(traceback.format_exc())
-        return None
+
     
 
 async def get_AccountInfo(qqid,info):

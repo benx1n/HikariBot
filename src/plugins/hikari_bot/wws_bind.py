@@ -4,7 +4,7 @@ import traceback
 import re
 from requests import head
 from .data_source import servers
-from .wws_info import get_AccountIdByName
+from .publicAPI import get_AccountIdByName
 from .utils import match_keywords
 from nonebot import get_driver
 from nonebot.log import logger

@@ -8,7 +8,7 @@ from pathlib import Path
 from .data_source import servers,set_recentparams
 from .utils import match_keywords
 from nonebot_plugin_htmlrender import html_to_pic
-from .wws_info import get_AccountIdByName
+from .publicAPI import get_AccountIdByName
 from nonebot import get_driver
 from nonebot.log import logger
 
