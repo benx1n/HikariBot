@@ -67,7 +67,7 @@ async def get_RecentInfo(qqid,info):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                print(params)
+                logger.info(f"{params}")
             else:
                 return '您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格区分'
         else:
@@ -92,4 +92,4 @@ async def get_RecentInfo(qqid,info):
             return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
     except Exception:
         logger.error(traceback.format_exc())
-        return
+        return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'

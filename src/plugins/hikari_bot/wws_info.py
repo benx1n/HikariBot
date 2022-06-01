@@ -59,7 +59,7 @@ async def get_AccountInfo(qqid,info):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                print(params)
+                logger.info(f"{params}")
             else:
                 return '您似乎准备用游戏昵称查询水表，请检查参数中时候包含服务器和游戏昵称，以空格区分'
         else:

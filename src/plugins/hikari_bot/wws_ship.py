@@ -68,11 +68,11 @@ async def get_ShipInfo(qqid,info,bot):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                print(params)
+                logger.info(f"{params}")
             else:
                 return '您似乎准备用游戏昵称查询单船战绩，请检查参数中是否包含服务器、游戏昵称和船名，以空格区分'
             shipList = await get_ship_byName(str(info[0]))
-            print(shipList)
+            logger.info(f"{shipList}")
             if shipList:
                 if len(shipList) < 2:
                     params["shipId"] = shipList[0][0]

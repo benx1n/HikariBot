@@ -39,7 +39,7 @@ async def get_ShipRank(qqid,info,bot):
         else:
             return '参数似乎出了问题呢'
         shipList = await get_ship_byName(str(info[0]))
-        print(shipList)
+        logger.info(f"{shipList}")
         if shipList:
             if len(shipList) < 2:
                 select_shipId = shipList[0][0]
@@ -57,7 +57,6 @@ async def get_ShipRank(qqid,info,bot):
                 while a < 200 and not SecletProcess[qqid].state:
                     a += 1
                     await asyncio.sleep(0.1)
-                    #print(SecletProcess[qqid].SelectList)
                 if SecletProcess[qqid].state and SecletProcess[qqid].SlectIndex <= len(shipList):
                     select_shipId = int(shipList[SecletProcess[qqid].SlectIndex-1][0])
                     number_url += f"{select_shipId},{shipList[SecletProcess[qqid].SlectIndex-1][2]}"
@@ -67,7 +66,6 @@ async def get_ShipRank(qqid,info,bot):
             return '找不到船'
         content = await search_ShipRank_Yuyuko(select_shipId,param_server)
         if content:                                         #存在缓存，直接出图
-            print('存在缓存')
             return await html_to_pic(content, wait=0, viewport={"width": 1800, "height": 100})
         else:                                               #无缓存，去Number爬
             content,numbers_data = await search_ShipRank_Numbers(number_url)
@@ -136,6 +134,5 @@ async def post_ShipRank(shipId,server,data):
             }
             resp = await client.post(url, json = post_data, timeout=20)
             result = resp.json()
-            print(result)
     except Exception:
         logger.error(traceback.format_exc())

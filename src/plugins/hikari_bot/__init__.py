@@ -155,7 +155,6 @@ async def check_version():
             resp = await client.get(url, timeout=10)
             result = json.loads(resp.text)
         superid = get_driver().config.superusers
-        print(result,superid)
         match,msg = False,f'发现新版本'
         for each in result['data']:
             if each['version'] > __version__:
