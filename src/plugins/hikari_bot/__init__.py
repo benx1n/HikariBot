@@ -23,7 +23,7 @@ _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.2.0'
+__version__ = '0.2.2'
 dir_path = Path(__file__).parent
 css_path = dir_path / "template"/"text.css"
 

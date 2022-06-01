@@ -2,7 +2,6 @@ from typing import List
 import httpx
 import traceback
 import re
-from requests import head
 from .data_source import servers
 from .publicAPI import get_AccountIdByName
 from .utils import match_keywords

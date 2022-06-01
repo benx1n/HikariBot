@@ -6,12 +6,11 @@ import jinja2
 import re
 from pathlib import Path
 from .data_source import servers,set_infoparams
-from .utils import match_keywords,encode_gzip
+from .utils import match_keywords
 from .publicAPI import get_AccountIdByName
 from nonebot_plugin_htmlrender import html_to_pic
 from nonebot import get_driver
 from nonebot.log import logger
-import json
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -23,9 +22,6 @@ headers = {
     'Authorization': get_driver().config.api_token
 }
   
-
-    
-
 async def get_AccountInfo(qqid,info):
     try:
         url,params = '',''
@@ -75,9 +71,7 @@ async def get_AccountInfo(qqid,info):
             result = resp.json()
         if result['code'] == 200 and result['data']:
             template = env.get_template("wws-info.html")
-            print(template)
             template_data = await set_infoparams(result['data'])
-            print(template)
             content = await template.render_async(template_data)
             return await html_to_pic(content, wait=0, viewport={"width": 920, "height": 1000})
         elif result['code'] == 403:
