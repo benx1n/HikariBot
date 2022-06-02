@@ -38,7 +38,7 @@ async def get_ShipInfo(qqid,info,bot):
                     "server": "QQ",
                     "accountId": qqid,
                     }
-                    info.remove("me")
+                    info.remove(str(i))
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
                     url = 'https://api.wows.linxun.link/public/wows/account/v2/ship/info'
@@ -67,8 +67,10 @@ async def get_ShipInfo(qqid,info,bot):
                         return '发生了错误，有可能是网络波动，请稍后再试'
                 else:
                     return '服务器参数似乎输错了呢'
-            elif params:
+            elif params and len(info) == 1:
                 logger.info(f"{params}")
+            elif params:
+                return '您似乎准备用查询自己的单船战绩，请检查参数中是否带有船名，以空格区分'
             else:
                 return '您似乎准备用游戏昵称查询单船战绩，请检查参数中是否包含服务器、游戏昵称和船名，以空格区分'
             shipList = await get_ship_byName(str(info[0]))
