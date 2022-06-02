@@ -17,6 +17,7 @@ from pathlib import Path
 import httpx
 import json
 import asyncio
+import re
 from nonebot import require
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
@@ -50,15 +51,25 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         searchtag = str(matchmsg).strip()
         if not searchtag or searchtag=="":
             await send_bot_help()
-        search_list = str(matchmsg).split()
+        match = re.search(r"(\(|（)(.*?)(\)|）)",str(matchmsg))
+        replace_name = None
+        if match:
+            replace_name = match.group(2)
+            search_list = str(matchmsg).replace(match.group(0),'').split()
+        else:
+            search_list = str(matchmsg).split()
 
         select_command,search_list = await find_and_replace_keywords(search_list,command_list)
         if not select_command:
+            if replace_name:
+                search_list.append(replace_name)
             msg = await get_AccountInfo(qqid,search_list)
         elif select_command == 'ship':
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
             if not select_command:
+                if replace_name:
+                    search_list.append(replace_name)
                 msg = await get_ShipInfo(qqid,search_list,bot)
             elif select_command == 'recent':
                 msg = "待开发：查单船近期战绩"
@@ -68,6 +79,8 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list)             #第二次匹配
             if not select_command:
+                if replace_name:
+                    search_list.append(replace_name)
                 msg = await get_RecentInfo(qqid,search_list)
             elif select_command == 'ship':
                 msg = '待开发：查单船近期战绩'
@@ -76,6 +89,8 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         elif select_command == 'ship_rank':
             msg = await get_ShipRank(qqid,search_list,bot)   
         elif select_command == 'bind':
+            if replace_name:
+                search_list.append(replace_name)
             msg = await set_BindInfo(qqid,search_list)
         elif select_command == 'special_bind':
             msg = await set_special_BindInfo(qqid,search_list)
