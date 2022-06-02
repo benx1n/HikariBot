@@ -61,7 +61,7 @@
    > pip install hikari-bot
    > ```
    >
-4. 编辑.env.prod文件
+4. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并编辑
    > ```
    > API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
    >SUPERUSERS=["QQ号"] 
@@ -114,30 +114,16 @@
 
 >```
 >pip install --upgrade hikari-bot
+>git pull
 >```
+>对比`.env.prod-example`中新增的配置项，并同步至你本地的`env.prod`
+>
 >install结束后会打印当前版本
 >
 >您也可以通过pip show hikari-bot查看
 >
 >如果没有更新到最新版请等待一会儿，镜像站一般每五分钟同步
 >
->(插件版无需下列步骤，Bot版在更新说明中没有提到git pull也不需要)
->
->可双击`强制同步git.bat`完成以下操作
->
->```
->cd HikariBot
->
->git fetch --all
->
->git reset --hard origin/master
->
->git pull
->```
->
->重新编辑您的.env.prod文件
->
->(如果您会自己解决分支冲突不看也可以.jpg
 
 ## 可能会遇到的问题
 

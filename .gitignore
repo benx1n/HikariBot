@@ -143,3 +143,5 @@ dmypy.json
 accounts
 .vscode
 logs
+.env.prod
+src/plugins/hikari_bot/template
