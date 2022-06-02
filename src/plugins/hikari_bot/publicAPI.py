@@ -55,6 +55,8 @@ async def get_ship_name(infolist:List):
         else:
             msg = '没有符合的船只'
         return msg
+    except httpx.ReadTimeout:
+        return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
@@ -102,6 +104,8 @@ async def get_AccountIdByName(server:str,name:str):
             return 404
         else:
             return None
+    except httpx.ReadTimeout:
+        return None
     except Exception:
         logger.error(traceback.format_exc())
         return None

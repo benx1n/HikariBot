@@ -82,6 +82,8 @@ async def get_AccountInfo(qqid,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return '查询不到对应信息哦~可能是游戏昵称不正确或QQ未绑定'
+    except httpx.ReadTimeout:
+        return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'

@@ -53,7 +53,7 @@
    >
    > git clone https://gitee.com/benx1n/HikariBot.git
    > ```
-3. 双击`一键安装.bat` 
+3. 以管理员身份运行`一键安装.bat` 
 
    >执行下列两条命令安装nonebot2和hikari-bot插件
    > ```
@@ -69,6 +69,8 @@
    >总之最后应该长这样
    >
    >API_TOKEN = 123764323:ba1f2511fc30423bdbb183fe33
+   >
+   >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
 
 5. 双击`启动.bat`，在打开的浏览器中添加bot账号密码，重新启动Hikari
     >打开终端，进入HikariBot文件夹下，输入下方命令运行bot
@@ -110,7 +112,7 @@
 4. 重启bot
 
 ## 更新
-双击`更新.bat`
+以管理员身份运行`更新.bat`
 
 >```
 >pip install --upgrade hikari-bot

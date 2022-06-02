@@ -74,6 +74,8 @@ async def get_ShipRank(qqid,info,bot):
                 return await html_to_pic(content, wait=0, viewport={"width": 1800, "height": 100})
             else:
                 return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'   
+    except httpx.ReadTimeout:
+        return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~' 

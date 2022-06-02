@@ -56,6 +56,8 @@ async def get_BindInfo(user,info):
                 return '该用户似乎还没绑定窝窝屎账号'
         else:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+    except httpx.ReadTimeout:
+        return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
@@ -96,6 +98,8 @@ async def set_BindInfo(user,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuwu出了点问题，请联系麻麻解决'
+    except httpx.ReadTimeout:
+        return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
@@ -148,6 +152,8 @@ async def change_BindInfo(user,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuwu出了点问题，请联系麻麻解决'
+    except httpx.ReadTimeout:
+        return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
@@ -185,6 +191,8 @@ async def set_special_BindInfo(user,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuwu出了点问题，请联系麻麻解决'
+    except httpx.ReadTimeout:
+        return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
