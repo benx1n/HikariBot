@@ -151,3 +151,40 @@ async def change_BindInfo(user,info):
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
+    
+async def set_special_BindInfo(user,info):
+    try:
+        param_server = None
+        if isinstance (info,List):
+            if len(info) == 2:
+                param_server,info = await match_keywords(info,servers)
+                if param_server:
+                    if str(info[0]).isdigit():
+                        url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
+                        params = {
+                        "platformType": "QQ",
+                        "platformId": str(user),
+                        "accountId": int(info[0])
+                        }
+                    else:
+                        return '特殊绑定只能使用网页查询到的AccountID哦'
+                else:
+                    return '服务器参数似乎输错了呢'
+            else:
+                return '参数似乎输错了呢，请确保后面跟随服务器+网页查询到的AccountID'
+        else:
+            return '参数似乎输错了呢，请确保后面跟随服务器+游戏昵称'
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
+        async with httpx.AsyncClient(headers=headers) as client:
+            resp = await client.get(url, params=params, timeout=20)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
+            result = resp.json()
+        if result['code'] == 200 and result['message'] == "success":
+            return '绑定成功'
+        elif result['code'] == 500:
+            return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+        else:
+            return 'wuwuwu出了点问题，请联系麻麻解决'
+    except Exception:
+        logger.error(traceback.format_exc())
+        return 'wuwuwu出了点问题，请联系麻麻解决'

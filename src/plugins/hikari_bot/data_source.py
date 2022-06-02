@@ -12,6 +12,7 @@ class matching:
 command_list = [        #同指令中越长的匹配词越靠前
     matching(("切换绑定","更换绑定","更改绑定"),"changebind"),
     matching(("查询绑定","绑定查询","绑定列表","查绑定"),"bindlist"),
+    matching(("特殊绑定",),"special_bind"),
     matching(("ship.rank","SHIP.RANK","rank","RANK"),"ship_rank"),
     matching(("bind","BIND","绑定","set","SET"),"bind"),
     matching(("recent","RECENT","近期",),"recent"),

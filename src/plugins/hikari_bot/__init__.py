@@ -7,7 +7,7 @@ from nonebot.log import logger
 from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
 from .wws_info import get_AccountInfo
 from .wws_recent import get_RecentInfo
-from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo
+from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo,set_special_BindInfo
 from .wws_ship import get_ShipInfo,SecletProcess
 from .wws_shiprank import get_ShipRank
 from .data_source import command_list
@@ -35,114 +35,91 @@ driver = get_driver()
 
 @bot.handle()
 async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
-    msg = ''
-    qqid = ev.user_id
-    select_command = None
-    if not _nlmt.check(qqid):
-        await bot.send(EXCEED_NOTICE, at_sender=True)
-        return
-    if not _flmt.check(qqid):
-        await bot.send('您冲得太快了，请稍候再冲', at_sender=True)
-        return
-    _flmt.start_cd(qqid)
-    _nlmt.increase(qqid) 
-    searchtag = str(matchmsg).strip()
-    if not searchtag or searchtag=="":
-        await send_bot_help()
-    search_list = str(matchmsg).split()
-    
-    select_command,search_list = await find_and_replace_keywords(search_list,command_list)
-    if not select_command:
-        try:
-            msg = await get_AccountInfo(qqid,search_list)
-        except Exception:
-            logger.warning(traceback.format_exc())
-            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-    elif select_command == 'ship':
+    try:
+        msg = ''
+        qqid = ev.user_id
         select_command = None
-        select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
+        if not _nlmt.check(qqid):
+            await bot.send(EXCEED_NOTICE, at_sender=True)
+            return
+        if not _flmt.check(qqid):
+            await bot.send('您冲得太快了，请稍候再冲', at_sender=True)
+            return
+        _flmt.start_cd(qqid)
+        _nlmt.increase(qqid) 
+        searchtag = str(matchmsg).strip()
+        if not searchtag or searchtag=="":
+            await send_bot_help()
+        search_list = str(matchmsg).split()
+
+        select_command,search_list = await find_and_replace_keywords(search_list,command_list)
         if not select_command:
-            try:
+            msg = await get_AccountInfo(qqid,search_list)
+        elif select_command == 'ship':
+            select_command = None
+            select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
+            if not select_command:
                 msg = await get_ShipInfo(qqid,search_list,bot)
-            except Exception:
-                logger.warning(traceback.format_exc())
-                await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+            elif select_command == 'recent':
+                msg = "待开发：查单船近期战绩"
+            else:
+                msg = '看不懂指令QAQ'
         elif select_command == 'recent':
-            msg = "待开发：查单船近期战绩"
+            select_command = None
+            select_command,search_list = await find_and_replace_keywords(search_list,command_list)             #第二次匹配
+            if not select_command:
+                msg = await get_RecentInfo(qqid,search_list)
+            elif select_command == 'ship':
+                msg = '待开发：查单船近期战绩'
+            else:
+                msg = '：看不懂指令QAQ'
+        elif select_command == 'ship_rank':
+            msg = await get_ShipRank(qqid,search_list,bot)   
+        elif select_command == 'bind':
+            msg = await set_BindInfo(qqid,search_list)
+        elif select_command == 'special_bind':
+            msg = await set_special_BindInfo(qqid,search_list)
+        elif select_command == 'bindlist':
+            msg = await get_BindInfo(qqid,search_list)
+        elif select_command == 'changebind':
+            msg = await change_BindInfo(qqid,search_list)
+        elif select_command == 'searchship':
+            msg = await get_ship_name(search_list)
+        elif select_command == 'help':
+            msg = await send_bot_help()
         else:
             msg = '看不懂指令QAQ'
-    elif select_command == 'recent':
-        select_command = None
-        select_command,search_list = await find_and_replace_keywords(search_list,command_list)             #第二次匹配
-        if not select_command:
-            try:
-                msg = await get_RecentInfo(qqid,search_list)
-            except Exception:
-                logger.warning(traceback.format_exc())
-                await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-        elif select_command == 'ship':
-            msg = '待开发：查单船近期战绩'
+        if msg:
+            if isinstance(msg,str):
+                await bot.send(msg)
+                return
+            else:
+                await bot.send(MessageSegment.image(msg))
+                return
         else:
-            msg = '：看不懂指令QAQ'
-    elif select_command == 'ship_rank':
-        try:
-            msg = await get_ShipRank(qqid,search_list,bot)
-        except Exception:
-            logger.warning(traceback.format_exc())
-            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')    
-    elif select_command == 'bind':
-        try:
-            msg = await set_BindInfo(qqid,search_list)
-        except Exception:
-            logger.warning(traceback.format_exc())
-            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-    elif select_command == 'bindlist':
-        try:
-            msg = await get_BindInfo(qqid,search_list)
-        except Exception:
-            logger.warning(traceback.format_exc())
-            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-    elif select_command == 'changebind':
-        try:
-            msg = await change_BindInfo(qqid,search_list)
-        except Exception:
-            logger.warning(traceback.format_exc())
-            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-    elif select_command == 'searchship':
-        try:
-            msg = await get_ship_name(search_list)
-        except Exception:
-            logger.warning(traceback.format_exc())
-            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-    elif select_command == 'help':
-        try:
-            msg = await send_bot_help()
-        except Exception:
-            logger.warning(traceback.format_exc())
-            await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-    else:
-        msg = '看不懂指令QAQ'
-    if msg:
-        if isinstance(msg,str):
-            await bot.finish(msg)
-        else:
-            await bot.finish(MessageSegment.image(msg))
-    else:
+            await bot.send('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+            return
+    except Exception:
+        logger.warning(traceback.format_exc())
         await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
                 
 async def send_bot_help():
-    url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
-    async with httpx.AsyncClient() as client:
-        resp = await client.get(url, timeout=10)
-        result = json.loads(resp.text)
-    latest_version = result['latest_version']
-    url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/wws_help.txt'
-    async with httpx.AsyncClient() as client:
-        resp = await client.get(url, timeout=10)
-        result = resp.text
-    result = f'''帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}'''
-    img = await text_to_pic(text = result,css_path = str(template_path/"text-help.css"), width = 800)
-    return img
+    try:
+        url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, timeout=10)
+            result = json.loads(resp.text)
+        latest_version = result['latest_version']
+        url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/wws_help.txt'
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, timeout=10)
+            result = resp.text
+        result = f'''帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}'''
+        img = await text_to_pic(text = result,css_path = str(template_path/"text-help.css"), width = 800)
+        return img
+    except Exception:
+        logger.warning(traceback.format_exc())
+        return 'wuwuwu出了点问题，请联系麻麻解决'
     
 @bot_listen.handle()
 async def change_select_state(ev:MessageEvent):

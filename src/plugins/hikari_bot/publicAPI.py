@@ -57,7 +57,7 @@ async def get_ship_name(infolist:List):
         return msg
     except Exception:
         logger.error(traceback.format_exc())
-        return msg
+        return 'wuwuwu出了点问题，请联系麻麻解决'
     
 async def get_ship_byName(shipname:str):
     try:
