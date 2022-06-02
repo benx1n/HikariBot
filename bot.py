@@ -30,8 +30,8 @@ app = nonebot.get_asgi()
 driver = nonebot.get_driver()
 driver.register_adapter(ONEBOT_V11Adapter)
 
-nonebot.load_from_toml("pyproject.toml")
-#nonebot.load_plugin('hikari_bot')
+#nonebot.load_from_toml("pyproject.toml")
+nonebot.load_plugin('hikari_bot')
 
 if driver.config.use_plugin_go_cqhttp:
     nonebot.load_plugin('nonebot_plugin_gocqhttp')

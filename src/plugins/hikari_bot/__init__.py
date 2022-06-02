@@ -25,7 +25,7 @@ _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.2.3'
+__version__ = '0.2.4'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
@@ -106,8 +106,12 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             msg = '看不懂指令QAQ'
         if msg:
             if isinstance(msg,str):
-                await bot.send(msg)
-                return
+                try:
+                    await bot.send(msg)
+                    return
+                except Exception:
+                    logger.error(traceback.format_exc())
+                    await bot.finish('消息可能被QQ吞了QAQ')
             else:
                 await bot.send(MessageSegment.image(msg))
                 return
@@ -115,7 +119,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             await bot.send('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
             return
     except Exception:
-        logger.warning(traceback.format_exc())
+        logger.error(traceback.format_exc())
         await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
                 
 async def send_bot_help():
