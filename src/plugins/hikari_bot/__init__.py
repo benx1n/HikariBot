@@ -16,6 +16,7 @@ from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
 import httpx
 import json
+import asyncio
 from nonebot import require
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
@@ -23,13 +24,14 @@ _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.2.2'
+__version__ = '0.2.3'
 dir_path = Path(__file__).parent
-css_path = dir_path / "template"/"text.css"
+template_path = dir_path / "template"
 
 bot = on_command("wws", block=True, aliases={"WWS"},priority=5)
 bot_listen = on_message(priority=5)
 bot_checkversion = on_command("wws 检查更新",priority=5)
+driver = get_driver()
 
 @bot.handle()
 async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
@@ -139,7 +141,7 @@ async def send_bot_help():
         resp = await client.get(url, timeout=10)
         result = resp.text
     result = f'''帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}'''
-    img = await text_to_pic(text = result,css_path= str(css_path), width = 800)
+    img = await text_to_pic(text = result,css_path = str(template_path/"text-help.css"), width = 800)
     return img
     
 @bot_listen.handle()
@@ -178,6 +180,24 @@ async def check_version():
         logger.warning(traceback.format_exc())
         return
         
+@driver.on_startup
+async def startup():
+    try:
+        loop = asyncio.get_running_loop()
+        url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/template_Hikari/template.json'
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, timeout=20)
+            result = resp.json()
+            for each in result:
+                for name, url in each.items():
+                    async with httpx.AsyncClient() as client:
+                        resp = resp = await client.get(url, timeout=20)
+                        with open(template_path/name , "wb+") as file:
+                            file.write(resp.content)
+    except Exception:
+        logger.error(traceback.format_exc())
+        return    
+    
 scheduler.add_job(
     check_version,
     "cron",

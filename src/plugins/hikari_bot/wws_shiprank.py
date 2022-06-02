@@ -45,13 +45,13 @@ async def get_ShipRank(qqid,info,bot):
                 select_shipId = shipList[0][0]
                 number_url += f"{select_shipId},{shipList[0][2]}"
             else:
-                msg = f'存在多条名字相似的船\n请在20秒内选择对应的序号\n=================\n'
+                msg = f'存在多条名字相似的船\n请在20秒内选择对应的序号\n================\n'
                 flag = 0
                 for each in shipList:
                     flag += 1
                     msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
                 SecletProcess[qqid] = ShipSlectState(False, None, shipList)
-                img = await text_to_pic(text=msg,width=230)
+                img = await text_to_pic(text=msg,css_path = str(template_path/"text-ship.css"),width=250) 
                 await bot.send(MessageSegment.image(img))
                 a = 0
                 while a < 200 and not SecletProcess[qqid].state:
