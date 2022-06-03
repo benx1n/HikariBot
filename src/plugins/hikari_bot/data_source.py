@@ -285,7 +285,7 @@ async def set_recentparams(List):
         InfoRecent_RankData = await set_InfoRecent_RankData(List['shipData'][0])
         winsColor = await set_winColor(List['shipData'][0]['pvpInfo']['wins'])
         damageColor = await set_damageColor(None,List['shipData'][0]['pvpInfo']['damage'])
-        solo_winsColor = await set_winColor(List['shipData'][0]['pvpSoloInfo']['damage'])
+        solo_winsColor = await set_winColor(List['shipData'][0]['pvpSoloInfo']['wins'])
         solo_damageColor = await set_damageColor(None,List['shipData'][0]['pvpSoloInfo']['damage'])
         div2_winsColor = await set_winColor(List['shipData'][0]['pvpTwoInfo']['wins'])
         div2_damageColor = await set_damageColor(None,List['shipData'][0]['pvpTwoInfo']['damage'])
