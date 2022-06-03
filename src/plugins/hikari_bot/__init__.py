@@ -8,7 +8,7 @@ from nonebot.log import logger
 from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
 from .wws_info import get_AccountInfo
 from .wws_recent import get_RecentInfo
-from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo,set_special_BindInfo
+from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo,set_special_BindInfo,delete_BindInfo
 from .wws_ship import get_ShipInfo,SecletProcess
 from .wws_shiprank import get_ShipRank
 from .data_source import command_list
@@ -99,6 +99,8 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             msg = await get_BindInfo(qqid,search_list)
         elif select_command == 'changebind':
             msg = await change_BindInfo(qqid,search_list)
+        elif select_command == 'delete_bind':
+            msg = await delete_BindInfo(qqid,search_list)
         elif select_command == 'searchship':
             msg = await get_ship_name(search_list)
         elif select_command == 'help':
