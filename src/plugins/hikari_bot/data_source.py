@@ -305,7 +305,7 @@ async def set_recentparams(List):
             "xp":List['shipData'][0]['pvpInfo']['xp'],
             "kd":List['shipData'][0]['pvpInfo']['kd'],
             "hit":f"{List['shipData'][0]['pvpInfo']['hit']:.2f}",
-            "frags":f"{List['shipData'][0]['pvpInfo']['hit']:.2f}",
+            "frags":f"{List['shipData'][0]['pvpInfo']['frags']:.2f}",
             "solo_battles":List['shipData'][0]['pvpSoloInfo']['battles'],
             "solo_wins":List['shipData'][0]['pvpSoloInfo']['wins'],
             "solo_pr":f"{List['shipData'][0]['pvpSoloInfo']['pr']['value']} {List['shipData'][0]['pvpSoloInfo']['pr']['name']}",
