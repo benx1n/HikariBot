@@ -366,15 +366,15 @@ async def set_shipparams(List):
         winsTopColor = await set_upinfo_color(List['dwpDataVO']['wins'])
         prTopColor = await set_upinfo_color(List['dwpDataVO']['pr'])
         winsColor = await set_winColor(List['shipInfo']['wins'])
-        damageColor = await set_damageColor(None,List['shipInfo']['damage'])
+        damageColor = await set_damageColor(List['shipInfo']['shipInfo']['shipType'],List['shipInfo']['damage'])
         solo_winsColor = await set_winColor(List['shipSolo']['wins'])
-        solo_damageColor = await set_damageColor(None,List['shipSolo']['damage'])
+        solo_damageColor = await set_damageColor(List['shipInfo']['shipInfo']['shipType'],List['shipSolo']['damage'])
         div2_winsColor = await set_winColor(List['shipTwo']['wins'])
-        div2_damageColor = await set_damageColor(None,List['shipTwo']['damage'])
+        div2_damageColor = await set_damageColor(List['shipInfo']['shipInfo']['shipType'],List['shipTwo']['damage'])
         div3_winsColor = await set_winColor(List['shipThree']['wins'])
-        div3_damageColor = await set_damageColor(None,List['shipThree']['damage'])
+        div3_damageColor = await set_damageColor(List['shipInfo']['shipInfo']['shipType'],List['shipThree']['damage'])
         rank_winsColor = await set_winColor(List['rankSolo']['wins'])
-        rank_damageColor = await set_damageColor(None,List['rankSolo']['damage'])
+        rank_damageColor = await set_damageColor(List['shipInfo']['shipInfo']['shipType'],List['rankSolo']['damage'])
         result = {
             "guild":List['clanInfo']['tag'],
             "userName":List['userName'],
