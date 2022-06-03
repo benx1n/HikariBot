@@ -198,3 +198,8 @@ scheduler.add_job(
     "cron",
     hour = 12,
 )
+scheduler.add_job(
+    startup,
+    "cron",
+    hour = 4
+)

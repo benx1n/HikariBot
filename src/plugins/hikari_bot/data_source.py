@@ -179,6 +179,7 @@ async def set_infoparams(List):
             "damage":List['pvp']['damage'],
             "xp":List['pvp']['xp'],
             "kd":List['pvp']['kd'],
+            "frags":f"{List['pvp']['frags']:.2f}",
             "hit":List['pvp']['hit'],
             "bb_battles":List['type']['Battleship']['battles'],
             "bb_pr":List['type']['Battleship']['pr']['value'],
@@ -202,28 +203,36 @@ async def set_infoparams(List):
             "cv_hit":List['type']['AirCarrier']['hit'],      
             "solo_battles":List['pvpSolo']['battles'],
             "solo_wins":List['pvpSolo']['wins'],
+            "solo_pr":List['pvpSolo']['pr']['value'],
             "solo_xp":List['pvpSolo']['xp'],
             "solo_damage":List['pvpSolo']['damage'],
             "solo_kd":List['pvpSolo']['kd'],
             "solo_hit":List['pvpSolo']['hit'],
+            "solo_frags":f"{List['pvpSolo']['frags']:.2f}",
             "div2_battles":List['pvpTwo']['battles'],
             "div2_wins":List['pvpTwo']['wins'],
+            "div2_pr":List['pvpTwo']['pr']['value'],
             "div2_xp":List['pvpTwo']['xp'],
             "div2_damage":List['pvpTwo']['damage'],
             "div2_kd":List['pvpTwo']['kd'],
             "div2_hit":List['pvpTwo']['hit'],
+            "div2_frags":f"{List['pvpTwo']['frags']:.2f}",
             "div3_battles":List['pvpThree']['battles'],
             "div3_wins":List['pvpThree']['wins'],
+            "div3_pr":List['pvpThree']['pr']['value'],
             "div3_xp":List['pvpThree']['xp'],
             "div3_damage":List['pvpThree']['damage'],
             "div3_kd":List['pvpThree']['kd'],
             "div3_hit":List['pvpThree']['hit'],
+            "div3_frags":f"{List['pvpThree']['frags']:.2f}",
             "rank_battles":List['rankSolo']['battles'],
             "rank_wins":List['rankSolo']['wins'],
+            "rank_pr":List['rankSolo']['pr']['value'],
             "rank_xp":List['rankSolo']['xp'],
             "rank_damage":List['rankSolo']['damage'],
             "rank_kd":List['rankSolo']['kd'],
             "rank_hit":List['rankSolo']['hit'],
+            "rank_frags":f"{List['rankSolo']['frags']:.2f}",
             "lv1":List['battleCountAll']['1'],
             "lv2":List['battleCountAll']['2'],
             "lv3":List['battleCountAll']['3'],
@@ -245,6 +254,10 @@ async def set_infoparams(List):
             "ca_prColor":List['type']['Cruiser']['pr']['color'],
             "dd_prColor":List['type']['Destroyer']['pr']['color'],
             "cv_prColor":List['type']['AirCarrier']['pr']['color'],
+            "solo_prColor":List['pvpSolo']['pr']['color'],
+            "div2_prColor":List['pvpTwo']['pr']['color'],
+            "div3_prColor":List['pvpThree']['pr']['color'],
+            "rank_prColor":List['rankSolo']['pr']['color'],
             "bb_winsColor":bb_winsColor,
             "ca_winsColor":ca_winsColor,
             "dd_winsColor":dd_winsColor,
@@ -268,25 +281,80 @@ async def set_infoparams(List):
 
 async def set_recentparams(List):
     try:   
-        historyData = await set_historyData(List['recentList'])
-        winsColor = await set_winColor(List['data']['wins'])
-        damageColor = await set_damageColor(None,List['data']['damage'])
+        InfoRecent_RandomData = await set_InfoRecent_RandomData(List['shipData'][0])
+        InfoRecent_RankData = await set_InfoRecent_RankData(List['shipData'][0])
+        winsColor = await set_winColor(List['shipData'][0]['pvpInfo']['wins'])
+        damageColor = await set_damageColor(None,List['shipData'][0]['pvpInfo']['damage'])
+        solo_winsColor = await set_winColor(List['shipData'][0]['pvpSoloInfo']['damage'])
+        solo_damageColor = await set_damageColor(None,List['shipData'][0]['pvpSoloInfo']['damage'])
+        div2_winsColor = await set_winColor(List['shipData'][0]['pvpTwoInfo']['wins'])
+        div2_damageColor = await set_damageColor(None,List['shipData'][0]['pvpTwoInfo']['damage'])
+        div3_winsColor = await set_winColor(List['shipData'][0]['pvpThreeInfo']['wins'])
+        div3_damageColor = await set_damageColor(None,List['shipData'][0]['pvpThreeInfo']['damage'])
+        rank_winsColor = await set_winColor(List['shipData'][0]['rankInfo']['wins'])
+        rank_damageColor = await set_damageColor(None,List['shipData'][0]['rankInfo']['damage'])
         result = {
             "guild":List['clanInfo']['tag'],
             "userName":List['userName'],
             "serverName":List['serverName'],
-            "prValue":f"{List['data']['pr']['value']} {List['data']['pr']['name']}",
-            "reTime":time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(abs(List['recordTime']))),
-            "battles":List['data']['battles'],
-            "wins":List['data']['wins'],
-            "damage":List['data']['damage'],
-            "xp":List['data']['xp'],
-            "kd":List['data']['kd'],
-            "hit":List['data']['hit'],
-            "historyData":historyData,
-            "prValueColor":List['data']['pr']['color'],
+            "prValue":f"{List['shipData'][0]['pvpInfo']['pr']['value']} {List['shipData'][0]['pvpInfo']['pr']['name']}",
+            "reTime":time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(int(abs(List['shipData'][0]['recordDateTime']/1000)))),
+            "battles":List['shipData'][0]['pvpInfo']['battles'],
+            "wins":List['shipData'][0]['pvpInfo']['wins'],
+            "damage":List['shipData'][0]['pvpInfo']['damage'],
+            "xp":List['shipData'][0]['pvpInfo']['xp'],
+            "kd":List['shipData'][0]['pvpInfo']['kd'],
+            "hit":f"{List['shipData'][0]['pvpInfo']['hit']:.2f}",
+            "frags":f"{List['shipData'][0]['pvpInfo']['hit']:.2f}",
+            "solo_battles":List['shipData'][0]['pvpSoloInfo']['battles'],
+            "solo_wins":List['shipData'][0]['pvpSoloInfo']['wins'],
+            "solo_pr":f"{List['shipData'][0]['pvpSoloInfo']['pr']['value']} {List['shipData'][0]['pvpSoloInfo']['pr']['name']}",
+            "solo_xp":List['shipData'][0]['pvpSoloInfo']['xp'],
+            "solo_damage":List['shipData'][0]['pvpSoloInfo']['damage'],
+            "solo_kd":List['shipData'][0]['pvpSoloInfo']['kd'],
+            "solo_hit":f"{List['shipData'][0]['pvpSoloInfo']['hit']:.2f}",
+            "solo_frags":f"{List['shipData'][0]['pvpSoloInfo']['frags']:.2f}",
+            "div2_battles":List['shipData'][0]['pvpTwoInfo']['battles'],
+            "div2_wins":List['shipData'][0]['pvpTwoInfo']['wins'],
+            "div2_pr":f"{List['shipData'][0]['pvpTwoInfo']['pr']['value']} {List['shipData'][0]['pvpTwoInfo']['pr']['name']}",
+            "div2_xp":List['shipData'][0]['pvpTwoInfo']['xp'],
+            "div2_damage":List['shipData'][0]['pvpTwoInfo']['damage'],
+            "div2_kd":List['shipData'][0]['pvpTwoInfo']['kd'],
+            "div2_hit":f"{List['shipData'][0]['pvpTwoInfo']['hit']:.2f}",
+            "div2_frags":f"{List['shipData'][0]['pvpTwoInfo']['frags']:.2f}",
+            "div3_battles":List['shipData'][0]['pvpThreeInfo']['battles'],
+            "div3_wins":List['shipData'][0]['pvpThreeInfo']['wins'],
+            "div3_pr":f"{List['shipData'][0]['pvpThreeInfo']['pr']['value']} {List['shipData'][0]['pvpThreeInfo']['pr']['name']}",
+            "div3_xp":List['shipData'][0]['pvpThreeInfo']['xp'],
+            "div3_damage":List['shipData'][0]['pvpThreeInfo']['damage'],
+            "div3_kd":List['shipData'][0]['pvpThreeInfo']['kd'],
+            "div3_hit":f"{List['shipData'][0]['pvpThreeInfo']['hit']:.2f}",
+            "div3_frags":f"{List['shipData'][0]['pvpThreeInfo']['frags']:.2f}",
+            "rank_battles":List['shipData'][0]['rankInfo']['battles'],
+            "rank_wins":List['shipData'][0]['rankInfo']['wins'],
+            "rank_pr":f"{List['shipData'][0]['rankInfo']['pr']['value']} {List['shipData'][0]['rankInfo']['pr']['name']}",
+            "rank_xp":List['shipData'][0]['rankInfo']['xp'],
+            "rank_damage":List['shipData'][0]['rankInfo']['damage'],
+            "rank_kd":List['shipData'][0]['rankInfo']['kd'],
+            "rank_hit":f"{List['shipData'][0]['rankInfo']['hit']:.2f}",
+            "rank_frags":f"{List['shipData'][0]['rankInfo']['frags']:.2f}",
+            "InfoRecent_RandomData":InfoRecent_RandomData,
+            "InfoRecent_RankData":InfoRecent_RankData,
+            "prValueColor":List['shipData'][0]['pvpInfo']['pr']['color'],
+            "solo_prColor":List['shipData'][0]['pvpSoloInfo']['pr']['color'],
+            "div2_prColor":List['shipData'][0]['pvpTwoInfo']['pr']['color'],
+            "div3_prColor":List['shipData'][0]['pvpThreeInfo']['pr']['color'],
+            "rank_prColor":List['shipData'][0]['rankInfo']['pr']['color'],
             "winsColor":winsColor,
-            "damageColor":damageColor
+            "damageColor":damageColor,
+            "solo_winsColor":solo_winsColor,
+            "solo_damageColor":solo_damageColor,
+            "div2_winsColor":div2_winsColor,
+            "div2_damageColor":div2_damageColor,
+            "div3_winsColor":div3_winsColor,
+            "div3_damageColor":div3_damageColor,
+            "rank_winsColor":rank_winsColor,
+            "rank_damageColor":rank_damageColor
         }
         return result
     except Exception:
@@ -322,30 +390,39 @@ async def set_shipparams(List):
             "xp":List['shipInfo']['xp'],
             "kda":List['shipInfo']['kd'],
             "hit":List['shipInfo']['hit'],
+            "frags":f"{List['shipInfo']['frags']:.2f}",
             "solo_battles":List['shipSolo']['battles'],
             "solo_wins":List['shipSolo']['wins'],
+            "solo_pr":List['shipSolo']['pr']['value'],
             "solo_xp":List['shipSolo']['xp'],
             "solo_damage":List['shipSolo']['damage'],
             "solo_kd":List['shipSolo']['kd'],
             "solo_hit":List['shipSolo']['hit'],
+            "solo_frags":f"{List['shipSolo']['frags']:.2f}",
             "div2_battles":List['shipTwo']['battles'],
             "div2_wins":List['shipTwo']['wins'],
+            "div2_pr":List['shipTwo']['pr']['value'],
             "div2_xp":List['shipTwo']['xp'],
             "div2_damage":List['shipTwo']['damage'],
             "div2_kd":List['shipTwo']['kd'],
             "div2_hit":List['shipTwo']['hit'],
+            "div2_frags":f"{List['shipTwo']['frags']:.2f}",
             "div3_battles":List['shipThree']['battles'],
             "div3_wins":List['shipThree']['wins'],
+            "div3_pr":List['shipThree']['pr']['value'],
             "div3_xp":List['shipThree']['xp'],
             "div3_damage":List['shipThree']['damage'],
             "div3_kd":List['shipThree']['kd'],
             "div3_hit":List['shipThree']['hit'],
+            "div3_frags":f"{List['shipThree']['frags']:.2f}",
             "rank_battles":List['rankSolo']['battles'],
             "rank_wins":List['rankSolo']['wins'],
+            "rank_pr":List['rankSolo']['pr']['value'],
             "rank_xp":List['rankSolo']['xp'],
             "rank_damage":List['rankSolo']['damage'],
             "rank_kd":List['rankSolo']['kd'],
             "rank_hit":List['rankSolo']['hit'],
+            "rank_frags":f"{List['rankSolo']['frags']:.2f}",
             "maxDamage":List['shipInfo']['extensionDataInfo']['maxDamage'],
             "maxDamageScouting":List['shipInfo']['extensionDataInfo']['maxDamageScouting'],
             "maxTotalAgro":List['shipInfo']['extensionDataInfo']['maxTotalAgro'],
@@ -353,6 +430,10 @@ async def set_shipparams(List):
             "maxFragsBattle":List['shipInfo']['extensionDataInfo']['maxFrags'],
             "maxPlanesKilled":List['shipInfo']['extensionDataInfo']['maxPlanesKilled'],
             "prColor":List['shipInfo']['pr']['color'],
+            "solo_prColor":List['shipSolo']['pr']['color'],
+            "div2_prColor":List['shipTwo']['pr']['color'],
+            "div3_prColor":List['shipThree']['pr']['color'],
+            "rank_prColor":List['rankSolo']['pr']['color'],
             "damageTopColor":damageTopColor,
             "winsTopColor":winsTopColor,
             "prTopColor":prTopColor,
@@ -376,23 +457,41 @@ async def select_prvalue_and_color(pr:int):
             color = select['color']
     return describe,color
 
-async def set_historyData(List):
-    historyData = ''
-    for ship in List:
-        historyData += r'<tr>'
-        historyData += r'<td colspan="8" class="blueColor">'+f"{ship['shipInfo']['nameCn']}"+r'</td>'
-        historyData += r'<td colspan="3" class="blueColor">'+f"{ship['shipInfo']['level']}"+r'</td>'
-        historyData += r'<td colspan="3" class="blueColor">'+f"{ship['battles']}"+r'</td>'
-        historyData += f'''<td colspan="7" class="blueColor" style="color: {ship['pr']['color']}">{ship['pr']['value']} {ship['pr']['name']}</td>'''
-        historyData += r'<td colspan="4" class="blueColor">'+f"{ship['xp']}"+r'</td>'
-        wincolor = await set_winColor(ship['wins'])
-        historyData += f'''<td class="blueColor" colspan="5" style="color: {wincolor}">{ship['wins']}%</td>'''
-        damagecolor = await set_damageColor(ship['shipInfo']['shipType'],ship['damage'])
-        historyData += f'''<td colspan="5" class="blueColor" style="color: {damagecolor}">{ship['damage']}</td>'''
-        historyData += r'<td colspan="5" class="blueColor">'+f"{ship['hit']}%"+r'</td>'
-        historyData += r'</tr>'
-    return historyData
+async def set_InfoRecent_RandomData(List):
+    Recent_RandomData = ''
+    for ship in List['shipData']:
+        if ship['shipInfo']['battles']:
+            Recent_RandomData += r'<tr>'
+            Recent_RandomData += r'<td colspan="8" class="blueColor">'+f"{ship['shipInfo']['shipInfo']['nameCn']}"+r'</td>'
+            Recent_RandomData += r'<td colspan="3" class="blueColor">'+f"{ship['shipInfo']['shipInfo']['level']}"+r'</td>'
+            Recent_RandomData += r'<td colspan="3" class="blueColor">'+f"{ship['shipInfo']['battles']}"+r'</td>'
+            #Recent_RandomData += f'''<td colspan="7" class="blueColor" style="color: {ship['shipInfo']['pr']['color']}">{ship['shipInfo']['pr']['value']} {ship['shipInfo']['pr']['name']}</td>'''
+            Recent_RandomData += f'''<td colspan="4" class="blueColor" style="color: {ship['shipInfo']['pr']['color']}">{ship['shipInfo']['pr']['value']}</td>'''
+            Recent_RandomData += r'<td colspan="4" class="blueColor">'+f"{ship['shipInfo']['xp']}"+r'</td>'
+            Recent_RandomData += f'''<td class="blueColor" colspan="5" style="color: {await set_winColor(ship['shipInfo']['wins'])}">{ship['shipInfo']['wins']}%</td>'''
+            Recent_RandomData += f'''<td colspan="5" class="blueColor" style="color: {await set_damageColor(ship['shipInfo']['shipInfo']['shipType'],ship['shipInfo']['damage'])}">{ship['shipInfo']['damage']}</td>'''
+            Recent_RandomData += r'<td colspan="3" class="blueColor">'+f"{ship['shipInfo']['frags']:.2f}"+r'</td>'
+            Recent_RandomData += r'<td colspan="5" class="blueColor">'+f"{ship['shipInfo']['hit']:.2f}%"+r'</td>'
+            Recent_RandomData += r'</tr>'
+    return Recent_RandomData
 
+async def set_InfoRecent_RankData(List):
+    Recent_RankData = ''
+    for ship in List['shipData']:
+        if ship['rankSolo']['battles']:
+            Recent_RankData += r'<tr>'
+            Recent_RankData += r'<td colspan="8" class="blueColor">'+f"{ship['rankSolo']['shipInfo']['nameCn']}"+r'</td>'
+            Recent_RankData += r'<td colspan="3" class="blueColor">'+f"{ship['rankSolo']['shipInfo']['level']}"+r'</td>'
+            Recent_RankData += r'<td colspan="3" class="blueColor">'+f"{ship['rankSolo']['battles']}"+r'</td>'
+            #Recent_RankData += f'''<td colspan="7" class="blueColor" style="color: {ship['rankSolo']['pr']['color']}">{ship['rankSolo']['pr']['value']} {ship['rankSolo']['pr']['name']}</td>'''
+            Recent_RankData += f'''<td colspan="4" class="blueColor" style="color: {ship['rankSolo']['pr']['color']}">{ship['rankSolo']['pr']['value']}</td>'''
+            Recent_RankData += r'<td colspan="4" class="blueColor">'+f"{ship['rankSolo']['xp']}"+r'</td>'
+            Recent_RankData += f'''<td class="blueColor" colspan="5" style="color: {await set_winColor(ship['rankSolo']['wins'])}">{ship['rankSolo']['wins']}%</td>'''
+            Recent_RankData += f'''<td colspan="5" class="blueColor" style="color: {await set_damageColor(ship['rankSolo']['shipInfo']['shipType'],ship['rankSolo']['damage'])}">{ship['rankSolo']['damage']}</td>'''
+            Recent_RankData += r'<td colspan="3" class="blueColor">'+f"{ship['rankSolo']['frags']:.2f}"+r'</td>'
+            Recent_RankData += r'<td colspan="5" class="blueColor">'+f"{ship['rankSolo']['hit']:.2f}%"+r'</td>'
+            Recent_RankData += r'</tr>'
+    return Recent_RankData
 async def set_damageColor(type,value):
     try:
         if type == 'Destroyer':
