@@ -365,6 +365,8 @@ async def set_shipparams(List):
         damageTopColor = await set_upinfo_color(List['dwpDataVO']['damage'])
         winsTopColor = await set_upinfo_color(List['dwpDataVO']['wins'])
         prTopColor = await set_upinfo_color(List['dwpDataVO']['pr'])
+        winsColor = await set_winColor(List['shipInfo']['wins'])
+        damageColor = await set_damageColor(None,List['shipInfo']['damage'])
         solo_winsColor = await set_winColor(List['shipSolo']['wins'])
         solo_damageColor = await set_damageColor(None,List['shipSolo']['damage'])
         div2_winsColor = await set_winColor(List['shipTwo']['wins'])
@@ -437,6 +439,8 @@ async def set_shipparams(List):
             "damageTopColor":damageTopColor,
             "winsTopColor":winsTopColor,
             "prTopColor":prTopColor,
+            "winsColor":winsColor,
+            "damageColor":damageColor,
             "solo_winsColor":solo_winsColor,
             "solo_damageColor":solo_damageColor,
             "div2_winsColor":div2_winsColor,
