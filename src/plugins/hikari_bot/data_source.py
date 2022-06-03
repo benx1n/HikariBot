@@ -25,7 +25,7 @@ nations = [
     matching(("commonwealth","英联邦",),"commonwealth"),
     matching(("europe","欧洲",),"europe"),
     matching(("france","法国",),"france"),
-    matching(("germany","德国",),"germany:"),
+    matching(("germany","德国",),"germany"),
     matching(("italy","意大利",),"italy"),
     matching(("japan","日本",),"japan"),
     matching(("pan_america","泛美",),"pan_america"),
