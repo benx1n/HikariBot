@@ -4,6 +4,7 @@ from loguru import logger
 from nonebot import get_bot, on_command, on_message, get_driver
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot
+from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.log import logger
 from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
 from .wws_info import get_AccountInfo
@@ -117,8 +118,9 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         else:
             await bot.send('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
             return
-    except nonebot.adapters.onebot.v11.exception.ActionFailed:
-        await bot.send('消息被QQ吞了QAQ')
+    except ActionFailed:
+        logger.warning(traceback.format_exc())
+        return
     except Exception:
         logger.error(traceback.format_exc())
         await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')

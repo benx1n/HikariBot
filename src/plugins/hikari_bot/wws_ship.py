@@ -9,6 +9,7 @@ from .data_source import servers,set_shipparams,tiers
 from .utils import match_keywords
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
 from nonebot.adapters.onebot.v11 import MessageSegment
+from nonebot.adapters.onebot.v11.exception import ActionFailed
 from.publicAPI import get_ship_byName,get_AccountIdByName
 from collections import defaultdict, namedtuple
 from nonebot import get_driver
@@ -119,6 +120,9 @@ async def get_ShipInfo(qqid,info,bot):
             return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'
     except httpx.ReadTimeout:
         return '请求超时了，请过会儿再尝试哦~'
+    except ActionFailed:
+        logger.warning(traceback.format_exc())
+        return '由于风控或禁言，无法发送消息'
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'

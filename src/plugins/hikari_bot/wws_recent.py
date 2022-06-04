@@ -1,4 +1,5 @@
 from typing import List
+from click import pass_obj
 import httpx
 import traceback
 import jinja2
@@ -72,14 +73,15 @@ async def get_RecentInfo(qqid,info):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                print('下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦')
+                pass
             else:
                 return '您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格区分'
         else:
             return '参数似乎出了问题呢'
-        print(params)
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
+            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
             result = resp.json()
         if result['code'] == 200:
             if result['data']['shipData'][0]['shipData']:
@@ -92,7 +94,7 @@ async def get_RecentInfo(qqid,info):
         elif result['code'] == 403:
             return f"{result['message']}\n请先绑定账号"
         elif result['code'] == 404:
-            return f"{result['message']}"
+            return f"{result['message']}\n您可以发送wws help查看recent相关说明"
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:

@@ -23,6 +23,15 @@ logger.add(
     format=default_format,
     encoding="utf-8",
 )
+logger.add(
+    "logs/warning.log",
+    rotation="00:00",
+    retention="1 week",
+    diagnose=False,
+    level="WARNING",
+    format=default_format,
+    encoding="utf-8",
+)
 
 nonebot.init()
 app = nonebot.get_asgi()
