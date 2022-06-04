@@ -11,6 +11,8 @@ from .publicAPI import get_AccountIdByName
 from nonebot_plugin_htmlrender import html_to_pic
 from nonebot import get_driver
 from nonebot.log import logger
+from httpx import ConnectTimeout
+from asyncio.exceptions import TimeoutError
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -82,7 +84,8 @@ async def get_AccountInfo(qqid,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return '查询不到对应信息哦~可能是游戏昵称不正确或QQ未绑定'
-    except httpx.ReadTimeout:
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())

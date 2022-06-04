@@ -13,6 +13,8 @@ from nonebot_plugin_htmlrender import html_to_pic
 from .publicAPI import get_AccountIdByName
 from nonebot import get_driver
 from nonebot.log import logger
+from httpx import ConnectTimeout
+from asyncio.exceptions import TimeoutError
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -99,6 +101,9 @@ async def get_RecentInfo(qqid,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
+        return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
     except Exception:
         traceback.print_exc()
-        return
+        return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'

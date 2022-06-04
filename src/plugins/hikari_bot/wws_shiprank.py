@@ -14,6 +14,8 @@ from.publicAPI import get_ship_byName
 from bs4 import BeautifulSoup
 from nonebot import get_driver
 from nonebot.log import logger
+from httpx import ConnectTimeout
+from asyncio.exceptions import TimeoutError
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -74,7 +76,8 @@ async def get_ShipRank(qqid,info,bot):
                 return await html_to_pic(content, wait=0, viewport={"width": 1800, "height": 100})
             else:
                 return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'   
-    except httpx.ReadTimeout:
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
@@ -100,6 +103,9 @@ async def search_ShipRank_Yuyuko(shipId,server):
                 return content
             else:
                 return None
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
+        return None 
     except Exception:
         logger.error(traceback.format_exc())
         return None 
@@ -136,5 +142,7 @@ async def post_ShipRank(shipId,server,data):
             }
             resp = await client.post(url, json = post_data, timeout=20)
             result = resp.json()
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
     except Exception:
         logger.error(traceback.format_exc())

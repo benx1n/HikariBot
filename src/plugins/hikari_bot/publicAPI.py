@@ -5,6 +5,8 @@ from .data_source import nations,shiptypes,levels
 from .utils import match_keywords
 from nonebot import get_driver
 from nonebot.log import logger
+from httpx import ConnectTimeout
+from asyncio.exceptions import TimeoutError
 
 headers = {
     'Authorization': get_driver().config.api_token
@@ -55,8 +57,8 @@ async def get_ship_name(infolist:List):
         else:
             msg = '没有符合的船只'
         return msg
-    except httpx.ReadTimeout:
-        return '请求超时了，请过会儿再尝试哦~'
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
     except Exception:
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
@@ -82,6 +84,8 @@ async def get_ship_byName(shipname:str):
             return List
         else:
             return None
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
     except Exception:
         logger.error(traceback.format_exc())
         return None
@@ -104,7 +108,8 @@ async def get_AccountIdByName(server:str,name:str):
             return 404
         else:
             return None
-    except httpx.ReadTimeout:
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
         return None
     except Exception:
         logger.error(traceback.format_exc())

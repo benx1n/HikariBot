@@ -14,6 +14,8 @@ from.publicAPI import get_ship_byName,get_AccountIdByName
 from collections import defaultdict, namedtuple
 from nonebot import get_driver
 from nonebot.log import logger
+from httpx import ConnectTimeout
+from asyncio.exceptions import TimeoutError
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -118,7 +120,8 @@ async def get_ShipInfo(qqid,info,bot):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'
-    except httpx.ReadTimeout:
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
     except ActionFailed:
         logger.warning(traceback.format_exc())

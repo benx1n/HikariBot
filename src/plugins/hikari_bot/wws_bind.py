@@ -7,6 +7,8 @@ from .publicAPI import get_AccountIdByName
 from .utils import match_keywords
 from nonebot import get_driver
 from nonebot.log import logger
+from httpx import ConnectTimeout
+from asyncio.exceptions import TimeoutError
 
 headers = {
     'Authorization': get_driver().config.api_token
@@ -56,7 +58,8 @@ async def get_BindInfo(user,info):
                 return '该用户似乎还没绑定窝窝屎账号'
         else:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
-    except httpx.ReadTimeout:
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
@@ -98,7 +101,8 @@ async def set_BindInfo(user,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuwu出了点问题，请联系麻麻解决'
-    except httpx.ReadTimeout:
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
@@ -147,7 +151,8 @@ async def change_BindInfo(user,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuwu出了点问题，请联系麻麻解决'
-    except httpx.ReadTimeout:
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
@@ -186,7 +191,8 @@ async def set_special_BindInfo(user,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuwu出了点问题，请联系麻麻解决'
-    except httpx.ReadTimeout:
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
@@ -235,7 +241,8 @@ async def delete_BindInfo(user,info):
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
             return 'wuwuwu出了点问题，请联系麻麻解决'
-    except httpx.ReadTimeout:
+    except (TimeoutError, ConnectTimeout):
+        logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
