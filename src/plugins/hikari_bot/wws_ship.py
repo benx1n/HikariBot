@@ -34,7 +34,6 @@ SecletProcess = defaultdict(lambda: ShipSlectState(False, None, None))
 async def get_ShipInfo(qqid,info,bot):
     try:
         url,params = '',''
-        start = time.time()
         if isinstance(info,List):
             for flag,i in enumerate(info):              #是否包含me或@，包含则调用平台接口
                 if str(i).lower() == 'me':
