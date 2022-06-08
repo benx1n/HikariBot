@@ -8,8 +8,8 @@ from pathlib import Path
 from .data_source import servers,set_shipparams,tiers,number_url_homes
 from .utils import match_keywords
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
-from nonebot.adapters.onebot.v11 import MessageSegment
-from nonebot.adapters.onebot.v11.exception import ActionFailed
+from nonebot.adapters.onebot.v11 import MessageSegment,ActionFailed
+#from nonebot.adapters.onebot.v11.exception import ActionFailed
 from.publicAPI import get_ship_byName,get_AccountIdByName
 from collections import defaultdict, namedtuple
 from nonebot import get_driver

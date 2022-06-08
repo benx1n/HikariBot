@@ -3,8 +3,8 @@ import nonebot.adapters.onebot.v11
 from loguru import logger
 from nonebot import get_bot, on_command, on_message, get_driver
 from nonebot.params import CommandArg
-from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot
-from nonebot.adapters.onebot.v11.exception import ActionFailed
+from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed
+#from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.log import logger
 from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
 from .wws_info import get_AccountInfo
@@ -27,7 +27,7 @@ _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.2.9.3'
+__version__ = '0.2.9.4'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
@@ -120,6 +120,10 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             return
     except ActionFailed:
         logger.warning(traceback.format_exc())
+        try:
+            await bot.send('发不出图片，可能被风控了QAQ')
+        except Exception:
+            pass
         return
     except Exception:
         logger.error(traceback.format_exc())
