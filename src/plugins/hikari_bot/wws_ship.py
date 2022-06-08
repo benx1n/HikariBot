@@ -173,8 +173,7 @@ async def get_MyShipRank_Numbers(url,server):
                     resp = await client.get(my_rank_url, timeout=20)
                     soup = BeautifulSoup(resp.content, 'html.parser')
                     data = soup.select_one(f'tr[data-nickname="{nickname}"]').select_one('td').string
-        if data.isdigit():
-            print(data)
+        if data and data.isdigit():
             return data
         else:
             return None
