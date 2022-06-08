@@ -3,6 +3,10 @@ from re import L
 from typing import Tuple,List
 import time
 import traceback
+from pathlib import Path
+
+dir_path = Path(__file__).parent
+template_path = dir_path / "template"
 
 @dataclass
 class matching:
@@ -166,6 +170,7 @@ async def set_infoparams(List):
         newWinsColor = await set_upinfo_color(List['dwpDataVO']['wins'])
         newPrColor = await set_upinfo_color(List['dwpDataVO']['pr'])
         result = {
+            "template_path":template_path,
             "guild":List['clanInfo']['tag'],
             "userName":List['userName'],
             "karma":List['karma'],
