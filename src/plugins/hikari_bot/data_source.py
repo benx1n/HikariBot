@@ -479,9 +479,9 @@ async def set_InfoRecent_RandomData(List):
             Recent_RandomData += f'''<td colspan="4" class="blueColor" style="color: {ship['shipInfo']['pr']['color']}">{ship['shipInfo']['pr']['value']}</td>'''
             Recent_RandomData += r'<td colspan="4" class="blueColor">'+f"{ship['shipInfo']['xp']}"+r'</td>'
             Recent_RandomData += f'''<td class="blueColor" colspan="5" style="color: {await set_winColor(ship['shipInfo']['wins'])}">{ship['shipInfo']['wins']}%</td>'''
-            Recent_RandomData += f'''<td colspan="5" class="blueColor" style="color: {await set_damageColor(ship['shipInfo']['shipInfo']['shipType'],ship['shipInfo']['damage'])}">{ship['shipInfo']['damage']}</td>'''
-            Recent_RandomData += r'<td colspan="3" class="blueColor">'+f"{ship['shipInfo']['frags']:.2f}"+r'</td>'
-            Recent_RandomData += r'<td colspan="5" class="blueColor">'+f"{ship['shipInfo']['hit']:.2f}%"+r'</td>'
+            Recent_RandomData += f'''<td colspan="4" class="blueColor" style="color: {await set_damageColor(ship['shipInfo']['shipInfo']['shipType'],ship['shipInfo']['damage'])}">{ship['shipInfo']['damage']}</td>'''
+            Recent_RandomData += r'<td colspan="4" class="blueColor">'+f"{ship['shipInfo']['frags']:.2f}"+r'</td>'
+            Recent_RandomData += r'<td colspan="4" class="blueColor">'+f"{ship['shipInfo']['hit']:.2f}%"+r'</td>'
             Recent_RandomData += r'</tr>'
     return Recent_RandomData
 
@@ -497,9 +497,9 @@ async def set_InfoRecent_RankData(List):
             Recent_RankData += f'''<td colspan="4" class="blueColor" style="color: {ship['rankSolo']['pr']['color']}">{ship['rankSolo']['pr']['value']}</td>'''
             Recent_RankData += r'<td colspan="4" class="blueColor">'+f"{ship['rankSolo']['xp']}"+r'</td>'
             Recent_RankData += f'''<td class="blueColor" colspan="5" style="color: {await set_winColor(ship['rankSolo']['wins'])}">{ship['rankSolo']['wins']}%</td>'''
-            Recent_RankData += f'''<td colspan="5" class="blueColor" style="color: {await set_damageColor(ship['rankSolo']['shipInfo']['shipType'],ship['rankSolo']['damage'])}">{ship['rankSolo']['damage']}</td>'''
-            Recent_RankData += r'<td colspan="3" class="blueColor">'+f"{ship['rankSolo']['frags']:.2f}"+r'</td>'
-            Recent_RankData += r'<td colspan="5" class="blueColor">'+f"{ship['rankSolo']['hit']:.2f}%"+r'</td>'
+            Recent_RankData += f'''<td colspan="4" class="blueColor" style="color: {await set_damageColor(ship['rankSolo']['shipInfo']['shipType'],ship['rankSolo']['damage'])}">{ship['rankSolo']['damage']}</td>'''
+            Recent_RankData += r'<td colspan="4" class="blueColor">'+f"{ship['rankSolo']['frags']:.2f}"+r'</td>'
+            Recent_RankData += r'<td colspan="4" class="blueColor">'+f"{ship['rankSolo']['hit']:.2f}%"+r'</td>'
             Recent_RankData += r'</tr>'
     return Recent_RankData
 async def set_damageColor(type,value):
