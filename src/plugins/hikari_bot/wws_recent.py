@@ -83,7 +83,7 @@ async def get_RecentInfo(qqid,info):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
-            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
+            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
         if result['code'] == 200:
             if result['data']['shipData'][0]['shipData']:
@@ -95,7 +95,7 @@ async def get_RecentInfo(qqid,info):
                 return '该日期数据记录不存在'
         elif result['code'] == 403:
             return f"{result['message']}\n请先绑定账号"
-        elif result['code'] == 404:
+        elif result['code'] == 404 or result['code'] == 405:
             return f"{result['message']}\n您可以发送wws help查看recent相关说明"
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"

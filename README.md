@@ -162,6 +162,11 @@
 >一般提示需要扫码，扫码后提示异地无法登录
 >
 >关于该问题，您可以查看[#1469](https://github.com/Mrs4s/go-cqhttp/issues/1469)获得相应解决办法
+
+### 出现ZoneInfoNotFoundError报错
+>
+>[issue#78](https://github.com/nonebot/nonebot2/issues/78)
+>
 ## 感谢
 
 [Nonebot2](https://github.com/nonebot/nonebot2)<br>

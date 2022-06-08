@@ -49,7 +49,7 @@ async def get_ship_name(infolist:List):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=10)
-            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
+            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
         if result['data']:
             for ship in result['data']:
@@ -75,7 +75,7 @@ async def get_ship_byName(shipname:str):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=10)
-            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
+            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
         List = []
         if result['code'] == 200 and result['data']:
@@ -100,7 +100,7 @@ async def get_AccountIdByName(server:str,name:str):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
-            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
+            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
         if result['code'] == 200 and result['data']:
             return result['data']['accountId']

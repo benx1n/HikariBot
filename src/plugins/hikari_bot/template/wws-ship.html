@@ -74,6 +74,11 @@
         <tr>
             <td colspan="6" style="text-align: center;background-color: {{prColor}}">{{prValue}}</td>
         </tr>
+        {% if shipRank %}
+        <tr>
+            <td colspan="6" style="text-align: center;">排名:{{shipRank}}</td>
+        </tr>   
+        {% endif %}
         <tr>
             <td colspan="6" style="text-align: center;">最后战斗时间</td>
         </tr>
