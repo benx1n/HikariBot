@@ -3,8 +3,7 @@ import nonebot.adapters.onebot.v11
 from loguru import logger
 from nonebot import get_bot, on_command, on_message, get_driver
 from nonebot.params import CommandArg
-from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed
-#from nonebot.adapters.onebot.v11.exception import ActionFailed
+from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
 from nonebot.log import logger
 from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
 from .wws_info import get_AccountInfo
@@ -39,6 +38,8 @@ driver = get_driver()
 @bot.handle()
 async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
     try:
+        if isinstance(ev, PrivateMessageEvent):
+            return
         msg = ''
         qqid = ev.user_id
         select_command = None
