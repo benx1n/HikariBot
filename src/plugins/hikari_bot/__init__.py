@@ -26,7 +26,7 @@ _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.2.9.4'
+__version__ = '0.3.0'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
@@ -88,7 +88,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             elif select_command == 'ship':
                 msg = '待开发：查单船近期战绩'
             else:
-                msg = '：看不懂指令QAQ'
+                msg = '看不懂指令QAQ'
         elif select_command == 'ship_rank':
             msg = await get_ShipRank(qqid,search_list,bot)   
         elif select_command == 'bind':
