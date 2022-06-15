@@ -53,7 +53,10 @@
     <table id="ship-data" width="920" style="table-layout: fixed;">
         <tr>
             <td colspan="6" class="font-data" style="text-align: center;">
-                <span style="color:#87CEEB">[{{guild}}]</span>&nbsp;<span>{{userName}}</span><sup style="color:green">+{{karma}}</sup>&nbsp;&nbsp;&nbsp;<span>{{serverName}}</span>
+                {% if guild%}
+                <span style="color:{{clanColor}}">[{{guild}}]</span>&nbsp;
+                {% endif %}
+                <span>{{userName}}</span><sup style="color:green">+{{karma}}</sup>&nbsp;&nbsp;&nbsp;<span>{{serverName}}</span>
             </td>
         </tr>
         <tr>
