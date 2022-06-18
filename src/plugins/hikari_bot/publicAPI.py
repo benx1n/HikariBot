@@ -114,3 +114,25 @@ async def get_AccountIdByName(server:str,name:str):
     except Exception:
         logger.error(traceback.format_exc())
         return None
+    
+async def get_ClanIdByName(server:str,name:str):
+    try:
+        url = ''
+        params = {
+            "server": server,
+            "clanName": name
+        }
+        print(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
+        async with httpx.AsyncClient(headers=headers) as client:
+            resp = await client.get(url, params=params, timeout=20)
+            result = resp.json()
+        List = []
+        if result['code'] == 200 and result['data']:
+            for each in result['data']:
+                List.append([each['id'],each['shipNameCn'],each['shipNameNumbers'],each['tier']])
+            return List
+        else:
+            return None
+    except Exception:
+        traceback.print_exc()
+        return None

@@ -9,7 +9,7 @@ from .data_source import servers,set_shipparams,tiers,number_url_homes,set_ShipR
 from .utils import match_keywords
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
 from .publicAPI import get_AccountIdByName
-from .wws_ship import SecletProcess,ShipSlectState
+from .wws_ship import ShipSecletProcess,ShipSlectState
 from.publicAPI import get_ship_byName
 from bs4 import BeautifulSoup
 from nonebot import get_driver
@@ -52,16 +52,16 @@ async def get_ShipRank(qqid,info,bot):
                 for each in shipList:
                     flag += 1
                     msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
-                SecletProcess[qqid] = ShipSlectState(False, None, shipList)
+                ShipSecletProcess[qqid] = ShipSlectState(False, None, shipList)
                 img = await text_to_pic(text=msg,css_path = str(template_path/"text-ship.css"),width=250) 
                 await bot.send(MessageSegment.image(img))
                 a = 0
-                while a < 200 and not SecletProcess[qqid].state:
+                while a < 200 and not ShipSecletProcess[qqid].state:
                     a += 1
                     await asyncio.sleep(0.1)
-                if SecletProcess[qqid].state and SecletProcess[qqid].SlectIndex <= len(shipList):
-                    select_shipId = int(shipList[SecletProcess[qqid].SlectIndex-1][0])
-                    number_url += f"{select_shipId},{shipList[SecletProcess[qqid].SlectIndex-1][2]}"
+                if ShipSecletProcess[qqid].state and ShipSecletProcess[qqid].SlectIndex <= len(shipList):
+                    select_shipId = int(shipList[ShipSecletProcess[qqid].SlectIndex-1][0])
+                    number_url += f"{select_shipId},{shipList[ShipSecletProcess[qqid].SlectIndex-1][2]}"
                 else:
                     return '已超时退出'
         else:
