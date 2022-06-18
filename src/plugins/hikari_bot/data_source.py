@@ -3,7 +3,6 @@ from typing import Tuple,List
 import time
 import traceback
 from pathlib import Path
-from bs4 import BeautifulSoup
 import re
 
 dir_path = Path(__file__).parent

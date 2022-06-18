@@ -5,18 +5,16 @@ import jinja2
 import re
 import asyncio
 from pathlib import Path
-from .data_source import servers,set_shipparams,tiers,number_url_homes
+from .data_source import servers,set_shipparams
 from .utils import match_keywords
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
 from nonebot.adapters.onebot.v11 import MessageSegment,ActionFailed
-#from nonebot.adapters.onebot.v11.exception import ActionFailed
 from.publicAPI import get_ClanIdByName
 from collections import defaultdict, namedtuple
 from nonebot import get_driver
 from nonebot.log import logger
 from httpx import ConnectTimeout
 from asyncio.exceptions import TimeoutError
-from bs4 import BeautifulSoup
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"

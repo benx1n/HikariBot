@@ -122,7 +122,7 @@ async def get_ClanIdByName(server:str,name:str):
             "server": server,
             "clanName": name
         }
-        print(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
             result = resp.json()
@@ -134,5 +134,5 @@ async def get_ClanIdByName(server:str,name:str):
         else:
             return None
     except Exception:
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return None

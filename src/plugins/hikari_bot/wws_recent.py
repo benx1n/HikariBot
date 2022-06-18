@@ -1,9 +1,7 @@
 from typing import List
-from click import pass_obj
 import httpx
 import traceback
 import jinja2
-import time
 import re
 from datetime import datetime
 from pathlib import Path
@@ -105,5 +103,5 @@ async def get_RecentInfo(qqid,info):
         logger.warning(traceback.format_exc())
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
     except Exception:
-        traceback.print_exc()
+        logger.warning(traceback.format_exc())
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'

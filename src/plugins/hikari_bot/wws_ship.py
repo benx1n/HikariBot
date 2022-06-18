@@ -251,13 +251,13 @@ async def get_ShipInfoRecent(qqid,info,bot):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params and len(info) == 1:
-                print(f"{params}")
+                logger.info(f"{params}")
             elif params:
                 return '您似乎准备用查询自己的单船近期战绩，请检查参数中是否带有船名，以空格区分'
             else:
                 return '您似乎准备用游戏昵称查询单船近期战绩，请检查参数中是否包含服务器、游戏昵称和船名，以空格区分'
             shipList = await get_ship_byName(str(info[0]))
-            print(shipList)
+            logger.info(f"{shipList}")
             if shipList:
                 if len(shipList) < 2:
                     params["shipId"] = shipList[0][0]
@@ -282,7 +282,7 @@ async def get_ShipInfoRecent(qqid,info,bot):
                 return '找不到船'
         else:
             return '参数似乎出了问题呢'
-        print(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
+        logger.ingo(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
             result = resp.json()
