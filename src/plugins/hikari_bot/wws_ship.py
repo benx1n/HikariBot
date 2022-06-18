@@ -205,11 +205,11 @@ async def get_ShipInfoRecent(qqid,info,bot):
             day = 1
         if isinstance(info,List):
             for i in info:              #查找日期,没找到默认一天
-                if str(i).isdigit():
-                    if int(i) < 8:
-                        day = int(i)
-                    else:
-                        day = 7
+                if str(i).isdigit() and len(i) <= 3:
+                    #if int(i) < 8:
+                    day = int(i)
+                    #else:
+                    #    day = 7
                     info.remove(i)
             for flag,i in enumerate(info):              #是否包含me或@，包含则调用平台接口
                 if i == 'me':
@@ -282,7 +282,7 @@ async def get_ShipInfoRecent(qqid,info,bot):
                 return '找不到船'
         else:
             return '参数似乎出了问题呢'
-        logger.ingo(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
             result = resp.json()
