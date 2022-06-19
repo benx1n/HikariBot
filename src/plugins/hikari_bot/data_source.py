@@ -563,15 +563,6 @@ async def set_ShipRecent_Data(List):
        data = time.strftime('%Y-%m-%d',time.localtime(int(abs(eachShipData['recordDateTime']/1000))))
        if eachShipData['shipInfo']['battles'] or eachShipData['rankSolo']['battles']:
            Recent_Data += f'''<tr><td colspan="6" class="bold-data greyColor" style="text-align: center;">{data}</td></tr>'''
-           Recent_Data += f'''
-               <tr>
-                   <td class="greyColor">类型</td>
-                   <td class="greyColor">场次</td>
-                   <td class="greyColor">胜率</td>
-                   <td class="greyColor">PR</td>
-                   <td class="greyColor">场均</td>
-                   <td class="greyColor">击杀</td>
-               </tr>'''
            for each in eachShipData:
                for index,value in enumerate(['shipSolo','shipTwo','shipThree','rankSolo']):
                    if str(each) == value and eachShipData[each]['battles']:
