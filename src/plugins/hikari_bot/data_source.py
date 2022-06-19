@@ -384,12 +384,18 @@ async def set_shipparams(List):
         div3_damageColor = await set_damageColor(List['shipInfo']['shipInfo']['shipType'],List['shipThree']['damage'])
         rank_winsColor = await set_winColor(List['rankSolo']['wins'])
         rank_damageColor = await set_damageColor(List['shipInfo']['shipInfo']['shipType'],List['rankSolo']['damage'])
+        if List['shipInfo']['shipInfo']['nameEnglish']:
+            shipNameEn = List['shipInfo']['shipInfo']['nameEnglish']
+            shipNameCn = List['shipInfo']['shipInfo']['nameCn']
+        else:
+            shipNameEn = List['rankSolo']['shipInfo']['nameEnglish']
+            shipNameCn = List['rankSolo']['shipInfo']['nameEnglish']
         result = {
             "guild":List['clanInfo']['tag'],
             "userName":List['userName'],
             "serverName":List['serverName'],
-            "shipNameEn":List['shipInfo']['shipInfo']['nameEnglish'],
-            "shipNameCn":List['shipInfo']['shipInfo']['nameCn'],
+            "shipNameEn":shipNameEn,
+            "shipNameCn":shipNameCn,
             "damageTop":f"{List['dwpDataVO']['damage']:+}",
             "winsTop":f"{List['dwpDataVO']['wins']:+.2f}",
             "prTop":f"{List['dwpDataVO']['pr']:+}",
@@ -476,12 +482,18 @@ async def set_shipRecentparams(List):
         rank_winsColor = await set_winColor(List['rankInfo']['wins'])
         rank_damageColor = await set_damageColor(List['shipData'][0]['shipInfo']['shipInfo']['shipType'],List['rankInfo']['damage'])
         detail_data = await set_ShipRecent_Data(List['shipData'])
+        if List['shipData'][0]['shipInfo']['shipInfo']['nameEnglish']:
+            shipNameEn = List['shipData'][0]['shipInfo']['shipInfo']['nameEnglish']
+            shipNameCn = List['shipData'][0]['shipInfo']['shipInfo']['nameCn']
+        else:
+            shipNameEn = List['shipData'][0]['rankSolo']['shipInfo']['nameEnglish']
+            shipNameCn = List['shipData'][0]['rankSolo']['shipInfo']['nameCn']
         result = {
             "guild":List['clanInfo']['tag'],
             "userName":List['userName'],
             "serverName":List['serverName'],
-            "shipNameEn":List['shipData'][0]['shipInfo']['shipInfo']['nameEnglish'],
-            "shipNameCn":List['shipData'][0]['shipInfo']['shipInfo']['nameCn'],
+            "shipNameEn":shipNameEn,
+            "shipNameCn":shipNameCn,
             "prValue":f"{List['pvpInfo']['pr']['value']} {List['pvpInfo']['pr']['name']}",
             "recordTime":time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(int(abs(List['shipData'][0]['recordDateTime']/1000)))),
             "battles":List['pvpInfo']['battles'],
