@@ -473,6 +473,7 @@ async def set_shipparams(List):
 async def set_shipRecentparams(List):
     try:   
         damageColor = await set_damageColor(List['shipData'][0]['shipInfo']['shipInfo']['shipType'],List['pvpInfo']['damage'])
+        winsColor = await set_winColor(List['pvpInfo']['wins'])
         solo_winsColor = await set_winColor(List['pvpSoloInfo']['wins'])
         solo_damageColor = await set_damageColor(List['shipData'][0]['shipInfo']['shipInfo']['shipType'],List['pvpSoloInfo']['damage'])
         div2_winsColor = await set_winColor(List['pvpTwoInfo']['wins'])
@@ -543,6 +544,7 @@ async def set_shipRecentparams(List):
             "rank_prColor":List['rankInfo']['pr']['color'],
             "clanColor":List['clanInfo']['colorRgb'],
             "damageColor":damageColor,
+            "winsColor":winsColor,
             "solo_winsColor":solo_winsColor,
             "solo_damageColor":solo_damageColor,
             "div2_winsColor":div2_winsColor,

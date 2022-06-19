@@ -98,96 +98,60 @@
         <tr>
             <td colspan="6" class="bold-data greyColor2" style="text-align: center;">Total Information</td>
         </tr>
+        <tr>
+            <td class="greyColor">类型</td>
+            <td class="greyColor">场次</td>
+            <td class="greyColor">胜率</td>
+            <td class="greyColor">PR</td>
+            <td class="greyColor">场均</td>
+            <td class="greyColor">击杀</td>
+        </tr>
         <!--        单野、两个人、三人数据-->
         {% if solo_battles %}
-        <tr>
-            <td colspan="6" class="bold-data greyColor" style="text-align: center;">单野</td>
-        </tr>
         <!--        <tr>-->
         <!--            <td colspan="6" style="text-align: center;background-color: ${solo_prValueColor}">${solo_prValue}</td>-->
         <!--        </tr>-->
         <tr>
-            <td class="greyColor">场次</td>
-            <td class="greyColor">胜率</td>
-            <td class="greyColor">PR</td>
-            <td class="greyColor">经验</td>
-            <td class="greyColor">场均</td>
-            <td class="greyColor">击杀</td>
-        </tr>
-        <tr>
+            <td class="bold-data greyColor">单野</td>
             <td class="blueColor">{{solo_battles}}</td>
             <td class="blueColor" style="color: {{solo_winsColor}}">{{solo_wins}}%</td>
             <td class="blueColor" style="color: {{solo_prColor}}">{{solo_pr}}</td>
-            <td class="blueColor">{{solo_xp}}</td>
             <td class="blueColor" style="color: {{solo_damageColor}}">{{solo_damage}}</td>
             <td class="blueColor">{{solo_frags}}</td>
         </tr>
         {% endif %}
         {% if div2_battles %}
-        <tr>
-            <td colspan="6" class="bold-data greyColor" style="text-align: center;">自行车</td>
-        </tr>
         <!--        <tr>-->
         <!--            <td colspan="6" style="text-align: center;background-color: {{div2_prValueColor}}">{{div2_prValue}}</td>-->
         <!--        </tr>-->
         <tr>
-            <td class="greyColor">场次</td>
-            <td class="greyColor">胜率</td>
-            <td class="greyColor">PR</td>
-            <td class="greyColor">经验</td>
-            <td class="greyColor">场均</td>
-            <td class="greyColor">击杀</td>
-        </tr>
-        <tr>
+            <td class="bold-data greyColor">自行车</td>
             <td class="blueColor">{{div2_battles}}</td>
             <td class="blueColor" style="color: {{div2_winsColor}}">{{div2_wins}}%</td>
             <td class="blueColor" style="color: {{div2_prColor}}">{{div2_pr}}</td>
-            <td class="blueColor">{{div2_xp}}</td>
             <td class="blueColor" style="color: {{div2_damageColor}}">{{div2_damage}}</td>
             <td class="blueColor">{{div2_frags}}</td>
         </tr>
         {% endif %}
         {% if div3_battles %}
-        <tr>
-            <td colspan="6" class="bold-data greyColor" style="text-align: center;">三轮车</td>
-        </tr>
         <!--        <tr>-->
         <!--            <td colspan="6" style="text-align: center;background-color: {{div3_prValueColor}}">{{div3_prValue}}</td>-->
         <!--        </tr>-->
         <tr>
-            <td class="greyColor">场次</td>
-            <td class="greyColor">胜率</td>
-            <td class="greyColor">PR</td>
-            <td class="greyColor">经验</td>
-            <td class="greyColor">场均</td>
-            <td class="greyColor">击杀</td>
-        </tr>
-        <tr>
+            <td class="bold-data greyColor">三轮车</td>
             <td class="blueColor">{{div3_battles}}</td>
             <td class="blueColor" style="color: {{div3_winsColor}}">{{div3_wins}}%</td>
             <td class="blueColor" style="color: {{div3_prColor}}">{{div3_pr}}</td>
-            <td class="blueColor">{{div3_xp}}</td>
             <td class="blueColor" style="color: {{div3_damageColor}}">{{div3_damage}}</td>
             <td class="blueColor">{{div3_frags}}</td>
         </tr>
         {% endif %}
         {% if rank_battles %}
         <tr>
-            <td colspan="6" class="bold-data greyColor" style="text-align: center;">排位</td>
-        </tr>
-        <tr>
-            <td class="greyColor">场次</td>
-            <td class="greyColor">胜率</td>
-            <td class="greyColor">PR</td>
-            <td class="greyColor">经验</td>
-            <td class="greyColor">场均</td>
-            <td class="greyColor">击杀</td>
-        </tr>
-        <tr>
+            <td class="bold-data greyColor">排位</td>
             <td class="blueColor">{{rank_battles}}</td>
             <td class="blueColor" style="color: {{rank_winsColor}}">{{rank_wins}}%</td>
             <td class="blueColor" style="color: {{rank_prColor}}">{{rank_pr}}</td>
-            <td class="blueColor">{{rank_xp}}</td>
             <td class="blueColor" style="color: {{rank_damageColor}}">{{rank_damage}}</td>
             <td class="blueColor">{{rank_frags}}</td>
         </tr>
