@@ -95,6 +95,9 @@
         <tr>
             <td colspan="6" class="blackColor" style="text-align: center;"></td>
         </tr>
+        <tr>
+            <td colspan="6" class="bold-data greyColor2" style="text-align: center;">Total Information</td>
+        </tr>
         <!--        单野、两个人、三人数据-->
         {% if solo_battles %}
         <tr>
@@ -189,6 +192,18 @@
             <td class="blueColor">{{rank_frags}}</td>
         </tr>
         {% endif %}
+        {% if detail_data %}
+        <tr>
+            <td colspan="6" class="blackColor" style="text-align: center;"></td>
+        </tr>
+        <tr>
+            <td colspan="6" class="bold-data greyColor2" style="text-align: center;">Daily Information</td>
+        </tr>
+        {{ detail_data }}
+        {% endif %}
+        <tr>
+            <td colspan="6" class="blackColor" style="text-align: center;"></td>
+        </tr>
         <tr>
             <td colspan="6" class="font-data greyColor" style="text-align: center;">
                 <span>© 西行寺雨季</span>&nbsp;&nbsp;<span>© 本心</span></td>

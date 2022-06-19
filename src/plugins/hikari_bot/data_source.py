@@ -475,6 +475,7 @@ async def set_shipRecentparams(List):
         div3_damageColor = await set_damageColor(List['shipData'][0]['shipInfo']['shipInfo']['shipType'],List['pvpThreeInfo']['damage'])
         rank_winsColor = await set_winColor(List['rankInfo']['wins'])
         rank_damageColor = await set_damageColor(List['shipData'][0]['shipInfo']['shipInfo']['shipType'],List['rankInfo']['damage'])
+        detail_data = await set_ShipRecent_Data(List['shipData'])
         result = {
             "guild":List['clanInfo']['tag'],
             "userName":List['userName'],
@@ -522,6 +523,7 @@ async def set_shipRecentparams(List):
             "rank_kd":List['rankInfo']['kd'],
             "rank_hit":List['rankInfo']['hit'],
             "rank_frags":f"{List['rankInfo']['frags']:.2f}",
+            "detail_data":detail_data,
             "prColor":List['pvpInfo']['pr']['color'],
             "solo_prColor":List['pvpSoloInfo']['pr']['color'],
             "div2_prColor":List['pvpTwoInfo']['pr']['color'],
@@ -542,7 +544,41 @@ async def set_shipRecentparams(List):
     except Exception:
         traceback.print_exc()
         
-        
+async def set_ShipRecent_Data(List):
+   Recent_Data = ''
+   typeList = ['单野','自行车','三轮车','排位']
+   for eachShipData in List:
+       data = time.strftime('%Y-%m-%d',time.localtime(int(abs(eachShipData['recordDateTime']/1000))))
+       if eachShipData['shipInfo']['battles'] or eachShipData['rankSolo']['battles']:
+           Recent_Data += f'''<tr><td colspan="6" class="bold-data greyColor" style="text-align: center;">{data}</td></tr>'''
+           Recent_Data += f'''
+               <tr>
+                   <td class="greyColor">类型</td>
+                   <td class="greyColor">场次</td>
+                   <td class="greyColor">胜率</td>
+                   <td class="greyColor">PR</td>
+                   <td class="greyColor">场均</td>
+                   <td class="greyColor">击杀</td>
+               </tr>'''
+           for each in eachShipData:
+               for index,value in enumerate(['shipSolo','shipTwo','shipThree','rankSolo']):
+                   if str(each) == value and eachShipData[each]['battles']:
+                       type = typeList[index]
+                       Recent_Data += f'''
+                       <tr>
+                           <td class="bold-data greyColor">{type}</td>
+                           <td class="blueColor">{eachShipData[each]['battles']}</td>
+                           <td class="blueColor" style="color: {await set_winColor(eachShipData[each]['wins'])}">{eachShipData[each]['wins']}%</td>
+                           <td class="blueColor" style="color: {eachShipData[each]['pr']['color']}">{eachShipData[each]['pr']['value']}</td>
+                           <td class="blueColor" style="color: {await set_damageColor(eachShipData['shipInfo']['shipInfo']['shipType'],eachShipData[each]['damage'])}">{eachShipData[each]['damage']}</td>
+                           <td class="blueColor">{eachShipData[each]['frags']:.2f}</td>
+                       </tr>'''
+                   else:
+                       continue
+   return Recent_Data
+
+
+                 
 async def select_prvalue_and_color(pr:int):
     for select in pr_select :
         if pr > select['value']:
