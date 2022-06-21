@@ -68,10 +68,7 @@ async def get_ClanInfo(qqid,info,bot):
                             ClanSecletProcess[qqid] = ClanSecletProcess(False, None, clanList)
                             img = await text_to_pic(text=msg,css_path = str(template_path/"text-ship.css"),width=250) 
                             await bot.send(MessageSegment.image(img))
-                            a = 0
-                            while a < 200 and not ClanSecletProcess[qqid].state:
-                                a += 1
-                                await asyncio.sleep(0.1)
+                            await asyncio.sleep(20)
                             if ClanSecletProcess[qqid].state and ClanSecletProcess[qqid].SlectIndex <= len(clanList):
                                 selectClanId = clanList[ClanSecletProcess[qqid].SlectIndex-1][0]
                             else:

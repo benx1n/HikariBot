@@ -20,6 +20,7 @@ import httpx
 import json
 import asyncio
 import re
+import html
 from nonebot import require
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
@@ -52,16 +53,16 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             return
         _flmt.start_cd(qqid)
         _nlmt.increase(qqid) 
-        searchtag = str(matchmsg).strip()
+        searchtag = html.unescape(str(matchmsg)).strip()
         if not searchtag or searchtag=="":
             await send_bot_help()
-        match = re.search(r"(\(|（)(.*?)(\)|）)",str(matchmsg))
+        match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
         replace_name = None
         if match:
             replace_name = match.group(2)
-            search_list = str(matchmsg).replace(match.group(0),'').split()
+            search_list = searchtag.replace(match.group(0),'').split()
         else:
-            search_list = str(matchmsg).split()
+            search_list = searchtag.split()
 
         select_command,search_list = await find_and_replace_keywords(search_list,command_list)
         if not select_command:
