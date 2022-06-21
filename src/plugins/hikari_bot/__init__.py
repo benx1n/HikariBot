@@ -91,7 +91,8 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             else:
                 msg = '看不懂指令QAQ'
         elif select_command == 'clan':
-            msg = await get_ClanInfo(qqid,search_list,bot)
+            #msg = await get_ClanInfo(qqid,search_list,bot)
+            msg = '即将上线：军团查询'
         elif select_command == 'ship_rank':
             msg = await get_ShipRank(qqid,search_list,bot)   
         elif select_command == 'bind':
@@ -153,14 +154,22 @@ async def send_bot_help():
     
 @bot_listen.handle()
 async def change_select_state(ev:MessageEvent):
-    msg = str(ev.message)
-    qqid = ev.user_id
-    if ShipSecletProcess[qqid].SelectList and str(msg).isdigit():
-        ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state = True)
-        ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(SlectIndex = int(msg))
-    if ClanSecletProcess[qqid].SelectList and str(msg).isdigit():
-        ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state = True)
-        ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(SlectIndex = int(msg))
+    try:
+        msg = str(ev.message)
+        qqid = ev.user_id
+        if ShipSecletProcess[qqid].SelectList and str(msg).isdigit():
+            if int(msg) <= len( ShipSecletProcess[qqid].SelectList):
+                ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state = True)
+                ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(SlectIndex = int(msg))
+            else:
+                await bot.send('请选择列表中的序号哦~')
+        if ClanSecletProcess[qqid].SelectList and str(msg).isdigit():
+            ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state = True)
+            ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(SlectIndex = int(msg))
+        return
+    except Exception:
+        logger.warning(traceback.format_exc())
+        return
 
 @bot_checkversion.handle()
 async def check_version():
