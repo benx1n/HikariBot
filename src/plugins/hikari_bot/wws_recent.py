@@ -81,8 +81,8 @@ async def get_RecentInfo(qqid,info):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
-            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
+            logger.info(f"本次请求返回的状态码:{result['code']}")
         if result['code'] == 200:
             if result['data']['shipData'][0]['shipData']:
                 template = env.get_template("wws-info-recent.html")
@@ -98,7 +98,7 @@ async def get_RecentInfo(qqid,info):
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
-            return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
+            return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'

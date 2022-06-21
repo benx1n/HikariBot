@@ -40,8 +40,8 @@ async def get_BindInfo(user,info):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=10)
-            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
+            logger.info(f"本次请求返回的状态码:{result['code']}")
         if result['code'] == 200 and result['message'] == "success":
             if result['data']:
                 msg1 = f'当前绑定账号\n'
@@ -56,8 +56,10 @@ async def get_BindInfo(user,info):
                 return msg
             else:
                 return '该用户似乎还没绑定窝窝屎账号'
-        else:
+        elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+        else:
+            return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
@@ -93,14 +95,14 @@ async def set_BindInfo(user,info):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
-            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
+            logger.info(f"本次请求返回的状态码:{result['code']}")
         if result['code'] == 200 and result['message'] == "success":
             return '绑定成功'
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
-            return 'wuwuwu出了点问题，请联系麻麻解决'
+            return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
@@ -121,8 +123,8 @@ async def change_BindInfo(user,info):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=10)
-            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
+            logger.info(f"本次请求返回的状态码:{result['code']}")
         if result['code'] == 200 and result['message'] == "success":
             if result['data'] and len(result['data']) >= int(info[0]):
                 account_name = result['data'][int(info[0])-1]['userName']
@@ -136,8 +138,10 @@ async def change_BindInfo(user,info):
                 }
             else:
                 return '没有对应序号的绑定记录'
+        elif result['code'] == 500:
+            return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
-            return '参数似乎不正确，请确保只跟随了序号'
+            return f"{result['message']}"
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=10)
             result = resp.json()
@@ -145,12 +149,10 @@ async def change_BindInfo(user,info):
             return f'切换绑定成功,当前绑定账号{param_server}：{account_name}'
         elif result['code'] == 403:
             return f"{result['message']}\n请先绑定账号"
-        elif result['code'] == 404 or result['code'] == 405:
-            return f"{result['message']}"
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
-            return 'wuwuwu出了点问题，请联系麻麻解决'
+            return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
@@ -183,14 +185,14 @@ async def set_special_BindInfo(user,info):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
-            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
+            logger.info(f"本次请求返回的状态码:{result['code']}")
         if result['code'] == 200 and result['message'] == "success":
             return '绑定成功'
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
-            return 'wuwuwu出了点问题，请联系麻麻解决'
+            return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
@@ -224,23 +226,21 @@ async def delete_BindInfo(user,info):
                 }
             else:
                 return '没有对应序号的绑定记录'
-        else:
-            return '参数似乎不正确，请确保只跟随了序号'
-        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
-        async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, params=params, timeout=10)
-            logger.info(f"本次请求返回的状态码:{resp.status_code}")
-            result = resp.json()
-        if result['code'] == 200 and result['message'] == "success":
-            return f'删除绑定成功,删除的账号为{param_server}：{account_name}'
-        elif result['code'] == 403:
-            return f"{result['message']}"
-        elif result['code'] == 404 or result['code'] == 405:
-            return f"{result['message']}"
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
-            return 'wuwuwu出了点问题，请联系麻麻解决'
+            return f"{result['message']}"
+        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
+        async with httpx.AsyncClient(headers=headers) as client:
+            resp = await client.get(url, params=params, timeout=10)
+            result = resp.json()
+            logger.info(f"本次请求返回的状态码:{result['code']}")
+        if result['code'] == 200 and result['message'] == "success":
+            return f'删除绑定成功,删除的账号为{param_server}：{account_name}'
+        elif result['code'] == 500:
+            return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
+        else:
+            return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'

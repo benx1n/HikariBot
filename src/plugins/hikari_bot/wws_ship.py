@@ -104,8 +104,8 @@ async def get_ShipInfo(qqid,info,bot):
         ranking = await get_MyShipRank_yuyuko(params)
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
-            logger.info(f"本次请求返回的状态码:{resp.status_code}")
             result = resp.json()
+            logger.info(f"本次请求返回的状态码:{result['code']}")
             logger.info(f"本次请求服务器计算时间:{result['queryTime']}")
         if result['code'] == 200 and result['data']:
             template = env.get_template("wws-ship.html")
@@ -115,12 +115,10 @@ async def get_ShipInfo(qqid,info,bot):
             return await html_to_pic(content, wait=0, viewport={"width": 800, "height": 100})
         elif result['code'] == 403:
             return f"{result['message']}\n请先绑定账号"
-        elif result['code'] == 404 or result['code'] == 405:
-            return f"{result['message']}"
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
-            return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'
+            return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
@@ -287,12 +285,10 @@ async def get_ShipInfoRecent(qqid,info,bot):
             return await html_to_pic(content, wait=0, viewport={"width": 800, "height": 100})
         elif result['code'] == 403:
             return f"{result['message']}\n请先绑定账号"
-        elif result['code'] == 404 or result['code'] == 405:
-            return f"{result['message']}"
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
-            return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~'
+            return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return '请求超时了，请过会儿再尝试哦~'
