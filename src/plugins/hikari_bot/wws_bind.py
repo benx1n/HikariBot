@@ -75,7 +75,7 @@ async def set_BindInfo(user,info):
                 param_server,info = await match_keywords(info,servers)
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))
-                    if param_accountid.isdigit():
+                    if isinstance(param_accountid,int):
                         url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
                         params = {
                         "platformType": "QQ",

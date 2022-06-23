@@ -58,7 +58,7 @@ async def get_RecentInfo(qqid,info):
                 param_server,info = await match_keywords(info,servers)
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))
-                    if param_accountid.isdigit():
+                    if isinstance(param_accountid,int):
                         url = 'https://api.wows.linxun.link//api/wows/recent/v2/recent/info'
                         params = {
                         "server": param_server,
