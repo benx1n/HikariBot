@@ -54,7 +54,7 @@
    >
    > git clone https://gitee.com/benx1n/HikariBot.git
    > ```
-3. 以管理员身份运行`一键安装.bat` 
+3. 以管理员身份运行`一键安装.bat`
 
    >执行下列两条命令安装nonebot2和hikari-bot插件
    > ```
@@ -65,7 +65,7 @@
 4. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并编辑
    > ```
    > API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
-   >SUPERUSERS=["QQ号"] 
+   >SUPERUSERS=["QQ号"]
    > ```
    >总之最后应该长这样
    >
@@ -97,7 +97,7 @@
 3. 在环境文件中加入
     ```
     API_TOKEN = xxxxxxxxxxxx
-    SUPERUSERS=["QQ号"] 
+    SUPERUSERS=["QQ号"]
     ```
 >一般来说该文件为.env.dev
 >
@@ -128,6 +128,49 @@
 >如果没有更新到最新版请等待一会儿，镜像站一般每五分钟同步
 >
 
+## 在Ubuntu/Debian系统上的管理
+- 使用`./manage.sh`，基于原有批处理脚本
+- 无参数调用以获取使用帮助
+1. `install`
+    - 安装必须的依赖与bot本体
+2. `update`
+    - 更新bot
+3. `start [-t/--token] [token] [-i/--id] [qqid]`
+    - 运行bot
+    - 在当前目录下不存在`.env.prod`的情况下从参数获取token和qqid以创建相应文件，否则直接运行
+    - 考虑到使用Linux部署时多数情况下本地不存在图形界面，有风险的向公网开放访问
+    - 加入验证机制（listed）
+
+## 使用Docker部署
+- Docker目录下是一个简单的Dockerfile，可以基于官方的Python容器封装一个完整的HikariBot
+  - 以`hikari-bot:latest`上线官方仓库
+- 注意需要将内部的8080端口映射出来
+  ```
+  docker run -d -v ~/HikariBot:/home/HikariBot -P hikari-bot:latest -t [token] -i [qqid] # 首次使用需输入token和qqid，-P表示将8080端口随机映射至主机
+  docker run -d -v ~/HikariBot:/home/HikariBot -p 12345:8080 hikari-bot:latest -t [token] -i [qqid] # 使用-p以指定映射在外的端口
+  ```
+- 运行上述指令后会在终端显示一串字符，即Docker容器的标识符，一般使用前几位即可唯一确定一个容器
+  ```
+  1a2b3c4d5e..... # 标识符
+  docker stop 1a2b # 使用前四位确定，stop即停止容器
+  1a2b3c4d5e.....
+  docker start 1a2b # start即启动容器
+  1a2b3c4d5e.....
+  docker restart 1a2b # restart即重启容器
+  1a2b3c4d5e.....
+  ```
+- 在更新后即上传新版本容器，直接覆盖即可，原有验证文件会保留
+  ```
+  docker pull hikari-bot:latest # 更新
+  docker stop 1a2b
+  1a2b...
+  docker rm 1a2b # 删除旧容器，
+  1a2b...
+  docker run -d -v ~/HikariBot:/home/HikariBot -P hikari-bot:latest # 随机映射
+  docker run -d -v ~/HikariBot:/home/HikariBot -p 12345:8080 hikari-bot:latest # 指定映射
+  9z8y... # 注意标识符变化了
+  ```
+
 ## 可能会遇到的问题
 
 ### go-cqhttp扫码后提示异地无法登录
@@ -156,7 +199,7 @@
           middlewares:
             <<: *default
     ```
-    
+
     > 关于go-cqhttp的配置，你可以在[这里](https://docs.go-cqhttp.org/guide/config.html#%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF)找到更多说明。
 
 3. 启动go-cqhttp，按照提示登录。
