@@ -12,7 +12,11 @@ EXPOSE 8080
 RUN apt update \
 && apt install -y locales locales-all fonts-noto libnss3-dev libxss1 libasound2 libxrandr2 libatk1.0-0 libgtk-3-0 libgbm-dev libxshmfence1 \
 && cd /home \
-&& git clone https://gitee.com/benx1n/HikariBot.git \
+&& mkdir HikariBot \
+&& cd HikariBot \
+&& git init \
+&& git remote add origin https://github.com/benx1n/HikariBot.git \
+&& git checkout origin bot.py manage.sh .env.prod-example LICENSE \
 && pip config set global.index-url http://mirrors.tencentyun.com/pypi/simple \
 && pip config set install.trusted-host mirrors.tencentyun.com \
 && pip install nb-cli hikari-bot \
