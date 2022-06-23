@@ -58,17 +58,15 @@ async def get_ShipInfo(qqid,info,bot):
                 param_server,info = await match_keywords(info,servers)
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))      #剩余列表第一个是否为游戏名
-                    if param_accountid and param_accountid != 404:
+                    if param_accountid.isdigit():
                         info.remove(info[0])
                         url = 'https://api.wows.linxun.link/public/wows/account/v2/ship/info'
                         params = {
                         "server": param_server,
                         "accountId": param_accountid,
                         }
-                    elif param_accountid == 404:
-                        return '无法查询该游戏昵称Orz，请检查昵称是否存在'
                     else:
-                        return '发生了错误，有可能是网络波动，请稍后再试'
+                        return f"{param_accountid}"
                 else:
                     return '服务器参数似乎输错了呢'
             elif params and len(info) == 1:
@@ -236,7 +234,7 @@ async def get_ShipInfoRecent(qqid,info,bot):
                 param_server,info = await match_keywords(info,servers)
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))      #剩余列表第一个是否为游戏名
-                    if param_accountid and param_accountid != 404:
+                    if param_accountid.isdigit():
                         info.remove(info[0])
                         url = 'https://api.wows.linxun.link/api/wows/recent/v2/recent/info/ship'
                         params = {
@@ -244,10 +242,8 @@ async def get_ShipInfoRecent(qqid,info,bot):
                         "accountId": param_accountid,
                         "day": day
                         }
-                    elif param_accountid == 404:
-                        return '无法查询该游戏昵称Orz，请检查昵称是否存在'
                     else:
-                        return '发生了错误，有可能是网络波动，请稍后再试'
+                        return f"{param_accountid}"
                 else:
                     return '服务器参数似乎输错了呢'
             elif params and len(info) == 1:

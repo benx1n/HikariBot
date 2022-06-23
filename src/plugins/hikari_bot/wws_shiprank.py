@@ -7,7 +7,6 @@ from nonebot.adapters.onebot.v11 import MessageSegment
 from .data_source import servers,set_shipparams,tiers,number_url_homes,set_ShipRank_Numbers
 from .utils import match_keywords
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
-from .publicAPI import get_AccountIdByName
 from .wws_ship import ShipSecletProcess,ShipSlectState
 from.publicAPI import get_ship_byName
 from bs4 import BeautifulSoup
