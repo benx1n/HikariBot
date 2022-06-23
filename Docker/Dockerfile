@@ -15,7 +15,7 @@ RUN apt update \
 && mkdir HikariBot \
 && cd HikariBot \
 && git init \
-&& git remote add origin https://github.com/benx1n/HikariBot.git \
+&& git remote add origin https://github.com/12hydrogen/HikariBot.git \
 && git pull origin master \
 && git checkout origin/master bot.py manage.sh .env.prod-example LICENSE \
 && pip config set install.trusted-host mirrors.tencentyun.com \
