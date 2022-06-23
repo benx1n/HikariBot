@@ -1,9 +1,7 @@
 from typing import List
-from click import pass_obj
 import httpx
 import traceback
 import jinja2
-import time
 import re
 from datetime import datetime
 from pathlib import Path
@@ -60,7 +58,7 @@ async def get_RecentInfo(qqid,info):
                 param_server,info = await match_keywords(info,servers)
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))
-                    if param_accountid and param_accountid != 404:
+                    if isinstance(param_accountid,int):
                         url = 'https://api.wows.linxun.link//api/wows/recent/v2/recent/info'
                         params = {
                         "server": param_server,
@@ -68,10 +66,8 @@ async def get_RecentInfo(qqid,info):
                         "day": day,
                         "status": 0
                         }
-                    elif param_accountid == 404:
-                        return '无法查询该游戏昵称Orz，请检查昵称是否存在'
                     else:
-                        return '发生了错误，有可能是网络波动，请稍后再试'
+                        return f"{param_accountid}"
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
@@ -82,9 +78,9 @@ async def get_RecentInfo(qqid,info):
             return '参数似乎出了问题呢'
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, params=params, timeout=20)
-            logger.info(f"本次请求返回的状态码:{resp.status_code}")
+            resp = await client.get(url, params=params, timeout=None)
             result = resp.json()
+            logger.info(f"本次请求返回的状态码:{result['code']}")
         if result['code'] == 200:
             if result['data']['shipData'][0]['shipData']:
                 template = env.get_template("wws-info-recent.html")
@@ -100,10 +96,10 @@ async def get_RecentInfo(qqid,info):
         elif result['code'] == 500:
             return f"{result['message']}\n这是服务器问题，请联系雨季麻麻"
         else:
-            return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
+            return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
     except Exception:
-        traceback.print_exc()
+        logger.warning(traceback.format_exc())
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'

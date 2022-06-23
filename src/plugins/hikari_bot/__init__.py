@@ -9,7 +9,8 @@ from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
 from .wws_info import get_AccountInfo
 from .wws_recent import get_RecentInfo
 from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo,set_special_BindInfo,delete_BindInfo
-from .wws_ship import get_ShipInfo,SecletProcess
+from .wws_ship import get_ShipInfo,get_ShipInfoRecent,ShipSecletProcess
+from .wws_clan import get_ClanInfo,ClanSecletProcess
 from .wws_shiprank import get_ShipRank
 from .data_source import command_list
 from .utils import find_and_replace_keywords,DailyNumberLimiter,FreqLimiter
@@ -19,6 +20,7 @@ import httpx
 import json
 import asyncio
 import re
+import html
 from nonebot import require
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
@@ -26,7 +28,7 @@ _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.3.0.1'
+__version__ = '0.3.1'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
@@ -42,7 +44,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             return
         msg = ''
         qqid = ev.user_id
-        select_command = None
+        select_command,replace_name = None,None
         if not _nlmt.check(qqid):
             await bot.send(EXCEED_NOTICE, at_sender=True)
             return
@@ -51,17 +53,15 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             return
         _flmt.start_cd(qqid)
         _nlmt.increase(qqid) 
-        searchtag = str(matchmsg).strip()
-        if not searchtag or searchtag=="":
+        searchtag = html.unescape(str(matchmsg)).strip()
+        if not searchtag:
             await send_bot_help()
-        match = re.search(r"(\(|（)(.*?)(\)|）)",str(matchmsg))
-        replace_name = None
+        match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
         if match:
             replace_name = match.group(2)
-            search_list = str(matchmsg).replace(match.group(0),'').split()
+            search_list = searchtag.replace(match.group(0),'').split()
         else:
-            search_list = str(matchmsg).split()
-
+            search_list = searchtag.split()
         select_command,search_list = await find_and_replace_keywords(search_list,command_list)
         if not select_command:
             if replace_name:
@@ -70,25 +70,28 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         elif select_command == 'ship':
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
+            if replace_name:
+                search_list.append(replace_name)
             if not select_command:
-                if replace_name:
-                    search_list.append(replace_name)
                 msg = await get_ShipInfo(qqid,search_list,bot)
             elif select_command == 'recent':
-                msg = "待开发：查单船近期战绩"
+                msg = await get_ShipInfoRecent(qqid,search_list,bot)
             else:
                 msg = '看不懂指令QAQ'
         elif select_command == 'recent':
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list)             #第二次匹配
+            if replace_name:
+                search_list.append(replace_name)
             if not select_command:
-                if replace_name:
-                    search_list.append(replace_name)
                 msg = await get_RecentInfo(qqid,search_list)
             elif select_command == 'ship':
-                msg = '待开发：查单船近期战绩'
+                msg = await get_ShipInfoRecent(qqid,search_list,bot)
             else:
                 msg = '看不懂指令QAQ'
+        elif select_command == 'clan':
+            #msg = await get_ClanInfo(qqid,search_list,bot)
+            msg = '即将上线：军团查询'
         elif select_command == 'ship_rank':
             msg = await get_ShipRank(qqid,search_list,bot)   
         elif select_command == 'bind':
@@ -150,11 +153,22 @@ async def send_bot_help():
     
 @bot_listen.handle()
 async def change_select_state(ev:MessageEvent):
-    msg = str(ev.message)
-    qqid = ev.user_id
-    if SecletProcess[qqid].SelectList and str(msg).isdigit():
-        SecletProcess[qqid] = SecletProcess[qqid]._replace(state = True)
-        SecletProcess[qqid] = SecletProcess[qqid]._replace(SlectIndex = int(msg))
+    try:
+        msg = str(ev.message)
+        qqid = ev.user_id
+        if ShipSecletProcess[qqid].SelectList and str(msg).isdigit():
+            if int(msg) <= len( ShipSecletProcess[qqid].SelectList):
+                ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state = True)
+                ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(SlectIndex = int(msg))
+            else:
+                await bot.send('请选择列表中的序号哦~')
+        if ClanSecletProcess[qqid].SelectList and str(msg).isdigit():
+            ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state = True)
+            ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(SlectIndex = int(msg))
+        return
+    except Exception:
+        logger.warning(traceback.format_exc())
+        return
 
 @bot_checkversion.handle()
 async def check_version():

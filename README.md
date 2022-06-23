@@ -37,6 +37,7 @@
 - [x] 全指令支持参数乱序
 - [x] 快速切换绑定账号
 - [x] 支持@快速查询
+- [x] 全异步，高并发下性能更优
 
 ## 快速部署（作为独立bot）
 [视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
@@ -112,12 +113,12 @@
 4. 重启bot
 
 ## 更新
-以管理员身份运行`更新.bat`
-
->```
->pip install --upgrade hikari-bot
->git pull
->```
+- Bot版：以管理员身份运行`更新.bat`
+  >```
+  >pip install --upgrade hikari-bot
+  >git pull
+  >```
+- 插件版：pip install --upgrade hikari-bot
 >对比`.env.prod-example`中新增的配置项，并同步至你本地的`env.prod`
 >
 >install结束后会打印当前版本
