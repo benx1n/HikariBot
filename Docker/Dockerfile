@@ -16,7 +16,8 @@ RUN apt update \
 && cd HikariBot \
 && git init \
 && git remote add origin https://github.com/benx1n/HikariBot.git \
-&& git checkout origin bot.py manage.sh .env.prod-example LICENSE \
+&& git pull origin master \
+&& git checkout origin/master bot.py manage.sh .env.prod-example LICENSE \
 && pip config set global.index-url http://mirrors.tencentyun.com/pypi/simple \
 && pip config set install.trusted-host mirrors.tencentyun.com \
 && pip install nb-cli hikari-bot \
