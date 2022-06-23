@@ -44,7 +44,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             return
         msg = ''
         qqid = ev.user_id
-        select_command = None
+        select_command,replace_name = None,None
         if not _nlmt.check(qqid):
             await bot.send(EXCEED_NOTICE, at_sender=True)
             return
@@ -54,16 +54,14 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         _flmt.start_cd(qqid)
         _nlmt.increase(qqid) 
         searchtag = html.unescape(str(matchmsg)).strip()
-        if not searchtag or searchtag=="":
+        if not searchtag:
             await send_bot_help()
         match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
-        replace_name = None
         if match:
             replace_name = match.group(2)
             search_list = searchtag.replace(match.group(0),'').split()
         else:
             search_list = searchtag.split()
-
         select_command,search_list = await find_and_replace_keywords(search_list,command_list)
         if not select_command:
             if replace_name:
@@ -72,9 +70,9 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         elif select_command == 'ship':
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
+            if replace_name:
+                search_list.append(replace_name)
             if not select_command:
-                if replace_name:
-                    search_list.append(replace_name)
                 msg = await get_ShipInfo(qqid,search_list,bot)
             elif select_command == 'recent':
                 msg = await get_ShipInfoRecent(qqid,search_list,bot)
@@ -83,9 +81,9 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         elif select_command == 'recent':
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list)             #第二次匹配
+            if replace_name:
+                search_list.append(replace_name)
             if not select_command:
-                if replace_name:
-                    search_list.append(replace_name)
                 msg = await get_RecentInfo(qqid,search_list)
             elif select_command == 'ship':
                 msg = await get_ShipInfoRecent(qqid,search_list,bot)
