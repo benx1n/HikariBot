@@ -93,7 +93,7 @@ async def search_ShipRank_Yuyuko(shipId,server):
                 "shipId":int(shipId)
             }
             logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
-            resp = await client.get(url, params=params,timeout=20)
+            resp = await client.get(url, params=params,timeout=None)
             result = resp.json()
             logger.info(f"本次请求返回的状态码:{result['code']}")
             if result['code'] == 200 and result['data']:
@@ -115,7 +115,7 @@ async def search_ShipRank_Numbers(url,server,shipId):
         content = None
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}")
         async with httpx.AsyncClient() as client:
-            resp = await client.get(url, timeout=20)
+            resp = await client.get(url, timeout=None)
             logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
         soup = BeautifulSoup(resp.content, 'html.parser')
         data = soup.select('tr[class="cells-middle"]')
@@ -135,7 +135,7 @@ async def post_ShipRank(data):
     try:
         async with httpx.AsyncClient(headers=headers) as client:
             url = 'https://api.wows.linxun.link/upload/numbers/data/v2/upload/ship/rank'
-            resp = await client.post(url, json = data, timeout=20)
+            resp = await client.post(url, json = data, timeout=None)
             result = resp.json()
             logger.info(result)
     except (TimeoutError, ConnectTimeout):

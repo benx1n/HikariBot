@@ -78,7 +78,7 @@ async def get_RecentInfo(qqid,info):
             return '参数似乎出了问题呢'
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, params=params, timeout=20)
+            resp = await client.get(url, params=params, timeout=None)
             result = resp.json()
             logger.info(f"本次请求返回的状态码:{result['code']}")
         if result['code'] == 200:

@@ -106,7 +106,7 @@ async def get_ShipInfo(qqid,info,bot):
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         ranking = await get_MyShipRank_yuyuko(params)
         async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, params=params, timeout=20)
+            resp = await client.get(url, params=params, timeout=None)
             result = resp.json()
             logger.info(f"本次请求返回的状态码:{result['code']}")
             logger.info(f"本次请求服务器计算时间:{result['queryTime']}")
@@ -138,7 +138,7 @@ async def get_MyShipRank_yuyuko(params):
     try:
         url = 'https://api.wows.linxun.link/upload/numbers/data/upload/user/ship/rank'
         async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, params=params, timeout=20)
+            resp = await client.get(url, params=params, timeout=None)
             result = resp.json()
             if result['code'] == 200 and result['data']:
                 if result['data']['ranking']:
@@ -160,14 +160,14 @@ async def get_MyShipRank_Numbers(url,server):
     try:
         data = None
         async with httpx.AsyncClient() as client:
-            resp = await client.get(url, timeout=20)
+            resp = await client.get(url, timeout=None)
             if resp.content:
                 result = resp.json()
                 page_url = str(result['url']).replace("\\","")
                 nickname = str(result['nickname'])
                 my_rank_url = f"{number_url_homes[server]}{page_url}"
                 async with httpx.AsyncClient() as client:
-                    resp = await client.get(my_rank_url, timeout=20)
+                    resp = await client.get(my_rank_url, timeout=None)
                     soup = BeautifulSoup(resp.content, 'html.parser')
                     data = soup.select_one(f'tr[data-nickname="{nickname}"]').select_one('td').string
         if data and data.isdigit():
@@ -188,7 +188,7 @@ async def post_MyShipRank_yuyuko(accountId,ranking,serverId,shipId):
                 "serverId": serverId,
                 "shipId":int(shipId)
             }
-            resp = await client.post(url, json = post_data, timeout=20)
+            resp = await client.post(url, json = post_data, timeout=None)
             result = resp.json()
             return
     except Exception:
@@ -282,7 +282,7 @@ async def get_ShipInfoRecent(qqid,info,bot):
             return '参数似乎出了问题呢'
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, params=params, timeout=20)
+            resp = await client.get(url, params=params, timeout=None)
             result = resp.json()
         if result['code'] == 200 and result['data']:
             template = env.get_template("wws-ship-recent.html")
