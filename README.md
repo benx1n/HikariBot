@@ -143,11 +143,11 @@
 
 ## 使用Docker部署
 - Docker目录下是一个简单的Dockerfile，可以基于官方的Python容器封装一个完整的HikariBot
-  - 以`hikari-bot:latest`上线官方仓库
+  - 以`12hydrogen/hikari-bot:latest`上线官方仓库
 - 注意需要将内部的8080端口映射出来
   ```
-  docker run -d -v ~/HikariBot:/home/HikariBot -P hikari-bot:latest -t [token] -i [qqid] # 首次使用需输入token和qqid，-P表示将8080端口随机映射至主机
-  docker run -d -v ~/HikariBot:/home/HikariBot -p 12345:8080 hikari-bot:latest -t [token] -i [qqid] # 使用-p以指定映射在外的端口
+  docker run -d -P 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 首次使用需输入token和qqid，-P表示将8080端口随机映射至主机
+  docker run -d -p 12345:8080 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 使用-p以指定映射在外的端口
   ```
 - 运行上述指令后会在终端显示一串字符，即Docker容器的标识符，一般使用前几位即可唯一确定一个容器
   ```
@@ -159,17 +159,18 @@
   docker restart 1a2b # restart即重启容器
   1a2b3c4d5e.....
   ```
-- 在更新后即上传新版本容器，直接覆盖即可，原有验证文件会保留
+- 在更新后即上传新版本容器
   ```
-  docker pull hikari-bot:latest # 更新
+  docker pull 12hydrogen/hikari-bot:latest # 更新
   docker stop 1a2b
   1a2b...
   docker rm 1a2b # 删除旧容器，
   1a2b...
-  docker run -d -v ~/HikariBot:/home/HikariBot -P hikari-bot:latest # 随机映射
-  docker run -d -v ~/HikariBot:/home/HikariBot -p 12345:8080 hikari-bot:latest # 指定映射
+  docker run -d -P 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 随机映射
+  docker run -d -p 12345:8080 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 指定映射
   9z8y... # 注意标识符变化了
   ```
+- 将配置文件与容器分离（listed）
 
 ## 可能会遇到的问题
 
