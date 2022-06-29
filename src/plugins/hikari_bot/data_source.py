@@ -38,7 +38,7 @@ nations = [
     matching(("pan_asia","泛亚",),"pan_asia"),
     matching(("uk","英国","United_Kingdom"),"United_Kingdom"),
     matching(("usa","美国",),"usa"),
-    matching(("ussr","苏联",),"ussr"),
+    matching(("ussr","苏联",),"Russia"),
     matching(("netherlands","荷兰",),"netherlands"),
     matching(("spain","西班牙",),"spain"),
 ]
