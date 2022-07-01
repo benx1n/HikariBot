@@ -22,6 +22,7 @@ command_list = [        #同指令中越长的匹配词越靠前
     matching(("bind","BIND","绑定","set","SET"),"bind"),
     matching(("recent","RECENT","近期",),"recent"),
     matching(("ship","SHIP","单船",),"ship"),
+    matching(("record","历史记录"),"record"),
     matching(("搜船名","查船名","船名"),"searchship"),
     matching(("clan","军团","公会","工会"),"clan"),
     matching(("help","HELP","帮助"),"help"),
@@ -306,7 +307,8 @@ async def set_recentparams(List):
             "userName":List['userName'],
             "serverName":List['serverName'],
             "prValue":f"{List['shipData'][0]['pvpInfo']['pr']['value']} {List['shipData'][0]['pvpInfo']['pr']['name']}",
-            "reTime":time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(int(abs(List['shipData'][0]['recordDateTime']/1000)))),
+            "reTime":time.strftime('%Y-%m-%d %H:%M',time.localtime(int(abs(List['shipData'][0]['recordDateTime']/1000)))),
+            "nowTime":time.strftime('%Y-%m-%d %H:%M',time.localtime(time.time())),
             "battles":List['shipData'][0]['pvpInfo']['battles'],
             "wins":List['shipData'][0]['pvpInfo']['wins'],
             "damage":List['shipData'][0]['pvpInfo']['damage'],
@@ -496,7 +498,8 @@ async def set_shipRecentparams(List):
             "shipNameEn":shipNameEn,
             "shipNameCn":shipNameCn,
             "prValue":f"{List['pvpInfo']['pr']['value']} {List['pvpInfo']['pr']['name']}",
-            "recordTime":time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(int(abs(List['shipData'][0]['recordDateTime']/1000)))),
+            "recordTime":time.strftime('%Y-%m-%d %H:%M',time.localtime(int(abs(List['shipData'][0]['recordDateTime']/1000)))),
+            "nowTime":time.strftime('%Y-%m-%d %H:%M',time.localtime(time.time())),
             "battles":List['pvpInfo']['battles'],
             "wins":List['pvpInfo']['wins'],
             "damage":List['pvpInfo']['damage'],
@@ -689,6 +692,9 @@ async def set_ShipRank_Numbers(data,server,shipId):
         traceback.print_exc()
         return None
     
+async def set_clanRecord_params():
+    return
+
 async def search_accountId(str):
     try:
         match = re.search(r"/player/(.*?),",str)

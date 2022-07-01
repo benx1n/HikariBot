@@ -113,22 +113,22 @@ async def get_AccountIdByName(server:str,name:str):
         logger.error(traceback.format_exc())
         return '好像出了点问题呢，可能是网络问题，如果重试几次还不行的话，请联系麻麻解决'
     
-async def get_ClanIdByName(server:str,name:str):
+async def get_ClanIdByName(server:str,tag:str):
     try:
-        url = ''
+        url = 'https://api.wows.linxun.link/public/wows/clan/search'
         params = {
             "server": server,
-            "clanName": name
+            "tag": tag
         }
-        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
+        print(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=None)
             result = resp.json()
         List = []
         if result['code'] == 200 and result['data']:
-            for each in result['data']:
-                List.append([each['id'],each['shipNameCn'],each['shipNameNumbers'],each['tier']])
-            return List
+            #for each in result['data']:
+            #    List.append([each['clanId'],each['name'],each['serverName'],each['tag']])
+            return result['data']
         else:
             return None
     except Exception:

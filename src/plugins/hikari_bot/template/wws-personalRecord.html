@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body {
+        font-size: 26px;
+        font-family: "Microsoft YaHei UI";
+    }
+
+    .font-size {
+        font-weight: bold;
+        font-size: 28px;
+    }
+
+    .font-data {
+        font-weight: bold;
+    }
+
+    .greyColor {
+        color: #696969;
+    }
+
+    .greyColor2 {
+        color: #404040;
+    }
+
+    .blueColor {
+        font-weight: bold;
+        color: #000080;
+    }
+
+    .blackColor {
+        font-weight: bold;
+        color: black;
+    }
+
+    .bold-data {
+        font-weight: bold;
+    }
+
+
+    table {
+        border-spacing: 20px 15px;
+        text-align: center;
+    }
+
+</style>
+<body>
+   <div>
+    <table id="ship-data" width="920" style="table-layout: fixed;">
+        <tr>
+            <td colspan="10" class="font-data" style="text-align: center;">
+                {% if data[0]['clanTag'] and not data[0]['status'] %}
+                <span style="color:{{data[0]['clanColor']}}">[{{data[0]['clanTag']}}]</span>&nbsp;
+                {% endif %}
+                <span>{{data[0]['userName']}}</span>&nbsp;&nbsp;&nbsp;<span>{{data[0]['serverName']}}</span>
+            </td>
+        </tr>
+
+        {% for each in data %}
+        <tr  style="text-align: center;">
+            <td colspan="3">{{each['time']}}</td>
+            <td colspan="1">
+                {% if each['status'] == 0 %}
+                进入
+                {% else %}
+                退出
+                {% endif %}
+            </td>
+            <td colspan="6"><span class="font-data" style="color:{{each['clanColor']}}">[{{each['clanTag']}}]</span>&nbsp;
+                
+                {{ each['clanName'][0:20] }}
+                {% if each['clanName']|length >20 %}
+                ...
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+            <td colspan="10" class="font-data greyColor" style="text-align: center;">
+                <span>© 西行寺雨季</span>&nbsp;&nbsp;<span>© 本心</span></td>
+        </tr>
+        <tr>
+            <td colspan="10" class="font-data greyColor" style="text-align: center;">
+                <span>https://github.com/benx1n/wows-stats-bot</span></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

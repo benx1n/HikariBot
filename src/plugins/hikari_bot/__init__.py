@@ -11,6 +11,7 @@ from .wws_recent import get_RecentInfo
 from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo,set_special_BindInfo,delete_BindInfo
 from .wws_ship import get_ShipInfo,get_ShipInfoRecent,ShipSecletProcess
 from .wws_clan import get_ClanInfo,ClanSecletProcess
+from .wws_record import get_record
 from .wws_shiprank import get_ShipRank
 from .data_source import command_list
 from .utils import find_and_replace_keywords,DailyNumberLimiter,FreqLimiter
@@ -90,8 +91,21 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             else:
                 msg = '看不懂指令QAQ'
         elif select_command == 'clan':
-            #msg = await get_ClanInfo(qqid,search_list,bot)
-            msg = '即将上线：军团查询'
+            select_command = None
+            select_command,search_list = await find_and_replace_keywords(search_list,command_list) 
+            if not select_command:                  #查询公会详情信息
+                msg = await get_ClanInfo(qqid,search_list,bot,ev)
+            elif select_command == 'record':        #查询公会历史记录
+                msg = await get_record(qqid,search_list,"clan")
+        elif select_command == 'record':
+            select_command = None
+            select_command,search_list = await find_and_replace_keywords(search_list,command_list) 
+            if replace_name:
+                search_list.append(replace_name)
+            if not select_command:                  #查询个人历史记录
+                msg = await get_record(qqid,search_list,"personal")
+            elif select_command == 'clan':          #查询公会历史记录
+                msg = await get_record(qqid,search_list,"clan")
         elif select_command == 'ship_rank':
             msg = await get_ShipRank(qqid,search_list,bot)   
         elif select_command == 'bind':
@@ -163,8 +177,11 @@ async def change_select_state(ev:MessageEvent):
             else:
                 await bot.send('请选择列表中的序号哦~')
         if ClanSecletProcess[qqid].SelectList and str(msg).isdigit():
-            ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state = True)
-            ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(SlectIndex = int(msg))
+            if int(msg) <= len( ClanSecletProcess[qqid].SelectList):
+                ClanSecletProcess[qqid] = ClanSecletProcess[qqid]._replace(state = True)
+                ClanSecletProcess[qqid] = ClanSecletProcess[qqid]._replace(SlectIndex = int(msg))
+            else:
+                await bot.send(ev,'请选择列表中的序号哦~') 
         return
     except Exception:
         logger.warning(traceback.format_exc())
