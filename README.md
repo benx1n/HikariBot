@@ -177,10 +177,11 @@
 ### go-cqhttp扫码后提示异地无法登录
 >一般提示需要扫码，扫码后提示异地无法登录
 >
->关于该问题，您可以查看[#1469](https://github.com/Mrs4s/go-cqhttp/issues/1469)获得相应解决办法，这里简单列举两种办法
+>关于该问题，您可以查看[#1469](https://github.com/Mrs4s/go-cqhttp/issues/1469)获得相应解决办法，这里简单列举三种办法
 >
->1. 手机下载`爱加速`等代理，连接到服务器对应市级地区
->2. 在本地电脑使用go-cqhttp登录成功后，复制生成的`session.token`和`device.json`到服务器对应目录下，内嵌go-cqhttp为`account\QQ号`，外置直接将整个本地文件夹拷贝过去即可，请注意使用外置go-cqhttp时需要将`.env.prod`的`USE_PLUGIN_GO_CQHTTP`的值改为`false`
+>1. 启动时登录方式选择`浏览器滑条`，按后续提示登录
+>2. 手机下载`爱加速`等代理，连接到服务器对应市级地区
+>3. 在本地电脑使用go-cqhttp登录成功后，复制生成的`session.token`和`device.json`到服务器对应目录下，内嵌go-cqhttp为`account\QQ号`，外置直接将整个本地文件夹拷贝过去即可，请注意使用外置go-cqhttp时需要将`.env.prod`的`USE_PLUGIN_GO_CQHTTP`的值改为`false`
 >
 
 ### 无法使用内嵌go-cqhttp登录bot
