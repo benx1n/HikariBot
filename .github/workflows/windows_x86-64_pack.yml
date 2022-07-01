@@ -1,0 +1,73 @@
+name: Build windows x86-64
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        path: HikariBot
+        ref: 'master'
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.10
+    - name: Latest-tag
+      run: |
+        cd HikariBot
+        git tag Latest --force
+        git push --force origin refs/tags/Latest:refs/tags/Latest
+        cd ..
+    - name: Prepare phthon environment with conda
+      shell: cmd
+      run: |
+        cd HikariBot
+        call %CONDA%/condabin/conda.bat create --prefix .\pyenv python
+        call %CONDA%/condabin/conda.bat activate .\pyenv
+        python -m pip install --upgrade pip
+        python -m pip install nb-cli hikari-bot
+        python -m pip install nonebot-plugin-apscheduler
+        python -m pip install nonebot-plugin-gocqhttp
+        set PLAYWRIGHT_BROWSERS_PATH=0
+        python -m playwright install chromium
+        call %CONDA%/condabin/conda.bat deactivate
+        attrib -h .git
+        cd ..
+    - name: Pack windows x86-64 version
+      shell: pwsh
+      run: |
+        Compress-Archive -DestinationPath release.zip -Path HikariBot
+    - name: Delete latest release
+      uses: actions/github-script@v4
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const { owner, repo } = context.repo
+          const { data: { id } } = await github.repos.getLatestRelease({ owner, repo })
+          await github.repos.deleteRelease({ owner, repo, release_id: id })
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: Latest
+        release_name: Latest Release
+        draft: false
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: release.zip
+        asset_name: release_windows.zip
+        asset_content_type: application/zip

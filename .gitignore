@@ -144,3 +144,4 @@ accounts
 .vscode
 logs
 .env.prod
+pyenv
