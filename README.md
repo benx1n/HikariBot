@@ -39,9 +39,24 @@
 - [x] 支持@快速查询
 - [x] 全异步，高并发下性能更优
 
-## 快速部署（作为独立bot）
+## 在Windows系统上快速部署
 [视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
-1. [Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
+
+1. 下载Hikari的[最新Release](https://github.com/benx1n/HikariBot/releases/download/Latest/release_windows.zip)并解压到合适文件夹
+2. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并编辑
+   > ```
+   > API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
+   >SUPERUSERS=["QQ号"]
+   > ```
+   >总之最后TOKEN应该长这样
+   >
+   >API_TOKEN = 123764323:ba1f2511fc30423bdbb183fe33
+   >
+   >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
+3. 双击`启动.bat`
+
+## 在Windwos系统上完整部署
+1. 下载[Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
     >Python版本需>3.8，或参考[Hoshino版插件](https://github.com/benx1n/wows-stats-bot)中使用Conda虚拟环境
     >
     >请注意python安装时勾选或点击`添加到环境变量`，可以安装后cmd中输入`python --version`来验证是否成功
@@ -85,49 +100,6 @@
     >如果重启后go-cqhhtp一直卡在扫码或无限重启，请继续往下阅读
 
 
-## 快速部署（作为插件）
-1. 如果您已经有了一个基于Nonebot2的机器人（例如真寻），您可以直接
-    ```
-    pip install hikari-bot
-    ```
-2. 在bot的bot.py中加入
-    ```
-    nonebot.load_plugin('hikari_bot')
-    ```
-3. 在环境文件中加入
-    ```
-    API_TOKEN = xxxxxxxxxxxx
-    SUPERUSERS=["QQ号"]
-    ```
->一般来说该文件为.env.dev
->
->也有可能是.env.pord，具体需要看.env中是否有指定
->
->如果啥都不懂，bot.py里,在`nonebot.init()`下面加上
->```
->config = nonebot.get_driver().config
->config.api_token = "xxxxxxxxxxxx"
->```
->请点击页面顶部链接加群获取Token哦~
->
-4. 重启bot
-
-## 更新
-- Bot版：以管理员身份运行`更新.bat`
-  >```
-  >pip install --upgrade hikari-bot
-  >git pull
-  >```
-- 插件版：pip install --upgrade hikari-bot
->对比`.env.prod-example`中新增的配置项，并同步至你本地的`env.prod`
->
->install结束后会打印当前版本
->
->您也可以通过pip show hikari-bot查看
->
->如果没有更新到最新版请等待一会儿，镜像站一般每五分钟同步
->
-
 ## 在Ubuntu/Debian系统上的管理
 - 使用`./manage.sh`，基于原有批处理脚本
 - 无参数调用以获取使用帮助
@@ -140,6 +112,7 @@
     - 在当前目录下不存在`.env.prod`的情况下从参数获取token和qqid以创建相应文件，否则直接运行
     - 考虑到使用Linux部署时多数情况下本地不存在图形界面，有风险的向公网开放访问
     - 加入验证机制（listed）
+
 
 ## 使用Docker部署
 - Docker目录下是一个简单的Dockerfile，可以基于官方的Python容器封装一个完整的HikariBot
@@ -172,6 +145,53 @@
   ```
 - 将配置文件与容器分离（listed）
 
+
+## 作为已有Bot的插件部署（如真寻、Haruka）
+1. 如果您已经有了一个基于Nonebot2的机器人（例如真寻），您可以直接
+    ```
+    pip install hikari-bot
+    ```
+2. 在bot的bot.py中加入
+    ```
+    nonebot.load_plugin('hikari_bot')
+    ```
+3. 在环境文件中加入
+    ```
+    API_TOKEN = xxxxxxxxxxxx
+    SUPERUSERS=["QQ号"]
+    ```
+>一般来说该文件为.env.dev
+>
+>也有可能是.env.pord，具体需要看.env中是否有指定
+>
+>如果啥都不懂，bot.py里,在`nonebot.init()`下面加上
+>```
+>config = nonebot.get_driver().config
+>config.api_token = "xxxxxxxxxxxx"
+>```
+>请点击页面顶部链接加群获取Token哦~
+>
+4. 重启bot
+
+## 更新
+- Windows一键包：下载最新一键包，复制旧版本中`accounts`文件夹和`env.prod`文件替换即可
+- Bot版：以管理员身份运行`更新.bat`或执行`./manage.sh update`
+  >```
+  >pip install --upgrade hikari-bot
+  >git pull
+  >```
+- 插件版：pip install --upgrade hikari-bot
+>对比`.env.prod-example`中新增的配置项，并同步至你本地的`env.prod`
+>
+>install结束后会打印当前版本
+>
+>您也可以通过pip show hikari-bot查看
+>
+>如果没有更新到最新版请等待一会儿，镜像站一般每五分钟同步
+>
+
+
+  
 ## 可能会遇到的问题
 
 ### go-cqhttp扫码后提示异地无法登录
