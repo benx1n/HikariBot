@@ -10,6 +10,7 @@ from .data_source import servers,set_clanRecord_params
 from .publicAPI import get_AccountIdByName
 from .utils import match_keywords
 from .wws_clan import ClanSlectState,ClanSecletProcess
+from nonebot import get_driver
 from nonebot_plugin_htmlrender import html_to_pic
 from bs4 import BeautifulSoup
 
