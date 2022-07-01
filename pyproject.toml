@@ -18,6 +18,7 @@ nonebot2 = ">=2.0.0-beta.3"
 nonebot-adapter-onebot = "^2.1.0"
 nonebot-plugin-htmlrender = ">=0.1.0"
 nonebot-plugin-apscheduler = "^0.1.2"
+nonebot_plugin_guild_patch = ">=0.2.0"
 httpx = ">=0.19.0"
 Jinja2 = "^3.0.0"
 beautifulsoup4 = "^4.11.1"
@@ -28,7 +29,7 @@ black = "^22.1.0"
 nonebot-plugin-gocqhttp = "^0.5.5"
 
 [tool.nonebot]
-plugins = ["nonebot_plugin_apscheduler", "nonebot_plugin_htmlrender"]
+plugins = ["nonebot_plugin_apscheduler", "nonebot_plugin_htmlrender","nonebot_plugin_guild_patch"]
 plugin_dirs = ["src/plugins"]
 
 [[tool.poetry.source]]

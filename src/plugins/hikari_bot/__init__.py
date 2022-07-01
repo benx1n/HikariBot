@@ -4,6 +4,7 @@ from loguru import logger
 from nonebot import get_bot, on_command, on_message, get_driver
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
+from nonebot_plugin_guild_patch import GuildMessageEvent
 from nonebot.log import logger
 from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
 from .wws_info import get_AccountInfo
