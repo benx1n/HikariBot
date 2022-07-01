@@ -55,7 +55,7 @@
    >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
 3. 双击`启动.bat`
 
-## 在Windwos系统上完整部署
+## 在Windows系统上完整部署
 1. 下载[Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
     >Python版本需>3.8，或参考[Hoshino版插件](https://github.com/benx1n/wows-stats-bot)中使用Conda虚拟环境
     >
@@ -174,7 +174,7 @@
 4. 重启bot
 
 ## 更新
-- Windows一键包：下载最新一键包，复制旧版本中`accounts`文件夹和`env.prod`文件替换即可
+- Windows一键包：下载最新一键包，复制旧版本中`accounts`文件夹和`env.prod`文件替换至新版文件夹中即可
 - Bot版：以管理员身份运行`更新.bat`或执行`./manage.sh update`
   >```
   >pip install --upgrade hikari-bot
