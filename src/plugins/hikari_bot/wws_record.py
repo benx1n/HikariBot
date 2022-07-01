@@ -15,15 +15,14 @@ from bs4 import BeautifulSoup
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
-cfgpath = dir_path / 'config.json'
-config = json.load(open(cfgpath, 'r', encoding='utf8'))
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(template_path), enable_async=True
 )
 
 headers = {
-    'Authorization': config['token']
+    'Authorization': get_driver().config.api_token
 }
+
   
 
 async def get_record(qqid,info,type):
