@@ -14,7 +14,7 @@ headers = {
     'Authorization': get_driver().config.api_token
 }
 
-async def get_BindInfo(user,info):
+async def get_BindInfo(server_type,user,info):
     try:
         url,params = '',''
         if isinstance(info,List) and len(info) == 1:
@@ -22,14 +22,14 @@ async def get_BindInfo(user,info):
                 if str(i).lower() == 'me':
                     url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
                     params = {
-                    "platformType": "QQ",
+                    "platformType": server_type,
                     "platformId": user,
                     }
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
                     url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
                     params = {
-                    "platformType": "QQ",
+                    "platformType": server_type,
                     "platformId": match.group(1),
                     }
                     break
@@ -67,7 +67,7 @@ async def get_BindInfo(user,info):
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
     
-async def set_BindInfo(user,info):
+async def set_BindInfo(server_type,user,info):
     try:
         param_server = None
         if isinstance (info,List):
@@ -78,7 +78,7 @@ async def set_BindInfo(user,info):
                     if isinstance(param_accountid,int):
                         url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
                         params = {
-                        "platformType": "QQ",
+                        "platformType": server_type,
                         "platformId": str(user),
                         "accountId": param_accountid
                         }
@@ -108,12 +108,12 @@ async def set_BindInfo(user,info):
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
 
-async def change_BindInfo(user,info):
+async def change_BindInfo(server_type,user,info):
     try:
         if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit:
             url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
             params = {
-            "platformType": "QQ",
+            "platformType": server_type,
             "platformId": user,
             }
         else:
@@ -130,7 +130,7 @@ async def change_BindInfo(user,info):
                 param_accountid = result['data'][int(info[0])-1]['accountId']
                 url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
                 params = {
-                "platformType": "QQ",
+                "platformType": server_type,
                 "platformId": str(user),
                 "accountId": param_accountid
                 }
@@ -158,7 +158,7 @@ async def change_BindInfo(user,info):
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
     
-async def set_special_BindInfo(user,info):
+async def set_special_BindInfo(server_type,user,info):
     try:
         param_server = None
         if isinstance (info,List):
@@ -168,7 +168,7 @@ async def set_special_BindInfo(user,info):
                     if str(info[0]).isdigit():
                         url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
                         params = {
-                        "platformType": "QQ",
+                        "platformType": server_type,
                         "platformId": str(user),
                         "accountId": int(info[0])
                         }
@@ -198,12 +198,12 @@ async def set_special_BindInfo(user,info):
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
     
-async def delete_BindInfo(user,info):
+async def delete_BindInfo(server_type,user,info):
     try:
         if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit:
             url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
             params = {
-            "platformType": "QQ",
+            "platformType": server_type,
             "platformId": user,
             }
         else:
@@ -218,7 +218,7 @@ async def delete_BindInfo(user,info):
                 param_accountid = result['data'][int(info[0])-1]['accountId']
                 url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/remove'
                 params = {
-                "platformType": "QQ",
+                "platformType": server_type,
                 "platformId": str(user),
                 "accountId": param_accountid
                 }

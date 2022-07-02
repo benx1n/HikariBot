@@ -25,7 +25,7 @@ headers = {
 }
 
 
-async def get_RecentInfo(qqid,info):
+async def get_RecentInfo(server_type,qqid,info):
     try:
         params,day = None,0
         if datetime.now().hour < 7:
@@ -39,7 +39,7 @@ async def get_RecentInfo(qqid,info):
                 if i == 'me':
                     url = 'https://api.wows.linxun.link//api/wows/recent/v2/recent/info'
                     params = {
-                    "server": "QQ",
+                    "server": server_type,
                     "accountId": qqid,
                     "day": day,
                     "status": 0
@@ -48,7 +48,7 @@ async def get_RecentInfo(qqid,info):
                 if match:
                     url = 'https://api.wows.linxun.link//api/wows/recent/v2/recent/info'
                     params = {
-                    "server": "QQ",
+                    "server": server_type,
                     "accountId": match.group(1),
                     "day": day,
                     "status": 0

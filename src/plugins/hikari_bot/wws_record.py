@@ -26,21 +26,21 @@ headers = {
 
   
 
-async def get_record(qqid,info,type):
+async def get_record(server_type,qqid,info,type):
     try:
         params = None
         if isinstance(info,List):
             for i in info:
                 if i == 'me':
                     params = {
-                    "server": "QQ",
+                    "server": server_type,
                     "accountId": str(qqid)
                     }
                     break
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
                     params = {
-                    "server": "QQ",
+                    "server": server_type,
                     "accountId": match.group(1)
                     }
                     break

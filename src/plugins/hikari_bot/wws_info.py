@@ -23,7 +23,7 @@ headers = {
     'Authorization': get_driver().config.api_token
 }
   
-async def get_AccountInfo(qqid,info):
+async def get_AccountInfo(server_type,qqid,info):
     try:
         url,params = '',''
         if isinstance(info,List):
@@ -31,7 +31,7 @@ async def get_AccountInfo(qqid,info):
                 if str(i).lower() == 'me':
                     url = 'https://api.wows.linxun.link/public/wows/account/v3/user/info'
                     params = {
-                    "server": "QQ",
+                    "server": server_type,
                     "accountId": str(qqid)
                     }
                     break
@@ -39,7 +39,7 @@ async def get_AccountInfo(qqid,info):
                 if match:
                     url = 'https://api.wows.linxun.link/public/wows/account/v3/user/info'
                     params = {
-                    "server": "QQ",
+                    "server": server_type,
                     "accountId": match.group(1)
                     }
                     break
