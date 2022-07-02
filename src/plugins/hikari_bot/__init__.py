@@ -43,7 +43,7 @@ driver = get_driver()
 async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
     try:
         server_type = None
-        if isinstance(ev, GuildMessageEvent):
+        if isinstance(ev, GuildMessageEvent) and driver.config.channel:
             if ev.channel_id in [1471049,5207171,5207190,5207198]:
                 server_type = 'QQ_CHANNEL'
             else:
