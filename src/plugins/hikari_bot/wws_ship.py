@@ -40,7 +40,7 @@ async def get_ShipInfo(server_type,qqid,info,bot):
                     url = 'https://api.wows.linxun.link/public/wows/account/v2/ship/info'
                     params = {
                     "server": server_type,
-                    "accountId": qqid,
+                    "accountId": int(qqid),
                     }
                     info.remove(str(i))
                 match = re.search(r"CQ:at,qq=(\d+)",i)
@@ -48,7 +48,7 @@ async def get_ShipInfo(server_type,qqid,info,bot):
                     url = 'https://api.wows.linxun.link/public/wows/account/v2/ship/info'
                     params = {
                     "server": server_type,
-                    "accountId": match.group(1),
+                    "accountId": int(match.group(1)),
                     }
                     info[flag] = str(i).replace(f"[{match.group(0)}]",'')
                     if not info[flag]:
@@ -214,7 +214,7 @@ async def get_ShipInfoRecent(server_type,qqid,info,bot):
                     url = 'https://api.wows.linxun.link/api/wows/recent/v2/recent/info/ship'
                     params = {
                     "server": server_type,
-                    "accountId": qqid,
+                    "accountId": int(qqid),
                     "day": day
                     }
                     info.remove("me")
@@ -223,7 +223,7 @@ async def get_ShipInfoRecent(server_type,qqid,info,bot):
                     url = 'https://api.wows.linxun.link/api/wows/recent/v2/recent/info/ship'
                     params = {
                     "server": server_type,
-                    "accountId": match.group(1),
+                    "accountId": int(match.group(1)),
                     "day": day
                     }
                     info[flag] = str(i).replace(f"[{match.group(0)}]",'')

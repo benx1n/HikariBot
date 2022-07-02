@@ -34,14 +34,14 @@ async def get_record(server_type,qqid,info,type):
                 if i == 'me':
                     params = {
                     "server": server_type,
-                    "accountId": str(qqid)
+                    "accountId": int(qqid)
                     }
                     break
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
                     params = {
                     "server": server_type,
-                    "accountId": match.group(1)
+                    "accountId": int(match.group(1))
                     }
                     break
             if not params and len(info) == 2:

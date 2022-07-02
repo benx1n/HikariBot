@@ -32,7 +32,7 @@ async def get_AccountInfo(server_type,qqid,info):
                     url = 'https://api.wows.linxun.link/public/wows/account/v3/user/info'
                     params = {
                     "server": server_type,
-                    "accountId": str(qqid)
+                    "accountId": int(qqid)
                     }
                     break
                 match = re.search(r"CQ:at,qq=(\d+)",i)
@@ -40,7 +40,7 @@ async def get_AccountInfo(server_type,qqid,info):
                     url = 'https://api.wows.linxun.link/public/wows/account/v3/user/info'
                     params = {
                     "server": server_type,
-                    "accountId": match.group(1)
+                    "accountId": int(match.group(1))
                     }
                     break
             if not params and len(info) == 2:

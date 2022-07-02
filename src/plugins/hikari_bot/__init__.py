@@ -44,9 +44,13 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
     try:
         server_type = None
         if isinstance(ev, GuildMessageEvent):
-            server_type = 'QQ_CHANNEL'
+            if ev.channel_id in [1471049,5207171,5207190,5207198]:
+                server_type = 'QQ_CHANNEL'
+            else:
+                return
         elif isinstance(ev, GroupMessageEvent):
             server_type = 'QQ'
+            return
         else:
             return
         msg = ''
