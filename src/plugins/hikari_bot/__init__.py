@@ -65,7 +65,9 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         _nlmt.increase(qqid) 
         searchtag = html.unescape(str(matchmsg)).strip()
         if not searchtag:
-            await send_bot_help()
+            msg = await send_bot_help()
+            await bot.send(MessageSegment.image(msg))
+            return
         match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
         if match:
             replace_name = match.group(2)
