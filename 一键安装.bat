@@ -4,9 +4,7 @@ python --version 3>NUL
 if errorlevel 1 goto errorNoPython 
 
 echo installing Nonebot and Hikari
-python -m pip install nb-cli hikari-bot -i https://pypi.doubanio.com/simple/
-nb plugin install nonebot-plugin-apscheduler
-nb plugin install nonebot-plugin-gocqhttp
+python -m pip install nb-cli hikari-bot nonebot-plugin-apscheduler nonebot-plugin-gocqhttp -i https://pypi.tuna.tsinghua.edu.cn/simple
 echo.
 echo Install finish,plaese do next
 pause
