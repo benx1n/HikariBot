@@ -36,6 +36,7 @@ jobs:
         python -m pip install nb-cli hikari-bot
         python -m pip install nonebot-plugin-apscheduler
         python -m pip install nonebot-plugin-gocqhttp
+        python -m pip install nonebot-plugin-guild-patch
         set PLAYWRIGHT_BROWSERS_PATH=0
         python -m playwright install chromium
         call %CONDA%/condabin/conda.bat deactivate
