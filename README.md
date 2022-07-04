@@ -238,6 +238,9 @@
 >
 >[issue#78](https://github.com/nonebot/nonebot2/issues/78)
 >
+### Recent和绑定提示'鉴权失败'
+1. 检查Token是否配置正确，token格式为`XXXXX:XXXXXX`
+2. 如果配置正确可能是Token失效了，请重新申请
 ## 感谢
 
 [Nonebot2](https://github.com/nonebot/nonebot2)<br>
