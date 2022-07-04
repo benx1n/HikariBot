@@ -43,13 +43,15 @@ driver = get_driver()
 async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
     try:
         server_type = None
-        if isinstance(ev, GuildMessageEvent) and driver.config.channel:
-            if ev.channel_id in driver.config.channel_list:
+        if isinstance(ev, PrivateMessageEvent) and (driver.config.private or str(ev.user_id) in driver.config.superusers):       #私聊事件,superusers默认不受影响
+            server_type = 'QQ'
+        elif isinstance(ev, GroupMessageEvent) and driver.config.group:         #群聊事件
+            server_type = 'QQ'
+        elif isinstance(ev, GuildMessageEvent) and driver.config.channel:       #频道事件
+            if driver.config.all_channel or ev.channel_id in driver.config.channel_list:
                 server_type = 'QQ_CHANNEL'
             else:
                 return
-        elif isinstance(ev, GroupMessageEvent) and driver.config.group:
-            server_type = 'QQ'
         else:
             return
         msg = ''
@@ -65,8 +67,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         _nlmt.increase(qqid) 
         searchtag = html.unescape(str(matchmsg)).strip()
         if not searchtag:
-            msg = await send_bot_help()
-            await bot.send(MessageSegment.image(msg))
+            await bot.send("请发送wws help查看相关帮助")
             return
         match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
         if match:
