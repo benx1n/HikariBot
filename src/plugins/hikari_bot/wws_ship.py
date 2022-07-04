@@ -31,7 +31,7 @@ headers = {
 ShipSlectState = namedtuple("ShipSlectState", ['state','SlectIndex','SelectList'])
 ShipSecletProcess = defaultdict(lambda: ShipSlectState(False, None, None))
 
-async def get_ShipInfo(qqid,info,bot):
+async def get_ShipInfo(server_type,qqid,info,bot):
     try:
         url,params = '',''
         if isinstance(info,List):
@@ -39,16 +39,16 @@ async def get_ShipInfo(qqid,info,bot):
                 if str(i).lower() == 'me':
                     url = 'https://api.wows.linxun.link/public/wows/account/v2/ship/info'
                     params = {
-                    "server": "QQ",
-                    "accountId": qqid,
+                    "server": server_type,
+                    "accountId": int(qqid),
                     }
                     info.remove(str(i))
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
                     url = 'https://api.wows.linxun.link/public/wows/account/v2/ship/info'
                     params = {
-                    "server": "QQ",
-                    "accountId": match.group(1),
+                    "server": server_type,
+                    "accountId": int(match.group(1)),
                     }
                     info[flag] = str(i).replace(f"[{match.group(0)}]",'')
                     if not info[flag]:
@@ -196,7 +196,7 @@ async def post_MyShipRank_yuyuko(accountId,ranking,serverId,shipId):
         return
     
     
-async def get_ShipInfoRecent(qqid,info,bot):
+async def get_ShipInfoRecent(server_type,qqid,info,bot):
     try:
         params,day = None,0
         if datetime.now().hour < 7:
@@ -213,8 +213,8 @@ async def get_ShipInfoRecent(qqid,info,bot):
                 if i == 'me':
                     url = 'https://api.wows.linxun.link/api/wows/recent/v2/recent/info/ship'
                     params = {
-                    "server": "QQ",
-                    "accountId": qqid,
+                    "server": server_type,
+                    "accountId": int(qqid),
                     "day": day
                     }
                     info.remove("me")
@@ -222,8 +222,8 @@ async def get_ShipInfoRecent(qqid,info,bot):
                 if match:
                     url = 'https://api.wows.linxun.link/api/wows/recent/v2/recent/info/ship'
                     params = {
-                    "server": "QQ",
-                    "accountId": match.group(1),
+                    "server": server_type,
+                    "accountId": int(match.group(1)),
                     "day": day
                     }
                     info[flag] = str(i).replace(f"[{match.group(0)}]",'')

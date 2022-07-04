@@ -4,6 +4,7 @@ from loguru import logger
 from nonebot import get_bot, on_command, on_message, get_driver
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
+from nonebot_plugin_guild_patch import GuildMessageEvent
 from nonebot.log import logger
 from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
 from .wws_info import get_AccountInfo
@@ -29,7 +30,7 @@ _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.3.1'
+__version__ = '0.3.2'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
@@ -41,7 +42,15 @@ driver = get_driver()
 @bot.handle()
 async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
     try:
-        if isinstance(ev, PrivateMessageEvent):
+        server_type = None
+        if isinstance(ev, GuildMessageEvent) and driver.config.channel:
+            if ev.channel_id in driver.config.channel_list:
+                server_type = 'QQ_CHANNEL'
+            else:
+                return
+        elif isinstance(ev, GroupMessageEvent) and driver.config.group:
+            server_type = 'QQ'
+        else:
             return
         msg = ''
         qqid = ev.user_id
@@ -56,7 +65,9 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         _nlmt.increase(qqid) 
         searchtag = html.unescape(str(matchmsg)).strip()
         if not searchtag:
-            await send_bot_help()
+            msg = await send_bot_help()
+            await bot.send(MessageSegment.image(msg))
+            return
         match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
         if match:
             replace_name = match.group(2)
@@ -67,16 +78,16 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         if not select_command:
             if replace_name:
                 search_list.append(replace_name)
-            msg = await get_AccountInfo(qqid,search_list)
+            msg = await get_AccountInfo(server_type,qqid,search_list)
         elif select_command == 'ship':
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
             if replace_name:
                 search_list.append(replace_name)
             if not select_command:
-                msg = await get_ShipInfo(qqid,search_list,bot)
+                msg = await get_ShipInfo(server_type,qqid,search_list,bot)
             elif select_command == 'recent':
-                msg = await get_ShipInfoRecent(qqid,search_list,bot)
+                msg = await get_ShipInfoRecent(server_type,qqid,search_list,bot)
             else:
                 msg = '看不懂指令QAQ'
         elif select_command == 'recent':
@@ -85,41 +96,41 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             if replace_name:
                 search_list.append(replace_name)
             if not select_command:
-                msg = await get_RecentInfo(qqid,search_list)
+                msg = await get_RecentInfo(server_type,qqid,search_list)
             elif select_command == 'ship':
-                msg = await get_ShipInfoRecent(qqid,search_list,bot)
+                msg = await get_ShipInfoRecent(server_type,qqid,search_list,bot)
             else:
                 msg = '看不懂指令QAQ'
         elif select_command == 'clan':
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list) 
             if not select_command:                  #查询公会详情信息
-                msg = await get_ClanInfo(qqid,search_list,bot,ev)
+                msg = await get_ClanInfo(server_type,qqid,search_list,bot,ev)
             elif select_command == 'record':        #查询公会历史记录
-                msg = await get_record(qqid,search_list,"clan")
+                msg = await get_record(server_type,qqid,search_list,"clan")
         elif select_command == 'record':
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list) 
             if replace_name:
                 search_list.append(replace_name)
             if not select_command:                  #查询个人历史记录
-                msg = await get_record(qqid,search_list,"personal")
+                msg = await get_record(server_type,qqid,search_list,"personal")
             elif select_command == 'clan':          #查询公会历史记录
-                msg = await get_record(qqid,search_list,"clan")
+                msg = await get_record(server_type,qqid,search_list,"clan")
         elif select_command == 'ship_rank':
             msg = await get_ShipRank(qqid,search_list,bot)   
         elif select_command == 'bind':
             if replace_name:
                 search_list.append(replace_name)
-            msg = await set_BindInfo(qqid,search_list)
+            msg = await set_BindInfo(server_type,qqid,search_list)
         elif select_command == 'special_bind':
-            msg = await set_special_BindInfo(qqid,search_list)
+            msg = await set_special_BindInfo(server_type,qqid,search_list)
         elif select_command == 'bindlist':
-            msg = await get_BindInfo(qqid,search_list)
+            msg = await get_BindInfo(server_type,qqid,search_list)
         elif select_command == 'changebind':
-            msg = await change_BindInfo(qqid,search_list)
+            msg = await change_BindInfo(server_type,qqid,search_list)
         elif select_command == 'delete_bind':
-            msg = await delete_BindInfo(qqid,search_list)
+            msg = await delete_BindInfo(server_type,qqid,search_list)
         elif select_command == 'searchship':
             msg = await get_ship_name(search_list)
         elif select_command == 'help':

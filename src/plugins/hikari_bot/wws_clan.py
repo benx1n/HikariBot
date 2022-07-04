@@ -29,7 +29,7 @@ headers = {
 ClanSlectState = namedtuple("ClanSlectState", ['state','SlectIndex','SelectList'])
 ClanSecletProcess = defaultdict(lambda: ClanSlectState(False, None, None))
 
-async def get_ClanInfo(qqid,info,bot):
+async def get_ClanInfo(server_type,qqid,info,bot):
     try:
         params = None
         if isinstance(info,List):
@@ -37,7 +37,7 @@ async def get_ClanInfo(qqid,info,bot):
                 if i == 'me':
                     url = ''
                     params = {
-                    "server": "QQ",
+                    "server": server_type,
                     "clanId": qqid,
                     }
                     info.remove("me")
@@ -45,7 +45,7 @@ async def get_ClanInfo(qqid,info,bot):
                 if match:
                     url = ''
                     params = {
-                    "server": "QQ",
+                    "server": server_type,
                     "clanId": match.group(1),
                     }
                     info[flag] = str(i).replace(f"[{match.group(0)}]",'')

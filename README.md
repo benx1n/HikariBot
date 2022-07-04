@@ -38,6 +38,7 @@
 - [x] 快速切换绑定账号
 - [x] 支持@快速查询
 - [x] 全异步，高并发下性能更优
+- [x] 支持频道（非官方bot类型）
 
 ## 在Windows系统上快速部署
 [视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
@@ -238,6 +239,9 @@
 >
 >[issue#78](https://github.com/nonebot/nonebot2/issues/78)
 >
+### Recent和绑定提示'鉴权失败'
+1. 检查Token是否配置正确，token格式为`XXXXX:XXXXXX`
+2. 如果配置正确可能是Token失效了，请重新申请
 ## 感谢
 
 [Nonebot2](https://github.com/nonebot/nonebot2)<br>
