@@ -45,6 +45,8 @@ jobs:
     - name: Pack windows x86-64 version
       shell: pwsh
       run: |
+        $tmp = Get-Content "HikariBot\.git\config"
+        echo $tmp |Select-String -NotMatch -Pattern "extraheader" | Set-Content "HikariBot\.git\config"
         Compress-Archive -DestinationPath release.zip -Path HikariBot
     - name: Delete latest release
       uses: actions/github-script@v4
