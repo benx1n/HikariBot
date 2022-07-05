@@ -110,7 +110,7 @@ async def set_BindInfo(server_type,user,info):
 
 async def change_BindInfo(server_type,user,info):
     try:
-        if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit:
+        if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit():
             url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
             params = {
             "platformType": server_type,
@@ -200,7 +200,7 @@ async def set_special_BindInfo(server_type,user,info):
     
 async def delete_BindInfo(server_type,user,info):
     try:
-        if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit:
+        if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit():
             url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
             params = {
             "platformType": server_type,
