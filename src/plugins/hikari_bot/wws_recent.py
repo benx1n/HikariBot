@@ -37,7 +37,7 @@ async def get_RecentInfo(server_type,qqid,info):
                     info.remove(i)
             for i in info:              #是否包含me或@，包含则调用平台接口
                 if i == 'me':
-                    url = 'https://api.wows.linxun.link//api/wows/recent/v2/recent/info'
+                    url = 'https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info'
                     params = {
                     "server": server_type,
                     "accountId": int(qqid),
@@ -46,7 +46,7 @@ async def get_RecentInfo(server_type,qqid,info):
                     }
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
-                    url = 'https://api.wows.linxun.link//api/wows/recent/v2/recent/info'
+                    url = 'https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info'
                     params = {
                     "server": server_type,
                     "accountId": int(match.group(1)),
@@ -59,7 +59,7 @@ async def get_RecentInfo(server_type,qqid,info):
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))
                     if isinstance(param_accountid,int):
-                        url = 'https://api.wows.linxun.link//api/wows/recent/v2/recent/info'
+                        url = 'https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info'
                         params = {
                         "server": param_server,
                         "accountId": param_accountid,

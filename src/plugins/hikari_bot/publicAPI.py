@@ -15,7 +15,7 @@ headers = {
 async def get_nation_list():
     try:
         msg = ''
-        url = 'https://api.wows.linxun.link/public/wows/encyclopedia/nation/list'
+        url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/nation/list'
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, timeout=None)
             result = resp.json()
@@ -45,7 +45,7 @@ async def get_ship_name(infolist:List):
             "shipName":'',
             "shipType":param_shiptype
         }
-        url = 'https://api.wows.linxun.link/public/wows/encyclopedia/ship/search'
+        url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=None)
@@ -65,7 +65,7 @@ async def get_ship_name(infolist:List):
     
 async def get_ship_byName(shipname:str):
     try:
-        url = 'https://api.wows.linxun.link/public/wows/encyclopedia/ship/search'
+        url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
         params = {
         "county":'',
         "level":'',
@@ -92,7 +92,7 @@ async def get_ship_byName(shipname:str):
     
 async def get_AccountIdByName(server:str,name:str):
     try:
-        url = 'https://api.wows.linxun.link/public/wows/account/search/user'
+        url = 'https://api.wows.shinoaki.com/public/wows/account/search/user'
         params = {
             "server": server,
             "userName": name
@@ -115,7 +115,7 @@ async def get_AccountIdByName(server:str,name:str):
     
 async def get_ClanIdByName(server:str,tag:str):
     try:
-        url = 'https://api.wows.linxun.link/public/wows/clan/search'
+        url = 'https://api.wows.shinoaki.com/public/wows/clan/search'
         params = {
             "server": server,
             "tag": tag

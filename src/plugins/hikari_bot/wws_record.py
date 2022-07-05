@@ -67,7 +67,7 @@ async def get_record(server_type,qqid,info,type):
             return '参数似乎出了问题呢'
         print(params)
         if type == 'personal':
-            url = 'https://api.wows.linxun.link/upload/numbers/data/upload/user/clan/record'
+            url = 'https://api.wows.shinoaki.com/upload/numbers/data/upload/user/clan/record'
             async with httpx.AsyncClient(headers=headers) as client:
                 resp = await client.get(url, params=params, timeout=None)
                 result = resp.json()
@@ -201,7 +201,7 @@ async def get_ClanRecord_Numbers(url,clanId):
 async def post_personalRecord_yuyuko(post_data):
     try:
         async with httpx.AsyncClient(headers=headers) as client:
-            url = 'https://api.wows.linxun.link/upload/numbers/data/upload/user/clan/record'
+            url = 'https://api.wows.shinoaki.com/upload/numbers/data/upload/user/clan/record'
             resp = await client.post(url, json = post_data, timeout=None)
             result = resp.json()
             if result['code'] == 200 and result['data']:

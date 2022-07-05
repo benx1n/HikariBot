@@ -246,7 +246,7 @@
 
 [Nonebot2](https://github.com/nonebot/nonebot2)<br>
 [go-cqhttp](https://github.com/Mrs4s/go-cqhttp)<br>
-[战舰世界API平台](https://wows.linxun.link/)<br>
+[战舰世界API平台](https://wows.shinoaki.com/)<br>
 
 ## 开源协议
 

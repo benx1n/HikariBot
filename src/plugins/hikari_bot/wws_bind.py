@@ -20,14 +20,14 @@ async def get_BindInfo(server_type,user,info):
         if isinstance(info,List) and len(info) == 1:
             for i in info:              #是否包含me或@
                 if str(i).lower() == 'me':
-                    url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
+                    url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
                     params = {
                     "platformType": server_type,
                     "platformId": user,
                     }
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
-                    url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
+                    url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
                     params = {
                     "platformType": server_type,
                     "platformId": match.group(1),
@@ -76,7 +76,7 @@ async def set_BindInfo(server_type,user,info):
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))
                     if isinstance(param_accountid,int):
-                        url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
+                        url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
                         params = {
                         "platformType": server_type,
                         "platformId": str(user),
@@ -111,7 +111,7 @@ async def set_BindInfo(server_type,user,info):
 async def change_BindInfo(server_type,user,info):
     try:
         if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit():
-            url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
+            url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
             params = {
             "platformType": server_type,
             "platformId": user,
@@ -128,7 +128,7 @@ async def change_BindInfo(server_type,user,info):
                 account_name = result['data'][int(info[0])-1]['userName']
                 param_server = result['data'][int(info[0])-1]['serverType']
                 param_accountid = result['data'][int(info[0])-1]['accountId']
-                url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
+                url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
                 params = {
                 "platformType": server_type,
                 "platformId": str(user),
@@ -166,7 +166,7 @@ async def set_special_BindInfo(server_type,user,info):
                 param_server,info = await match_keywords(info,servers)
                 if param_server:
                     if str(info[0]).isdigit():
-                        url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/put'
+                        url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
                         params = {
                         "platformType": server_type,
                         "platformId": str(user),
@@ -201,7 +201,7 @@ async def set_special_BindInfo(server_type,user,info):
 async def delete_BindInfo(server_type,user,info):
     try:
         if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit():
-            url = 'https://api.wows.linxun.link/public/wows/bind/account/platform/bind/list'
+            url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
             params = {
             "platformType": server_type,
             "platformId": user,
@@ -216,7 +216,7 @@ async def delete_BindInfo(server_type,user,info):
                 account_name = result['data'][int(info[0])-1]['userName']
                 param_server = result['data'][int(info[0])-1]['serverType']
                 param_accountid = result['data'][int(info[0])-1]['accountId']
-                url = 'https://api.wows.linxun.link/api/wows/bind/account/platform/bind/remove'
+                url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/remove'
                 params = {
                 "platformType": server_type,
                 "platformId": str(user),
