@@ -8,8 +8,7 @@ then
 	sudo apt-get update
 	sudo apt-get install -y locales locales-all fonts-noto libnss3-dev libxss1 libasound2 libxrandr2 libatk1.0-0 libgtk-3-0 libgbm-dev libxshmfence1
 	echo "Installing HikariBot"
-	pip install nb-cli hikari-bot
-	nb plugin install nonebot-plugin-gocqhttp
+	pip install nb-cli hikari-bot nonebot-plugin-gocqhttp
 	playwright install chromium
 elif [ $1 = "start" ]
 then
