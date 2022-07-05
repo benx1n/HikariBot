@@ -1,6 +1,6 @@
 @echo off
+set PATH=%~dp0pyenv\Library\bin;%~dp0pyenv;%PATH%
 if exist %~dp0\pyenv (
-    set PATH=%~dp0pyenv\Library\bin;%~dp0pyenv
     set PLAYWRIGHT_BROWSERS_PATH=0
 )
 
