@@ -28,7 +28,7 @@
 
 战舰世界水表BOT，基于Nonebot2<br>
 水表人，出击！wws me recent！！！<br>
-如果觉得本插件还不错的话请点个Star哦~<br>
+### 如果觉得本插件还不错的话请点个Star哦~<br>
 [Hoshino版插件](https://github.com/benx1n/wows-stats-bot)
 
 ## 特色
@@ -40,20 +40,49 @@
 - [x] 全异步，高并发下性能更优
 - [x] 支持频道（非官方bot类型）
 
+  <details>
+  <summary>点我查看功能列表</summary>
+
+  - 绑定账号：wws bind/set/绑定 [服务器+游戏昵称]：
+  - 查询账号绑定列表：wws [查询/查]绑定/绑定列表 [me/@群友]：
+  - 切换删除绑定账号：wws [切换/删除]绑定 [序号]
+  - 查询账号总体战绩：wws [(服务器+游戏昵称)/@群友/me] 
+  - 查询账号历史记录：wws [(服务器+游戏昵称)/@群友/me] record
+  - 查询账号近期战绩：wws [(服务器+游戏昵称)/@群友/me] recent [日期]
+  - 查询单船总体战绩：wws [(服务器+游戏昵称)/@群友/me] ship [船名]
+  - 查询单船近期战绩：wws [(服务器+游戏昵称)/@群友/me] ship [船名] recent [日期]
+  - 查询服务器排行榜：wws [服务器+战舰名] rank/ship.rank 
+  - 查询军团详细信息：wws [(服务器+军团名)/@群友/me] clan
+  - 查询军团历史记录：wws [(服务器+军团名)/@群友/me] clan record
+  - 查询舰船中英文名：wws [搜/查船名] [国家][等级][类型]
+  - 检查版本更新：wws 检查更新
+  - 查看帮助：wws help
+
+  </details>
+  <details>
+  <summary>点我查看与Hoshino版的区别</summary>
+
+  - Hikari所使用的Nonebot2框架相比Hoshino更易部署，且两者在单环境下不兼容
+  - 一些功能比如频道目前仅支持Hikari
+  - Hoshino的插件生态更偏向PCR，具体可以查看[Nonebot2商店](https://v2.nonebot.dev/store)和[Hoshino插件索引](https://github.com/pcrbot/HoshinoBot-plugins-index)
+  - 由于个人精力原因，主要功能开发和维护面向Hikari，Hoshino版仅做最低限度功能适配
+
+  </details>
 ## 在Windows系统上快速部署
 [视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
 
 1. 下载Hikari的[最新Release](https://github.com/benx1n/HikariBot/releases/download/Latest/release_windows.zip)并解压到合适文件夹
-2. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并编辑
-   > ```
-   > API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
-   >SUPERUSERS=["QQ号"]
-   > ```
-   >总之最后TOKEN应该长这样
-   >
-   >API_TOKEN = 123764323:ba1f2511fc30423bdbb183fe33
-   >
-   >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
+2. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并按其中注释编辑  
+    >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
+    ```
+    API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
+    SUPERUSERS=["QQ号"]
+    ```
+   - 最后TOKEN应该长这样 `API_TOKEN = 123764323:ba1f2511fc30423bdbb183fe33`
+   - 从0.3.2.2版本开始，您没有填写的配置将按.env文件中的默认配置执行，具体逻辑为
+      - 私聊、频道默认禁用
+      - 群聊默认开启，默认屏蔽官方交流群
+   
 3. 双击`启动.bat`
 
 ## 在Windows系统上完整部署
@@ -65,40 +94,33 @@
     >否则请自行百度如何添加python到环境变量
 
 3. 打开一个合适的文件夹，鼠标右键——Git Bash here，输入以下命令（任选一条）克隆本Hikari仓库
-   > ```
-   > git clone https://github.com/benx1n/HikariBot.git
-   >
-   > git clone https://gitee.com/benx1n/HikariBot.git
-   > ```
+    ```
+    git clone https://github.com/benx1n/HikariBot.git
+   
+    git clone https://gitee.com/benx1n/HikariBot.git
+    ```
 3. 以管理员身份运行`一键安装.bat`
-
-   >执行下列两条命令安装nonebot2和hikari-bot插件
-   > ```
-   > pip install nb-cli
-   > pip install hikari-bot
-   > ```
-   >
-4. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并编辑
-   > ```
-   > API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
-   >SUPERUSERS=["QQ号"]
-   > ```
-   >总之最后应该长这样
-   >
-   >API_TOKEN = 123764323:ba1f2511fc30423bdbb183fe33
-   >
-   >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
+    >等效于在cmd中执行如下代码  
+    ```
+    python -m pip install nb-cli hikari-bot nonebot-plugin-apscheduler nonebot-plugin-gocqhttp -i https://pypi.tuna.tsinghua.edu.cn/simple
+    ```
+   
+4. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并按其中注释编辑  
+    >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
+    ```
+    API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
+    SUPERUSERS=["QQ号"]
+    ```
+   - 最后TOKEN应该长这样 `API_TOKEN = 123764323:ba1f2511fc30423bdbb183fe33`
+   - 从0.3.2.2版本开始，您没有填写的配置将按.env文件中的默认配置执行，具体逻辑为
+      - 私聊、频道默认禁用
+      - 群聊默认开启，默认屏蔽官方交流群`
 
 5. 双击`启动.bat`，在打开的浏览器中添加bot账号密码，重新启动Hikari
-    >打开终端，进入HikariBot文件夹下，输入下方命令运行bot
-    >```
-    >nb run
-    >```
-    >此时若没有报错，您可以打开http://127.0.0.1:8080/go-cqhttp/
-    >
-    >点击左侧添加账号，重启bot即可在网页上看到相应信息（大概率需要扫码）
-    >
-    >如果重启后go-cqhhtp一直卡在扫码或无限重启，请继续往下阅读
+    - 页面加载不出请尝试刷新以下，已知IE浏览器可能会u你在一些问题
+    - 此时若没有报错，您可以在打开的页面`http://127.0.0.1:8080/go-cqhttp/`中
+      点击左侧添加账号，重启bot即可在网页上看到相应信息（大概率需要扫码）
+    - 如果重启后go-cqhhtp一直卡在扫码或无限重启，请继续往下阅读
 
 
 ## 在Ubuntu/Debian系统上的管理
@@ -156,54 +178,174 @@
     ```
     nonebot.load_plugin('hikari_bot')
     ```
-3. 在环境文件中加入
+3. 在环境文件中加入以下配置项
     ```
     API_TOKEN = xxxxxxxxxxxx
     SUPERUSERS=["QQ号"]
+    private = false                 #开启私聊
+    group = true                    #开启群聊
+    channel = false                 #开启频道
+    all_channel = false             #是否全频道生效，无论此项配置如何，channel_list中的频道一定会开启
+    channel_list = []               #频道列表白名单，数组形式，可在控制台中获取相应的channel_id
+    ban_group_list = [967546463]    #群列表黑名单，默认屏蔽了开发者交流群
     ```
->一般来说该文件为.env.dev
->
->也有可能是.env.pord，具体需要看.env中是否有指定
->
->如果啥都不懂，bot.py里,在`nonebot.init()`下面加上
->```
->config = nonebot.get_driver().config
->config.api_token = "xxxxxxxxxxxx"
->```
->请点击页面顶部链接加群获取Token哦~
->
-4. 重启bot
+    >一般来说该文件为.env.dev  
+    >也有可能是.env.pord，具体需要看.env中是否有指定
+4.   重启bot
 
 ## 更新
-- Windows一键包：下载最新一键包，复制旧版本中`accounts`文件夹和`env.prod`文件替换至新版文件夹中即可
-- Bot版：以管理员身份运行`更新.bat`或执行`./manage.sh update`
-  >```
-  >pip install --upgrade hikari-bot
-  >git pull
-  >```
-- 插件版：pip install --upgrade hikari-bot
->对比`.env.prod-example`中新增的配置项，并同步至你本地的`env.prod`
->
->install结束后会打印当前版本
->
->您也可以通过pip show hikari-bot查看
->
->如果没有更新到最新版请等待一会儿，镜像站一般每五分钟同步
->
+1. 按不同版本
+   - Windows一键包：下载最新一键包，复制旧版本中`accounts`文件夹和`env.prod`文件替换至新版文件夹中即可
+   - 完整版：以管理员身份运行`更新.bat`或执行`./manage.sh update`
+      >等效于在cmd中执行如下代码
+      ```
+      pip install --upgrade hikari-bot
+      git pull
+      ```
+   - 插件版：在cmd中执行如下代码
+      ```
+      pip install --upgrade hikari-bot
+      ```
+2. **对比`.env.prod-example`中新增的配置项，并同步至你本地的`env.prod`**
+    - install结束后会打印当前版本
+    - 您也可以通过`pip show hikari-bot`查看当前Hikari版本
+    - 如果没有更新到最新版请等待一会儿，镜像站一般每五分钟同步
+    - 从0.3.2.2版本开始，您没有填写的配置将按.env文件中的默认配置执行，具体逻辑为
+      - 私聊、频道默认禁用
+      - 群聊默认开启，默认屏蔽官方交流群
+
+## 最近的更新日志
+
+22-07-05    v0.3.2.2  一些修复
+- [#]修复切换、删除绑定的bug
+- [#]默认配置改为不启用WEB登陆验证
+- [#]修复.bat的环境变量问题[@94Bo](https://github.com/94Bo)
+
+22-07-04    v0.3.2.1  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置 
+- [+]新增对QQ频道的适配（非官方bot接入，官方版bot已上线yuyuko频道）
+- [+]新增自定义开启群聊、私聊、QQ频道
+- [+]新增web登录密码
+- [+]新增默认配置项
+- [+]新增PR彩蛋
+- [#]info适配V3接口
+- [#]recent显示时间区间
+
+22-06-23    v0.3.1  **重要功能更新**
+- [+]新增单船近期战绩，可显示每日详细信息，指令`wws ship recent`
+- [#]修复国服特殊字符ID无法查询的bug
+- [#]修复船只选择过期后发送数字序号仍被识别的bug
+
+22-06-15    v0.3.0.1  **重要功能更新**
+- [+]支持显示军团评级颜色
+- [#]排行榜内部逻辑改动，现在仅显示前十，不更新将无法使用
+- [#]\(hotfix)`wws recent`现在无随机战绩不会显示PR和上方战斗信息
+
+<details>
+<summary>更以前的更新日志</summary>
+
+22-06-08    v0.2.9.4  **重要功能更新**
+- [+]新增单船的服务器排行，显示在`wws ship`的详情页面下
+- [#]修复0.2.9后无法启动的bug
+- [#]js依赖改为本地
+- [#]修改recent样式，不更新可能会导致错位
+- [#]优化报错提示
+
+22-06-03    v0.2.8  一些修复
+- [+]新增删除绑定功能
+- [#]修复`wws ship`总览经验和胜率不上色的bug
+- [#]修复`wws ship`详情只有单野场均被上色的bug
+- [#]修复`wws 查船名`中搜不到德国船的bug
+
+22-06-03    v0.2.6  [#]修复`wws recent`胜率颜色的bug
+
+22-06-03    v0.2.5  [#]修复`wws recent`击杀显示成命中的bug
+
+22-06-03    v0.2.4  **重要功能更新** 否则您将无法使用`wws recent`功能
+- [+]全指令在游戏名外带上括号即可强制指定昵称，以适配一些带有空格、特殊字符、指令字符的昵称
+- [+]新增特殊绑定，请配合网页端食用，复制后发送给Hikari即可一键绑定
+- [+]新增部分报错提示
+- [#]更改ship,rank,recent样式，现在没有战斗场次的类型不会被显示
+- [#]优化Hikari的部署流程
+- [#]修复me大写不被识别的问题
 
 
-  
+22-06-02    v0.2.3  一些修复
+- [+]全指令支持大写
+- [#]修复Linux上可能出现的报错
+- [#]修改部分图片的样式
+
+22-06-01    v0.2.2  修复了一个VSC导致的依赖错误
+
+22-06-01    v0.2.1  修复问题
+
+22-06-01    v0.2.0  **重要功能更新**
+- [+]新增排位数据
+- [+]支持国服
+- [+]单船战绩显示单野、自行车、三轮车
+- [+]启用gzip，试图改善请求Timeout
+- [+]增加3s指令CD和每日100次上限
+- [#]修复图片内字符不对称的bug（强迫症）
+- [#]修改未绑定账号时的返回
+- [#]修复网络问题与找不到游戏名时相同返回的bug
+- [#]适配HarukaBot
+
+
+22-05-31    v0.1.9  一些修复
+- [#]解决由于QQ风控导致的船只选择列表无法发送的问题
+- [#]修复带非me/@参数查询绑定时引起的报错
+
+22-05-30    v0.1.8  **重要更新**
+- [+]所有带请求参数的部分添加log输出以方便查找问题
+- [+]添加平台报错时返回以和Hikari内部错误区分
+- [#]移除bat脚本中的utf8以支持部分英文服务器
+- [#]试图减少因网络导致的报错问题
+
+22-05-30    v0.1.7  一些修复
+- [#]修复排行榜查询报错
+- [#]修复部分环境可能出现的单船查询无法选择问题
+
+22-05-28    v0.1.6  **重要功能更新**
+- [+]新增排行榜查询 指令`wws rank/ship.rank`
+- [+]新增是否开启内置go-cqhttp，默认开启
+
+22-05-28    v0.1.5  一些功能更新
+- [+]添加等级显示，适配新舰船数据
+- [+]新增wws 检查更新
+- [+]配置项添加Bot管理员
+- [#]修复定时任务不触发的bug
+
+22-05-27    v0.1.4  一些功能优化
+- [+]添加在windows下的一键安装、更新、启动脚本
+- [#]修复数字ID的recent匹配问题
+- [#]优化提示逻辑
+
+22-05-27    v0.1.3  一些修复和适配
+- [+]适配包括真寻等大部分Nonebot2机器人
+- [#]修复自动更新的bug
+
+22-05-27    v0.1.2  **调整info接口，不更新无法使用**
+
+22-05-27    v0.1.1  一些小改动
+
+22-05-27    v0.1.0  一些更新
+- [+]新增定时检查更新
+- [+]新增部署教程
+- [+]添加11级战绩信息
+- [#]优化账号总体和单船图片样式
+
+</details>
+
 ## 可能会遇到的问题
 
 ### go-cqhttp扫码后提示异地无法登录
->一般提示需要扫码，扫码后提示异地无法登录
->
->关于该问题，您可以查看[#1469](https://github.com/Mrs4s/go-cqhttp/issues/1469)获得相应解决办法，这里简单列举三种办法
->
->1. 启动时登录方式选择`浏览器滑条`，按后续提示登录
->2. 手机下载`爱加速`等代理，连接到服务器对应市级地区
->3. 在本地电脑使用go-cqhttp登录成功后，复制生成的`session.token`和`device.json`到服务器对应目录下，内嵌go-cqhttp为`account\QQ号`，外置直接将整个本地文件夹拷贝过去即可，请注意使用外置go-cqhttp时需要将`.env.prod`的`USE_PLUGIN_GO_CQHTTP`的值改为`false`
->
+- 一般提示需要扫码，扫码后提示异地无法登录
+- 关于该问题，您可以查看[这里](https://github.com/Mrs4s/go-cqhttp/issues/1469)获得相应解决办法，这里简单列举三种办法
+  - 启动时登录方式选择`浏览器滑条`，按后续提示登录
+  - 手机下载`爱加速`等代理，连接到服务器对应市级地区
+  - 在本地电脑使用go-cqhttp登录成功后，将会在exe同级目录下生成`session.token`和`device.json`两个文件  
+  将这两个文件复制到服务器对应目录下并重启  
+    - 内嵌go-cqhttp为`account\QQ号`
+    - 独立go-cqhttp为exe所在同级目录下，请注意使用独立go-cqhttp时需要将`.env.prod`的`USE_PLUGIN_GO_CQHTTP`的值改为`false`
 
 ### 无法使用内嵌go-cqhttp登录bot
 
@@ -213,7 +355,7 @@
 
     > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_386.exe](https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc1/go-cqhttp_windows_386.exe)
 
-2. 双击go-cqhttp，提示释出bat，重新运行bat，选择websocket反向代理，go-cqhttp将会在同文件夹内自动创建一个`config.yml`，右键使用notepad++打开，根据注释填写QQ账号密码，并将以下内容写入文件结尾：
+2. 双击go-cqhttp，提示释出bat，重新运行bat，选择websocket反向代理，go-cqhttp将会在同文件夹内自动创建一个`config.yml`，右键使用notepad++打开，根据注释填写QQ账号密码，并将以下内容写入文件结尾（需替换原有的ws-reverse节点）：
 
     ```yaml
       - ws-reverse:
@@ -237,7 +379,7 @@
 
 ### 出现ZoneInfoNotFoundError报错
 >
->[issue#78](https://github.com/nonebot/nonebot2/issues/78)
+>您可以在[这里](https://github.com/nonebot/nonebot2/issues/78)找到相关解决办法
 >
 ### Recent和绑定提示'鉴权失败'
 1. 检查Token是否配置正确，token格式为`XXXXX:XXXXXX`
@@ -250,15 +392,15 @@
 以下方法任选一种
 - 更新python版本至3.9+
 - 降低Hikari版本至3.1，等待后续版本修复
-- 使用Hikari一键包，其中自带了3.10的python环境
-- 修改依赖包代码，见[PR-6](https://github.com/mnixry/nonebot-plugin-guild-patch/pull/6/files)
+- 使用Hikari一键包，其中自带了3.10的python虚拟环境
+- 修改依赖包代码，见[这里](https://github.com/mnixry/nonebot-plugin-guild-patch/pull/6/files)
 
-## 感谢
+## 感谢以下项目的支持（排名不分先后）
 
-[Nonebot2](https://github.com/nonebot/nonebot2)<br>
-[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)<br>
-[战舰世界API平台](https://wows.shinoaki.com/)<br>
+[Nonebot2](https://github.com/nonebot/nonebot2)  
+[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)  
+[战舰世界API平台](https://wows.shinoaki.com/)  
 
-## 开源协议
-
-MIT
+## 开源相关
+MIT  
+修改、分发代码时请保留原作者相关信息
