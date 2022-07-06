@@ -242,6 +242,17 @@
 ### Recent和绑定提示'鉴权失败'
 1. 检查Token是否配置正确，token格式为`XXXXX:XXXXXX`
 2. 如果配置正确可能是Token失效了，请重新申请
+
+### 'Config' Object has no attribute XXXX
+1. 检查视力，重新阅读`更新`章节
+
+### Failed to import "nonebot_plugin_guild_patch"
+以下方法任选一种
+- 更新python版本至3.9+
+- 降低Hikari版本至3.1，等待后续版本修复
+- 使用Hikari一键包，其中自带了3.10的python环境
+- 修改依赖包代码，见[PR-6](https://github.com/mnixry/nonebot-plugin-guild-patch/pull/6/files)
+
 ## 感谢
 
 [Nonebot2](https://github.com/nonebot/nonebot2)<br>
