@@ -22,14 +22,18 @@
   <a href="https://jq.qq.com/?_wv=1027&k=S2WcTKi5">
     <img src="https://img.shields.io/badge/QQ%E7%BE%A4-967546463-orange?style=flat-square" alt="QQ Chat Group">
   </a>
+  <a href="https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&appChannel=share&inviteCode=1W4NX2S&from=181074&biz=ka#/pc">
+    <img src="https://img.shields.io/badge/QQ%E9%A2%91%E9%81%93-yuyuko助手-5492ff?style=flat-square" alt="QQ Channel">
+  </a>
 </p>
 
 ## 简介
 
-战舰世界水表BOT，基于Nonebot2<br>
-水表人，出击！wws me recent！！！<br>
+战舰世界水表BOT，基于Nonebot2  
+水表人，出击！wws me recent！！！  
+QQ频道官方机器人已上线，请点击上方链接加入体验~  
 [Hoshino版插件](https://github.com/benx1n/wows-stats-bot)
-### 如果您觉得本项目还不错的话请点个Star哦~<br>
+### 如果您觉得本项目还不错的话请点个Star哦~  
 
 
 ## 特色
