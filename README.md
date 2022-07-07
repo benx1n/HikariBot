@@ -73,6 +73,15 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
   - 由于个人精力原因，主要功能开发和维护面向Hikari，Hoshino版仅做最低限度功能适配
 
   </details>
+  <details>
+  <summary>点我查看遇到问题如何解决</summary>
+
+  - [ ] 请确认您已按文档中部署流程进行
+  - [ ] 请确认您已完整浏览[可能会遇到的问题](https://github.com/benx1n/HikariBot#%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98)，且仍无法自行解决
+  - [ ] [提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md)
+  - [ ] 提供系统环境和bot版本，以及出现问题前后至少 10 秒的完整日志内容。请自行删除日志内存在的个人信息及敏感内容
+
+  </details>
 ## 在Windows系统上快速部署
 >点我查看[视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
 
@@ -89,6 +98,10 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
       - 群聊默认开启，默认屏蔽官方交流群
    
 3. 双击`启动.bat`
+    - 页面加载不出请尝试刷新一下，已知IE浏览器可能存在一些问题
+    - 此时若没有报错，您可以在打开的页面`http://127.0.0.1:8080/go-cqhttp/`中  
+      点击左侧添加账号，重启bot即可在网页上看到相应信息（大概率需要扫码）
+    - 如果重启后go-cqhhtp一直卡在扫码或无限重启，请跳转[无法使用内嵌go-cqhttp登录](https://github.com/benx1n/HikariBot#%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E5%86%85%E5%B5%8Cgo-cqhttp%E7%99%BB%E5%BD%95bot)
 
 ## 在Windows系统上完整部署
 1. 下载[Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
@@ -122,10 +135,10 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
       - 群聊默认开启，默认屏蔽官方交流群`
 
 5. 双击`启动.bat`，在打开的浏览器中添加bot账号密码，重新启动Hikari
-    - 页面加载不出请尝试刷新以下，已知IE浏览器可能会u你在一些问题
+    - 页面加载不出请尝试刷新一下，已知IE浏览器可能存在一些问题
     - 此时若没有报错，您可以在打开的页面`http://127.0.0.1:8080/go-cqhttp/`中
       点击左侧添加账号，重启bot即可在网页上看到相应信息（大概率需要扫码）
-    - 如果重启后go-cqhhtp一直卡在扫码或无限重启，请继续往下阅读
+    - 如果重启后go-cqhhtp一直卡在扫码或无限重启，请跳转[无法使用内嵌go-cqhttp登录](https://github.com/benx1n/HikariBot#%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E5%86%85%E5%B5%8Cgo-cqhttp%E7%99%BB%E5%BD%95bot)
 
 
 ## 在Ubuntu/Debian系统上的管理
@@ -392,7 +405,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 2. 如果配置正确可能是Token失效了，请重新申请
 
 ### 'Config' Object has no attribute XXXX
-1. 检查视力，重新阅读`更新`章节
+1. 检查视力，重新阅读[更新](https://github.com/benx1n/HikariBot#更新)章节
 
 ### Failed to import "nonebot_plugin_guild_patch"
 以下方法任选一种
