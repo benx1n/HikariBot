@@ -194,7 +194,6 @@ async def change_select_state(ev:MessageEvent):
                 ClanSecletProcess[qqid] = ClanSecletProcess[qqid]._replace(SlectIndex = int(msg))
             else:
                 await bot.send(ev,'请选择列表中的序号哦~') 
-        return
     except Exception:
         logger.warning(traceback.format_exc())
         return
