@@ -111,6 +111,8 @@ async def get_ShipInfo(server_type,qqid,info,bot):
             logger.info(f"本次请求返回的状态码:{result['code']}")
             logger.info(f"本次请求服务器计算时间:{result['queryTime']}")
         if result['code'] == 200 and result['data']:
+            if not result['data']['shipInfo']['battles'] and not result['data']['rankSolo']['battles']:
+                return '查询不到战绩数据'
             template = env.get_template("wws-ship.html")
             template_data = await set_shipparams(result['data'])
             template_data['shipRank'] = ranking
