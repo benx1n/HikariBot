@@ -1,0 +1,36 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  USER_NAME: 12hydrogen
+  IMAGE_NAME: hikari-bot
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        cd Docker
+        docker build . --file Dockerfile --tag $IMAGE_NAME
+
+    - name: Login to DockerHub
+      env:
+        PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+      shell: 'script -q -e -c "bash {0}"'
+      run: docker login -u $USER_NAME -p $PASSWORD
+
+    - name: Upload image
+      run: |
+        IMAGE_ID=$USER_NAME/$IMAGE_NAME
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+        docker tag $IMAGE_NAME $IMAGE_ID:latest
+        docker push $IMAGE_ID:latest
