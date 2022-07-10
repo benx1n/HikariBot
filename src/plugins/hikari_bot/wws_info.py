@@ -29,7 +29,6 @@ async def get_AccountInfo(server_type,qqid,info):
         if isinstance(info,List):
             for i in info:
                 if str(i).lower() == 'me':
-                    url = 'https://api.wows.shinoaki.com/public/wows/account/v3/user/info'
                     params = {
                     "server": server_type,
                     "accountId": int(qqid)
@@ -37,7 +36,6 @@ async def get_AccountInfo(server_type,qqid,info):
                     break
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
-                    url = 'https://api.wows.shinoaki.com/public/wows/account/v3/user/info'
                     params = {
                     "server": server_type,
                     "accountId": int(match.group(1))
@@ -48,7 +46,6 @@ async def get_AccountInfo(server_type,qqid,info):
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))
                     if isinstance(param_accountid,int):
-                        url = 'https://api.wows.shinoaki.com/public/wows/account/v3/user/info'
                         params = {
                         "server": param_server,
                         "accountId": param_accountid
@@ -63,6 +60,7 @@ async def get_AccountInfo(server_type,qqid,info):
                 return '您似乎准备用游戏昵称查询，请检查参数中是否包含服务器和游戏昵称，以空格区分，如果您准备查询单船战绩，请带上ship参数'
         else:
             return '参数似乎出了问题呢'
+        url = 'https://api.wows.shinoaki.com/public/wows/account/v4/user/info'
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=None)

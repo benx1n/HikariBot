@@ -144,3 +144,4 @@ accounts
 logs
 .env.prod
 pyenv
+echarts.js

@@ -37,7 +37,6 @@ async def get_RecentInfo(server_type,qqid,info):
                     info.remove(i)
             for i in info:              #是否包含me或@，包含则调用平台接口
                 if i == 'me':
-                    url = 'https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info'
                     params = {
                     "server": server_type,
                     "accountId": int(qqid),
@@ -46,7 +45,6 @@ async def get_RecentInfo(server_type,qqid,info):
                     }
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
-                    url = 'https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info'
                     params = {
                     "server": server_type,
                     "accountId": int(match.group(1)),
@@ -59,7 +57,6 @@ async def get_RecentInfo(server_type,qqid,info):
                 if param_server:
                     param_accountid = await get_AccountIdByName(param_server,str(info[0]))
                     if isinstance(param_accountid,int):
-                        url = 'https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info'
                         params = {
                         "server": param_server,
                         "accountId": param_accountid,
@@ -76,6 +73,7 @@ async def get_RecentInfo(server_type,qqid,info):
                 return '您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格区分'
         else:
             return '参数似乎出了问题呢'
+        url = 'https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info'
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=None)
