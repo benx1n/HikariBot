@@ -118,7 +118,8 @@ async def get_ClanIdByName(server:str,tag:str):
         url = 'https://api.wows.shinoaki.com/public/wows/clan/search'
         params = {
             "server": server,
-            "tag": tag
+            "tag": tag,
+            "type": 1
         }
         print(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:

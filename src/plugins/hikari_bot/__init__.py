@@ -30,11 +30,11 @@ _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.3.2.2'
+__version__ = '0.3.3'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
-bot = on_command("wws", block=True, aliases={"WWS"},priority=5)
+bot = on_command("wws", block=False, aliases={"WWS"},priority=5)
 bot_listen = on_message(priority=5)
 bot_checkversion = on_command("wws 检查更新",priority=5)
 driver = get_driver()
@@ -106,7 +106,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list) 
             if not select_command:                  #查询公会详情信息
-                msg = await get_ClanInfo(server_type,qqid,search_list,bot,ev)
+                msg = await get_ClanInfo(server_type,qqid,search_list,bot)
             elif select_command == 'record':        #查询公会历史记录
                 msg = await get_record(server_type,qqid,search_list,"clan")
         elif select_command == 'record':
