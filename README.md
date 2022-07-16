@@ -246,6 +246,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 - [#]修复仅打过PVE的单船仍会显示战绩详情的问题
 - [#]info适配v4接口
 - [+]新增配置项ban_group_list
+- [#]v0.3.3.1 fix[#11](https://github.com/benx1n/HikariBot/issues/11) 
 
 ### 22-07-05    v0.3.2.2  一些修复
 - [#]修复切换、删除绑定的bug
