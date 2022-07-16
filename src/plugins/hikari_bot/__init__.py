@@ -35,7 +35,7 @@ dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
 bot = on_command("wws", block=False, aliases={"WWS"},priority=5)
-bot_listen = on_message(priority=5)
+bot_listen = on_message(priority=5,block=False)
 bot_checkversion = on_command("wws 检查更新",priority=5)
 driver = get_driver()
 
