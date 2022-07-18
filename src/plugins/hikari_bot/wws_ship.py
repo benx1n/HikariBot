@@ -100,7 +100,7 @@ async def get_ShipInfo(server_type,qqid,info,bot):
                 return '找不到船'
         else:
             return '参数似乎出了问题呢'
-        url = 'https://api.wows.shinoaki.com/public/wows/account/v2/ship/info'
+        url = 'https://api.wows.shinoaki.com/public/wows/account/ship/info'
         logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         ranking = await get_MyShipRank_yuyuko(params)
         async with httpx.AsyncClient(headers=headers) as client:
