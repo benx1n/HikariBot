@@ -93,7 +93,7 @@ async def get_ClanInfo(server_type,qqid,info,bot):
                 return '您似乎准备用军团名查询军团详情，请检查参数中是否包含服务器、军团名，以空格区分'
         else:
             return '参数似乎出了问题呢'
-        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
+        logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
             result = resp.json()

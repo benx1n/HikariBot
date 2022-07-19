@@ -67,13 +67,13 @@ async def get_ShipInfo(server_type,qqid,info,bot):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params and len(info) == 1:
-                logger.info(f"{params}")
+                logger.success(f"{params}")
             elif params:
                 return '您似乎准备用查询自己的单船战绩，请检查参数中是否带有船名，以空格区分'
             else:
                 return '您似乎准备用游戏昵称查询单船战绩，请检查参数中是否包含服务器、游戏昵称和船名，以空格区分'
             shipList = await get_ship_byName(str(info[0]))
-            logger.info(f"{shipList}")
+            logger.success(f"{shipList}")
             if shipList:
                 if len(shipList) < 2:
                     params["shipId"] = shipList[0][0]
@@ -101,13 +101,13 @@ async def get_ShipInfo(server_type,qqid,info,bot):
         else:
             return '参数似乎出了问题呢'
         url = 'https://api.wows.shinoaki.com/public/wows/account/ship/info'
-        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
+        logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         ranking = await get_MyShipRank_yuyuko(params)
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=None)
             result = resp.json()
-            logger.info(f"本次请求返回的状态码:{result['code']}")
-            logger.info(f"本次请求服务器计算时间:{result['queryTime']}")
+            logger.success(f"本次请求返回的状态码:{result['code']}")
+            logger.success(f"本次请求服务器计算时间:{result['queryTime']}")
         if result['code'] == 200 and result['data']:
             if not result['data']['shipInfo']['battles'] and not result['data']['rankSolo']['battles']:
                 return '查询不到战绩数据'
@@ -244,13 +244,13 @@ async def get_ShipInfoRecent(server_type,qqid,info,bot):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params and len(info) == 1:
-                logger.info(f"{params}")
+                logger.success(f"{params}")
             elif params:
                 return '您似乎准备用查询自己的单船近期战绩，请检查参数中是否带有船名，以空格区分'
             else:
                 return '您似乎准备用游戏昵称查询单船近期战绩，请检查参数中是否包含服务器、游戏昵称和船名，以空格区分'
             shipList = await get_ship_byName(str(info[0]))
-            logger.info(f"{shipList}")
+            logger.success(f"{shipList}")
             if shipList:
                 if len(shipList) < 2:
                     params["shipId"] = shipList[0][0]
@@ -278,7 +278,7 @@ async def get_ShipInfoRecent(server_type,qqid,info,bot):
         else:
             return '参数似乎出了问题呢'
         url = 'https://api.wows.shinoaki.com/api/wows/recent/v2/recent/info/ship'
-        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
+        logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=None)
             result = resp.json()

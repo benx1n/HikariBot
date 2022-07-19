@@ -55,18 +55,18 @@ async def get_AccountInfo(server_type,qqid,info):
                 else:
                     return '服务器参数似乎输错了呢'
             elif params:
-                logger.info(f"{params}")
+                logger.success(f"{params}")
             else:
                 return '您似乎准备用游戏昵称查询，请检查参数中是否包含服务器和游戏昵称，以空格区分，如果您准备查询单船战绩，请带上ship参数'
         else:
             return '参数似乎出了问题呢'
         url = 'https://api.wows.shinoaki.com/public/wows/account/user/info'
-        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
+        logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=None)
             result = resp.json()
-            logger.info(f"本次请求返回的状态码:{result['code']}")
-            logger.info(f"本次请求服务器计算时间:{result['queryTime']}")
+            logger.success(f"本次请求返回的状态码:{result['code']}")
+            logger.success(f"本次请求服务器计算时间:{result['queryTime']}")
         if result['code'] == 200 and result['data']:
             template = env.get_template("wws-info.html")
             template_data = await set_infoparams(result['data'])

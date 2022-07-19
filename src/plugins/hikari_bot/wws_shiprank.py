@@ -39,7 +39,7 @@ async def get_ShipRank(qqid,info,bot):
         else:
             return '参数似乎出了问题呢'
         shipList = await get_ship_byName(str(info[0]))
-        logger.info(f"{shipList}")
+        logger.success(f"{shipList}")
         if shipList:
             if len(shipList) < 2:
                 select_shipId = shipList[0][0]
@@ -92,10 +92,10 @@ async def search_ShipRank_Yuyuko(shipId,server):
                 "server":server,
                 "shipId":int(shipId)
             }
-            logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
+            logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
             resp = await client.get(url, params=params,timeout=None)
             result = resp.json()
-            logger.info(f"本次请求返回的状态码:{result['code']}")
+            logger.success(f"本次请求返回的状态码:{result['code']}")
             if result['code'] == 200 and result['data']:
                 template = env.get_template("ship-rank.html")
                 result_data = {"data":result['data']}
@@ -113,10 +113,10 @@ async def search_ShipRank_Yuyuko(shipId,server):
 async def search_ShipRank_Numbers(url,server,shipId):
     try:
         content = None
-        logger.info(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}")
+        logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}")
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, timeout=None)
-            logger.info(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
+            logger.success(f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}")
         soup = BeautifulSoup(resp.content, 'html.parser')
         data = soup.select('tr[class="cells-middle"]')
         infoList = await set_ShipRank_Numbers(data,server,shipId)
@@ -137,7 +137,7 @@ async def post_ShipRank(data):
             url = 'https://api.wows.shinoaki.com/upload/numbers/data/v2/upload/ship/rank'
             resp = await client.post(url, json = data, timeout=None)
             result = resp.json()
-            logger.info(result)
+            logger.success(result)
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
     except Exception:
