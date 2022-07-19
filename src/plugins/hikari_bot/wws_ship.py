@@ -3,9 +3,10 @@ import httpx
 import traceback
 import jinja2
 import re
+import time
 import asyncio
 from pathlib import Path
-from .data_source import servers,set_shipparams,set_shipRecentparams,tiers,number_url_homes
+from .data_source import servers,set_shipparams,set_shipRecentparams,tiers,number_url_homes,set_damageColor,set_winColor
 from .utils import match_keywords,get_bot
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
 from nonebot.adapters.onebot.v11 import MessageSegment,ActionFailed
@@ -286,6 +287,7 @@ async def get_ShipInfoRecent(server_type,qqid,info,ev):
             result = resp.json()
         if result['code'] == 200 and result['data']:
             template = env.get_template("wws-ship-recent.html")
+            env.globals.update(set_damageColor=set_damageColor,set_winColor=set_winColor,time=time,int=int,abs=abs,enumerate=enumerate)
             template_data = await set_shipRecentparams(result['data'])
             content = await template.render_async(template_data)
             return await html_to_pic(content, wait=0, viewport={"width": 800, "height": 100})
