@@ -66,15 +66,13 @@
             <td class="font-data" colspan="6" style="text-align: center; font-size: 30px;"><span>{{ data['shipData'][0]['rankSolo']['shipInfo']['nameEnglish'] }}</span>&nbsp;&nbsp;<span>{{ data['shipData'][0]['rankSolo']['shipInfo']['nameCn'] }}</span></td>
             {% endif %}
         </tr>
-        {% if data['pvpInfo']['pr']['color'] != '#828282' %}
         <tr>
-            <td colspan="6" style="text-align: center;background-color: {{ data['pvpInfo']['pr']['color'] }}">{{ data['pvpInfo']['pr']['value'] }} {{ data['pvpInfo']['pr']['name'] }}</td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="6" style="text-align: center;background-color: {{ data['rankInfo']['pr']['color'] }}">{{ data['rankInfo']['pr']['value'] }} {{ data['rankInfo']['pr']['name'] }}</td>
-        </tr>
-        {% endif %}
+            {% if data['pvpInfo']['pr']['color'] != '#828282' %}
+                <td colspan="6" style="text-align: center;background-color: {{ data['pvpInfo']['pr']['color'] }}">{{ data['pvpInfo']['pr']['value'] }} {{ data['pvpInfo']['pr']['name'] }}</td>
+            {% else %}
+                <td colspan="6" style="text-align: center;background-color: {{ data['rankInfo']['pr']['color'] }}">{{ data['rankInfo']['pr']['value'] }} {{ data['rankInfo']['pr']['name'] }}</td>
+            {% endif %}
+        </tr> 
         <tr>
             <td colspan="6" class="greyColor" style="text-align: center;">记录时间:{{ time.strftime('%Y-%m-%d %H:%M',time.localtime(int(abs(data['shipData'][0]['recordDateTime']/1000)))) }}—{{ time.strftime('%Y-%m-%d %H:%M',time.localtime(time.time())) }}</td>
         </tr>
