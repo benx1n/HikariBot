@@ -3,9 +3,10 @@ import httpx
 import traceback
 import jinja2
 import re
+import time
 from datetime import datetime
 from pathlib import Path
-from .data_source import servers,set_recentparams
+from .data_source import servers,set_recentparams,set_damageColor,set_winColor,set_upinfo_color
 from .utils import match_keywords
 from nonebot_plugin_htmlrender import html_to_pic
 from .publicAPI import get_AccountIdByName
@@ -19,6 +20,7 @@ template_path = dir_path / "template"
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(template_path), enable_async=True
 )
+env.globals.update(set_damageColor=set_damageColor,set_winColor=set_winColor,set_upinfo_color=set_upinfo_color,time=time,int=int,abs=abs,enumerate=enumerate)
 
 headers = {
     'Authorization': get_driver().config.api_token

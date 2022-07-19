@@ -53,10 +53,10 @@
     <table id="ship-data" width="920" style="table-layout: fixed;">
         <tr>
             <td colspan="6" class="font-data" style="text-align: center;">
-                {% if guild%}
-                <span style="color:{{clanColor}}">[{{guild}}]</span>&nbsp;
+                {% if data['clanInfo']['tag'] %}
+                <span style="color:{{ data['clanInfo']['colorRgb'] }}">[{{ data['clanInfo']['tag'] }}]</span>&nbsp;
                 {% endif %}
-                <span>{{userName}}</span><sup style="color:green">+{{karma}}</sup>&nbsp;&nbsp;&nbsp;<span>{{serverName}}</span>
+                <span>{{ data['userName'] }}</span><sup style="color:green">+{{ data['karma'] }}</sup>&nbsp;&nbsp;&nbsp;<span>{{ data['serverName'] }}</span>
             </td>
         </tr>
         <tr>
@@ -65,18 +65,18 @@
             <td colspan="2" class="font-data greyColor">PR</td>
         </tr>
         <tr>
-            <td colspan="2" style="color: {{newDamageColor}}">{{newDamage}}</td>
-            <td colspan="2" style="color: {{newWinsColor}}">{{newWins}}%</td>
-            <td colspan="2" style="color: {{newPrColor}}">{{newPr}}</td>
+            <td colspan="2" style="color: {{ set_upinfo_color(data['dwpDataVO']['damage']) }}">{{ '%+d' | format(data['dwpDataVO']['damage']) }}</td>
+            <td colspan="2" style="color: {{ set_upinfo_color(data['dwpDataVO']['wins']) }}">{{ '%.2f' | format(data['dwpDataVO']['wins']) }}%</td>
+            <td colspan="2" style="color: {{ set_upinfo_color(data['dwpDataVO']['pr']) }}">{{ '%+d' | format(data['dwpDataVO']['pr']) }}</td>
         </tr>
         <tr>
-            <td colspan="6" style="text-align: center;background-color: {{prValueColor}}">{{prValue}}</td>
+            <td colspan="6" style="text-align: center;background-color: {{ data['pr']['color'] }}">{{ data['pr']['value'] }} {{ data['pr']['name'] }}</td>
         </tr>
         <tr>
             <td colspan="6" style="text-align: center;">最后战斗时间</td>
         </tr>
         <tr>
-            <td colspan="6" class="greyColor" style="text-align: center;">{{time}}</td>
+            <td colspan="6" class="greyColor" style="text-align: center;">{{ time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(abs(data['lastDateTime']))) }}</td>
         </tr>
         <tr>
             <td colspan="2" class="greyColor2 font-size">场次</td>
@@ -84,9 +84,9 @@
             <td colspan="2" class="greyColor2 font-size">场均</td>
         </tr>
         <tr>
-            <td colspan="2" class="blueColor font-size">{{battles}}</td>
-            <td colspan="2" class="blueColor font-size" style="color: {{winsColor}}">{{wins}}%</td>
-            <td colspan="2" class="blueColor font-size" style="color: {{damageColor}}">{{damage}}</td>
+            <td colspan="2" class="blueColor font-size">{{ data['pvp']['battles'] }}</td>
+            <td colspan="2" class="blueColor font-size" style="color: {{ set_winColor(data['pvp']['wins']) }}">{{ data['pvp']['wins'] }}%</td>
+            <td colspan="2" class="blueColor font-size" style="color: {{ set_damageColor(None,data['pvp']['damage']) }}">{{ data['pvp']['damage'] }}</td>
         </tr>
         <tr>
             <td colspan="2" class="greyColor2 font-size">经验</td>
@@ -94,9 +94,9 @@
             <td colspan="2" class="greyColor2 font-size">命中</td>
         </tr>
         <tr>
-            <td colspan="2" class="blueColor font-size">{{xp}}</td>
-            <td colspan="2" class="blueColor font-size">{{frags}}</td>
-            <td colspan="2" class="blueColor font-size">{{hit}}%</td>
+            <td colspan="2" class="blueColor font-size">{{ data['pvp']['xp'] }}</td>
+            <td colspan="2" class="blueColor font-size">{{ '%.2f' | format(data['pvp']['frags']) }}</td>
+            <td colspan="2" class="blueColor font-size">{{ data['pvp']['hit'] }}%</td>
         </tr>
         <tr>
             <td colspan="6" class="blackColor" style="text-align: center;"></td>
@@ -112,48 +112,48 @@
             <td class="greyColor">场均</td>
             <td class="greyColor">命中</td>
         </tr>
-        {% if bb_battles %}
+        {% if  data['type']['Battleship']['battles']  %}
         <tr>
             <td class="bold-data greyColor">战列舰</td>
-            <td class="blueColor">{{bb_battles}}</td>
-            <td class="blueColor" style="color: {{bb_prColor}}">{{bb_pr}}</td>
-            <td class="blueColor" style="color: {{bb_winsColor}}">{{bb_wins}}%</td>
-            <td class="blueColor" style="color: {{bb_damageColor}}">{{bb_damage}}</td>
-            <td class="blueColor">{{bb_hit}}%</td>
+            <td class="blueColor">{{ data['type']['Battleship']['battles'] }}</td>
+            <td class="blueColor" style="color: {{ data['type']['Battleship']['pr']['color'] }}">{{ data['type']['Battleship']['pr']['value'] }}</td>
+            <td class="blueColor" style="color: {{ set_winColor(data['type']['Battleship']['wins']) }}">{{ data['type']['Battleship']['wins'] }}%</td>
+            <td class="blueColor" style="color: {{ set_damageColor(None,data['type']['Battleship']['damage']) }}">{{ data['type']['Battleship']['damage'] }}</td>
+            <td class="blueColor">{{ data['type']['Battleship']['hit'] }}%</td>
         </tr>
         {% endif %}
-        {% if ca_battles %}
+        {% if data['type']['Cruiser']['battles'] %}
         <tr>
             <td class="bold-data greyColor">巡洋舰</td>
-            <td class="blueColor">{{ca_battles}}</td>
-            <td class="blueColor" style="color: {{ca_prColor}}">{{ca_pr}}</td>
-            <td class="blueColor" style="color: {{ca_winsColor}}">{{ca_wins}}%</td>
-            <td class="blueColor" style="color: {{ca_damageColor}}">{{ca_damage}}</td>
-            <td class="blueColor">{{ca_hit}}%</td>
+            <td class="blueColor">{{ data['type']['Cruiser']['battles'] }}</td>
+            <td class="blueColor" style="color: {{ data['type']['Cruiser']['pr']['color'] }}">{{ data['type']['Cruiser']['pr']['value'] }}</td>
+            <td class="blueColor" style="color: {{ set_winColor(data['type']['Cruiser']['wins']) }}">{{ data['type']['Cruiser']['wins'] }}%</td>
+            <td class="blueColor" style="color: {{ set_damageColor('Cruiser',data['type']['Cruiser']['damage']) }}">{{ data['type']['Cruiser']['damage'] }}</td>
+            <td class="blueColor">{{ data['type']['Cruiser']['hit'] }}%</td>
         </tr>
         {% endif %}
-        {% if dd_battles %}
+        {% if data['type']['Destroyer']['battles'] %}
         <tr>
             <td class="bold-data greyColor">驱逐舰</td>
-            <td class="blueColor">{{dd_battles}}</td>
-            <td class="blueColor" style="color: {{dd_prColor}}">{{dd_pr}}</td>
-            <td class="blueColor" style="color: {{dd_winsColor}}">{{dd_wins}}%</td>
-            <td class="blueColor" style="color: {{dd_damageColor}}">{{dd_damage}}</td>
-            <td class="blueColor">{{dd_hit}}%</td>
+            <td class="blueColor">{{ data['type']['Destroyer']['battles'] }}</td>
+            <td class="blueColor" style="color: {{ data['type']['Destroyer']['pr']['color'] }}">{{ data['type']['Destroyer']['pr']['value'] }}</td>
+            <td class="blueColor" style="color: {{ set_winColor(data['type']['Destroyer']['wins']) }}">{{ data['type']['Destroyer']['wins'] }}%</td>
+            <td class="blueColor" style="color: {{ set_damageColor('Destroyer',data['type']['Destroyer']['damage']) }}">{{ data['type']['Destroyer']['damage'] }}</td>
+            <td class="blueColor">{{ data['type']['Destroyer']['hit'] }}%</td>
         </tr>
         {% endif %}
-        {% if cv_battles %}
+        {% if data['type']['AirCarrier']['battles'] %}
         <tr>
             <td class="bold-data greyColor">航空母舰</td>
-            <td class="blueColor">{{cv_battles}}</td>
-            <td class="blueColor" style="color: {{cv_prColor}}">{{cv_pr}}</td>
-            <td class="blueColor" style="color: {{cv_winsColor}}">{{cv_wins}}%</td>
-            <td class="blueColor" style="color: {{cv_damageColor}}">{{cv_damage}}</td>
+            <td class="blueColor">{{ data['type']['AirCarrier']['battles'] }}</td>
+            <td class="blueColor" style="color: {{ data['type']['AirCarrier']['pr']['color'] }}">{{ data['type']['AirCarrier']['pr']['value'] }}</td>
+            <td class="blueColor" style="color: {{ set_winColor(data['type']['AirCarrier']['wins']) }}">{{ data['type']['AirCarrier']['wins'] }}%</td>
+            <td class="blueColor" style="color: {{ set_damageColor('AirCarrier',data['type']['AirCarrier']['damage']) }}">{{ data['type']['AirCarrier']['damage'] }}</td>
             <td class="blueColor">N/A</td>
         </tr>
         {% endif %}
         <!--        单野、两个人、三人数据-->
-        {% if solo_battles %}
+        {% if data['pvpSolo']['battles'] %}
         <tr>
             <td colspan="6" class="bold-data greyColor" style="text-align: center;">单野</td>
         </tr>
@@ -169,15 +169,15 @@
             <td class="greyColor">击杀</td>
         </tr>
         <tr>
-            <td class="blueColor">{{solo_battles}}</td>
-            <td class="blueColor" style="color: {{solo_winsColor}}">{{solo_wins}}%</td>
-            <td class="blueColor" style="color: {{solo_prColor}}">{{solo_pr}}</td>
-            <td class="blueColor">{{solo_xp}}</td>
-            <td class="blueColor" style="color: {{solo_damageColor}}">{{solo_damage}}</td>
-            <td class="blueColor">{{solo_frags}}</td>
+            <td class="blueColor">{{ data['pvpSolo']['battles'] }}</td>
+            <td class="blueColor" style="color: {{ set_winColor(data['pvpSolo']['wins']) }}">{{ data['pvpSolo']['wins'] }}%</td>
+            <td class="blueColor" style="color: {{ data['pvpSolo']['pr']['color'] }}">{{ data['pvpSolo']['pr']['value'] }}</td>
+            <td class="blueColor">{{ data['pvpSolo']['xp'] }}</td>
+            <td class="blueColor" style="color: {{ set_damageColor(None,data['pvpSolo']['damage']) }}">{{ data['pvpSolo']['damage'] }}</td>
+            <td class="blueColor">{{ '%.2f' | format(data['pvpSolo']['frags']) }}</td>
         </tr>
         {% endif %}
-        {% if div2_battles %}
+        {% if data['pvpTwo']['battles'], %}
         <tr>
             <td colspan="6" class="bold-data greyColor" style="text-align: center;">自行车</td>
         </tr>
@@ -193,15 +193,15 @@
             <td class="greyColor">击杀</td>
         </tr>
         <tr>
-            <td class="blueColor">{{div2_battles}}</td>
-            <td class="blueColor" style="color: {{div2_winsColor}}">{{div2_wins}}%</td>
-            <td class="blueColor" style="color: {{div2_prColor}}">{{div2_pr}}</td>
-            <td class="blueColor">{{div2_xp}}</td>
-            <td class="blueColor" style="color: {{div2_damageColor}}">{{div2_damage}}</td>
-            <td class="blueColor">{{div2_frags}}</td>
+            <td class="blueColor">{{ data['pvpTwo']['battles'] }}</td>
+            <td class="blueColor" style="color: {{ set_winColor(data['pvpTwo']['wins']) }}">{{ data['pvpTwo']['wins'] }}%</td>
+            <td class="blueColor" style="color: {{ data['pvpTwo']['pr']['color'] }}">{{ data['pvpTwo']['pr']['value'] }}</td>
+            <td class="blueColor">{{ data['pvpTwo']['xp'] }}</td>
+            <td class="blueColor" style="color: {{ set_damageColor(None,data['pvpTwo']['damage']) }}">{{ data['pvpTwo']['damage'] }}</td>
+            <td class="blueColor">{{ '%.2f' | format(data['pvpTwo']['frags']) }}</td>
         </tr>
         {% endif %}
-        {% if div3_battles %}
+        {% if data['pvpThree']['battles'] %}
         <tr>
             <td colspan="6" class="bold-data greyColor" style="text-align: center;">三轮车</td>
         </tr>
@@ -217,15 +217,15 @@
             <td class="greyColor">击杀</td>
         </tr>
         <tr>
-            <td class="blueColor">{{div3_battles}}</td>
-            <td class="blueColor" style="color: {{div3_winsColor}}">{{div3_wins}}%</td>
-            <td class="blueColor" style="color: {{div3_prColor}}">{{div3_pr}}</td>
-            <td class="blueColor">{{div3_xp}}</td>
-            <td class="blueColor" style="color: {{div3_damageColor}}">{{div3_damage}}</td>
-            <td class="blueColor">{{div3_frags}}</td>
+            <td class="blueColor">{{ data['pvpThree']['battles'] }}</td>
+            <td class="blueColor" style="color: {{ set_winColor(data['pvpThree']['wins']) }}">{{ data['pvpThree']['wins'] }}%</td>
+            <td class="blueColor" style="color: {{ data['pvpThree']['pr']['color'] }}">{{ data['pvpThree']['pr']['value'] }}</td>
+            <td class="blueColor">{{ data['pvpThree']['xp'] }}</td>
+            <td class="blueColor" style="color: {{ set_damageColor(None,data['pvpThree']['damage']) }}">{{ data['pvpThree']['damage'] }}</td>
+            <td class="blueColor">{{ '%.2f' | format(data['pvpThree']['frags']) }}</td>
         </tr>
         {% endif %}
-        {% if rank_battles %}
+        {% if data['rankSolo']['battles'] %}
         <tr>
             <td colspan="6" class="bold-data greyColor" style="text-align: center;">排位</td>
         <tr>
@@ -237,12 +237,12 @@
             <td class="greyColor">击杀</td>
         </tr>
         <tr>
-            <td class="blueColor">{{rank_battles}}</td>
-            <td class="blueColor" style="color: {{rank_winsColor}}">{{rank_wins}}%</td>
-            <td class="blueColor" style="color: {{rank_prColor}}">{{rank_pr}}</td>
-            <td class="blueColor">{{rank_xp}}</td>
-            <td class="blueColor" style="color: {{rank_damageColor}}">{{rank_damage}}</td>
-            <td class="blueColor">{{rank_frags}}</td>
+            <td class="blueColor">{{ data['rankSolo']['battles'] }}</td>
+            <td class="blueColor" style="color: {{ set_winColor(data['rankSolo']['wins']) }}">{{ data['rankSolo']['wins'] }}%</td>
+            <td class="blueColor" style="color: {{ data['rankSolo']['pr']['color'] }}">{{ data['rankSolo']['pr']['value'] }}</td>
+            <td class="blueColor">{{ data['rankSolo']['xp'] }}</td>
+            <td class="blueColor" style="color: {{ set_damageColor(None,data['rankSolo']['damage']) }}">{{ data['rankSolo']['damage'] }}</td>
+            <td class="blueColor">{{ '%.2f' | format(data['rankSolo']['frags']) }}</td>
         </tr>
         {% endif %}
         <tr>
@@ -287,7 +287,19 @@
             labels: labels,
             datasets: [{
                 label: '场次',
-                data: [{{lv1}}, {{lv2}}, {{lv3}}, {{lv4}}, {{lv5}}, {{lv6}}, {{lv7}}, {{lv8}}, {{lv9}}, {{lv10}}, {{lv11}}],
+                data: [
+                    {{ data['battleCountAll']['1'] }},
+                    {{ data['battleCountAll']['2'] }},
+                    {{ data['battleCountAll']['3'] }},
+                    {{ data['battleCountAll']['4'] }},
+                    {{ data['battleCountAll']['5'] }},
+                    {{ data['battleCountAll']['6'] }},
+                    {{ data['battleCountAll']['7'] }},
+                    {{ data['battleCountAll']['8'] }},
+                    {{ data['battleCountAll']['9'] }},
+                    {{ data['battleCountAll']['10'] }},
+                    {{ data['battleCountAll']['11'] }},
+                    ],
                 backgroundColor: [
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
