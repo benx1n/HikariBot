@@ -237,6 +237,7 @@ async def check_version():
 @driver.on_startup
 async def startup():
     try:
+        tasks = []
         loop = asyncio.get_running_loop()
         url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/template_Hikari_Latest/template.json'
         async with httpx.AsyncClient() as client:
@@ -244,14 +245,18 @@ async def startup():
             result = resp.json()
             for each in result:
                 for name, url in each.items():
-                    async with httpx.AsyncClient() as client:
-                        resp = resp = await client.get(url, timeout=20)
-                        with open(template_path/name , "wb+") as file:
-                            file.write(resp.content)
+                    tasks.append(asyncio.ensure_future(startup_download(url, name)))
+        await asyncio.gather(*tasks)
     except Exception:
         logger.error(traceback.format_exc())
-        return    
-    
+        return   
+     
+async def startup_download(url,name):
+    async with httpx.AsyncClient() as client:
+        resp = resp = await client.get(url, timeout=20)
+        with open(template_path/name , "wb+") as file:
+            file.write(resp.content)
+            
 scheduler.add_job(
     check_version,
     "cron",
