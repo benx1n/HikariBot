@@ -6,7 +6,7 @@ import re
 import asyncio
 from pathlib import Path
 from .data_source import servers
-from .utils import match_keywords
+from .utils import match_keywords,get_bot
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
 from nonebot.adapters.onebot.v11 import MessageSegment,ActionFailed
 from.publicAPI import get_ClanIdByName
@@ -29,8 +29,9 @@ headers = {
 ClanSlectState = namedtuple("ClanSlectState", ['state','SlectIndex','SelectList'])
 ClanSecletProcess = defaultdict(lambda: ClanSlectState(False, None, None))
 
-async def get_ClanInfo(server_type,qqid,info,bot):
+async def get_ClanInfo(server_type,qqid,info,ev):
     try:
+        bot = get_bot()
         params = None
         if isinstance(info,List):
             for flag,i in enumerate(info):              #是否包含me或@，包含则调用平台接口
@@ -67,7 +68,7 @@ async def get_ClanInfo(server_type,qqid,info,bot):
                                 msg += f"{flag}：[{each['tag']}]\n"
                             ClanSecletProcess[qqid] = ClanSlectState(False, None, clanList)
                             img = await text_to_pic(text=msg,css_path = template_path/"text-ship.css",width=250)
-                            await bot.send(MessageSegment.image(img))
+                            await bot.send(ev,MessageSegment.image(img))
                             a = 0
                             while a < 40 and not ClanSecletProcess[qqid].state:
                                 a += 1

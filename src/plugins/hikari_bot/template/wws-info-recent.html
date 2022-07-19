@@ -58,9 +58,13 @@
                 {% endif %}
                 <span>{{userName}}</span>&nbsp;&nbsp;&nbsp;<span>{{serverName}}</span></td>
         </tr>
-        {% if prValueColor %}
+        {% if prValueColor != '#828282' %}
         <tr>
             <td colspan="40" style="text-align: center;background-color: {{prValueColor}}">{{prValue}}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="40" style="text-align: center;background-color: {{rankPrValueColor}}">{{rankPrValue}}</td>
         </tr>
         {% endif %}
         <tr>

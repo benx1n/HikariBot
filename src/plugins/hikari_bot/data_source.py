@@ -307,6 +307,7 @@ async def set_recentparams(List):
             "userName":List['userName'],
             "serverName":List['serverName'],
             "prValue":f"{List['shipData'][0]['pvpInfo']['pr']['value']} {List['shipData'][0]['pvpInfo']['pr']['name']}",
+            "rankPrValue":f"{List['shipData'][0]['rankInfo']['pr']['value']} {List['shipData'][0]['rankInfo']['pr']['name']}",
             "reTime":time.strftime('%Y-%m-%d %H:%M',time.localtime(int(abs(List['shipData'][0]['recordDateTime']/1000)))),
             "nowTime":time.strftime('%Y-%m-%d %H:%M',time.localtime(time.time())),
             "battles":List['shipData'][0]['pvpInfo']['battles'],
@@ -351,6 +352,7 @@ async def set_recentparams(List):
             "InfoRecent_RandomData":InfoRecent_RandomData,
             "InfoRecent_RankData":InfoRecent_RankData,
             "prValueColor":List['shipData'][0]['pvpInfo']['pr']['color'],
+            "rankPrValueColor":List['shipData'][0]['rankInfo']['pr']['color'],
             "solo_prColor":List['shipData'][0]['pvpSoloInfo']['pr']['color'],
             "div2_prColor":List['shipData'][0]['pvpTwoInfo']['pr']['color'],
             "div3_prColor":List['shipData'][0]['pvpThreeInfo']['pr']['color'],
@@ -492,12 +494,14 @@ async def set_shipRecentparams(List):
             shipNameEn = List['shipData'][0]['rankSolo']['shipInfo']['nameEnglish']
             shipNameCn = List['shipData'][0]['rankSolo']['shipInfo']['nameCn']
         result = {
+            "data":List,
             "guild":List['clanInfo']['tag'],
             "userName":List['userName'],
             "serverName":List['serverName'],
             "shipNameEn":shipNameEn,
             "shipNameCn":shipNameCn,
             "prValue":f"{List['pvpInfo']['pr']['value']} {List['pvpInfo']['pr']['name']}",
+            "rankPrValue":f"{List['rankInfo']['pr']['value']} {List['rankInfo']['pr']['name']}",
             "recordTime":time.strftime('%Y-%m-%d %H:%M',time.localtime(int(abs(List['shipData'][0]['recordDateTime']/1000)))),
             "nowTime":time.strftime('%Y-%m-%d %H:%M',time.localtime(time.time())),
             "battles":List['pvpInfo']['battles'],
@@ -541,6 +545,7 @@ async def set_shipRecentparams(List):
             "rank_frags":f"{List['rankInfo']['frags']:.2f}",
             "detail_data":detail_data,
             "prColor":List['pvpInfo']['pr']['color'],
+            "rankPrColor":List['rankInfo']['pr']['color'],
             "solo_prColor":List['pvpSoloInfo']['pr']['color'],
             "div2_prColor":List['pvpTwoInfo']['pr']['color'],
             "div3_prColor":List['pvpThreeInfo']['pr']['color'],

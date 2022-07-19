@@ -2,8 +2,11 @@ import io
 import gzip
 import pytz
 import time
+import nonebot
 from collections import defaultdict
 from datetime import datetime, timedelta
+from nonebot.adapters.onebot.v11 import Bot
+from typing import Optional
 
 async def match_keywords(match_list,Lists):
     for List in Lists :                        
@@ -69,3 +72,12 @@ class DailyNumberLimiter:
     def reset(self, key):
         self.count[key] = 0
         
+def get_bot() -> Optional[Bot]:
+    """
+    说明：
+        获取 bot 对象
+    """
+    try:
+        return list(nonebot.get_bots().values())[0]
+    except IndexError:
+        return None

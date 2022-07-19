@@ -5,7 +5,7 @@ import asyncio
 from pathlib import Path
 from nonebot.adapters.onebot.v11 import MessageSegment
 from .data_source import servers,set_shipparams,tiers,number_url_homes,set_ShipRank_Numbers
-from .utils import match_keywords
+from .utils import match_keywords,get_bot
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
 from .wws_ship import ShipSecletProcess,ShipSlectState
 from.publicAPI import get_ship_byName
@@ -28,8 +28,9 @@ headers = {
     'Content-Type':'application/json',
 }
 
-async def get_ShipRank(qqid,info,bot):
+async def get_ShipRank(qqid,info,ev):
     try:
+        bot = get_bot()
         if len(info) == 2:
             param_server,info = await match_keywords(info,servers)
             if param_server and not param_server == 'cn':
@@ -52,7 +53,7 @@ async def get_ShipRank(qqid,info,bot):
                     msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
                 ShipSecletProcess[qqid] = ShipSlectState(False, None, shipList)
                 img = await text_to_pic(text=msg,css_path = str(template_path/"text-ship.css"),width=250) 
-                await bot.send(MessageSegment.image(img))
+                await bot.send(ev,MessageSegment.image(img))
                 a = 0
                 while a < 40 and not ShipSecletProcess[qqid].state:
                     a += 1

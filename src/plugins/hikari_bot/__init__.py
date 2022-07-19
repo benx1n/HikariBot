@@ -1,7 +1,7 @@
 import traceback
 import nonebot.adapters.onebot.v11
 from loguru import logger
-from nonebot import get_bot, on_command, on_message, get_driver
+from nonebot import on_command, on_message, get_driver
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
 from nonebot_plugin_guild_patch import GuildMessageEvent
@@ -15,7 +15,7 @@ from .wws_clan import get_ClanInfo,ClanSecletProcess
 from .wws_record import get_record
 from .wws_shiprank import get_ShipRank
 from .data_source import command_list
-from .utils import find_and_replace_keywords,DailyNumberLimiter,FreqLimiter
+from .utils import find_and_replace_keywords,DailyNumberLimiter,FreqLimiter,get_bot
 from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
 import httpx
@@ -40,7 +40,7 @@ bot_checkversion = on_command("wws 检查更新",priority=5,block=False)
 driver = get_driver()
 
 @bot.handle()
-async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
+async def selet_command(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg()):
     try:
         server_type = None
         if isinstance(ev, PrivateMessageEvent) and (driver.config.private or str(ev.user_id) in driver.config.superusers):       #私聊事件,superusers默认不受影响
@@ -58,16 +58,16 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
         qqid = ev.user_id
         select_command,replace_name = None,None
         if not _nlmt.check(qqid):
-            await bot.send(EXCEED_NOTICE, at_sender=True)
+            await bot.send(ev,EXCEED_NOTICE, at_sender=True)
             return
         if not _flmt.check(qqid):
-            await bot.send('您冲得太快了，请稍候再冲', at_sender=True)
+            await bot.send(ev,'您冲得太快了，请稍候再冲', at_sender=True)
             return
         _flmt.start_cd(qqid)
         _nlmt.increase(qqid) 
         searchtag = html.unescape(str(matchmsg)).strip()
         if not searchtag:
-            await bot.send("请发送wws help查看相关帮助")
+            await bot.send(ev,"请发送wws help查看相关帮助")
             return
         match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
         if match:
@@ -86,9 +86,9 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             if replace_name:
                 search_list.append(replace_name)
             if not select_command:
-                msg = await get_ShipInfo(server_type,qqid,search_list,bot)
+                msg = await get_ShipInfo(server_type,qqid,search_list,ev)
             elif select_command == 'recent':
-                msg = await get_ShipInfoRecent(server_type,qqid,search_list,bot)
+                msg = await get_ShipInfoRecent(server_type,qqid,search_list,ev)
             else:
                 msg = '看不懂指令QAQ'
         elif select_command == 'recent':
@@ -99,14 +99,14 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             if not select_command:
                 msg = await get_RecentInfo(server_type,qqid,search_list)
             elif select_command == 'ship':
-                msg = await get_ShipInfoRecent(server_type,qqid,search_list,bot)
+                msg = await get_ShipInfoRecent(server_type,qqid,search_list,ev)
             else:
                 msg = '看不懂指令QAQ'
         elif select_command == 'clan':
             select_command = None
             select_command,search_list = await find_and_replace_keywords(search_list,command_list) 
             if not select_command:                  #查询公会详情信息
-                msg = await get_ClanInfo(server_type,qqid,search_list,bot)
+                msg = await get_ClanInfo(server_type,qqid,search_list,ev)
             elif select_command == 'record':        #查询公会历史记录
                 msg = await get_record(server_type,qqid,search_list,"clan")
         elif select_command == 'record':
@@ -119,7 +119,7 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             elif select_command == 'clan':          #查询公会历史记录
                 msg = await get_record(server_type,qqid,search_list,"clan")
         elif select_command == 'ship_rank':
-            msg = await get_ShipRank(qqid,search_list,bot)   
+            msg = await get_ShipRank(qqid,search_list,ev)   
         elif select_command == 'bind':
             if replace_name:
                 search_list.append(replace_name)
@@ -140,24 +140,24 @@ async def selet_command(ev:MessageEvent, matchmsg: Message = CommandArg()):
             msg = '看不懂指令QAQ'
         if msg:
             if isinstance(msg,str):
-                await bot.send(msg)
+                await bot.send(ev,msg)
                 return
             else:
-                await bot.send(MessageSegment.image(msg))
+                await bot.send(ev,MessageSegment.image(msg))
                 return
         else:
-            await bot.send('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+            await bot.send(ev,'呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
             return
     except ActionFailed:
         logger.warning(traceback.format_exc())
         try:
-            await bot.send('发不出图片，可能被风控了QAQ')
+            await bot.send(ev,'发不出图片，可能被风控了QAQ')
         except Exception:
             pass
         return
     except Exception:
         logger.error(traceback.format_exc())
-        await bot.finish('呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+        await bot.send(ev,'呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
                 
 async def send_bot_help():
     try:
@@ -180,6 +180,7 @@ async def send_bot_help():
 @bot_listen.handle()
 async def change_select_state(ev:MessageEvent):
     try:
+        bot = get_bot()
         msg = str(ev.message)
         qqid = ev.user_id
         if ShipSecletProcess[qqid].SelectList and str(msg).isdigit():
@@ -187,7 +188,7 @@ async def change_select_state(ev:MessageEvent):
                 ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state = True)
                 ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(SlectIndex = int(msg))
             else:
-                await bot.send('请选择列表中的序号哦~')
+                await bot.send(ev,'请选择列表中的序号哦~')
         if ClanSecletProcess[qqid].SelectList and str(msg).isdigit():
             if int(msg) <= len( ClanSecletProcess[qqid].SelectList):
                 ClanSecletProcess[qqid] = ClanSecletProcess[qqid]._replace(state = True)
@@ -221,12 +222,19 @@ async def check_version():
                 await bot_checkversion.send(msg)
             except Exception:
                 return
+        else:
+            for each in superid:
+                await bot.send_private_msg(user_id=int(each),message='Hikari:当前已经是最新版本了')
+            try:
+                await bot_checkversion.send('Hikari:当前已经是最新版本了')
+            except Exception:
+                return
         return
     except Exception:
         logger.warning(traceback.format_exc())
         return
         
-@driver.on_startup
+#@driver.on_startup
 async def startup():
     try:
         loop = asyncio.get_running_loop()

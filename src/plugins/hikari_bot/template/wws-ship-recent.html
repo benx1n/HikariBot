@@ -63,9 +63,15 @@
             <td class="font-data" colspan="6" style="text-align: center; font-size: 30px;"><span>{{shipNameEn}}</span>&nbsp;&nbsp;<span>{{shipNameCn}}</span>
             </td>
         </tr>
+        {% if prColor != '#828282' %}
         <tr>
             <td colspan="6" style="text-align: center;background-color: {{prColor}}">{{prValue}}</td>
         </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" style="text-align: center;background-color: {{rankPrColor}}">{{rankPrValue}}</td>
+        </tr>
+        {% endif %}
         <tr>
             <td colspan="6" class="greyColor" style="text-align: center;">记录时间:{{recordTime}}—{{nowTime}}</td>
         </tr>

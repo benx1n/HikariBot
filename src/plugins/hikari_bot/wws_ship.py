@@ -6,7 +6,7 @@ import re
 import asyncio
 from pathlib import Path
 from .data_source import servers,set_shipparams,set_shipRecentparams,tiers,number_url_homes
-from .utils import match_keywords
+from .utils import match_keywords,get_bot
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
 from nonebot.adapters.onebot.v11 import MessageSegment,ActionFailed
 from.publicAPI import get_ship_byName,get_AccountIdByName
@@ -31,8 +31,9 @@ headers = {
 ShipSlectState = namedtuple("ShipSlectState", ['state','SlectIndex','SelectList'])
 ShipSecletProcess = defaultdict(lambda: ShipSlectState(False, None, None))
 
-async def get_ShipInfo(server_type,qqid,info,bot):
+async def get_ShipInfo(server_type,qqid,info,ev):
     try:
+        bot = get_bot()
         url,params = '',''
         if isinstance(info,List):
             for flag,i in enumerate(info):              #是否包含me或@，包含则调用平台接口
@@ -85,7 +86,7 @@ async def get_ShipInfo(server_type,qqid,info,bot):
                         msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
                     ShipSecletProcess[qqid] = ShipSlectState(False, None, shipList)
                     img = await text_to_pic(text=msg,css_path = str(template_path/"text-ship.css"),width=250) 
-                    await bot.send(MessageSegment.image(img))
+                    await bot.send(ev,MessageSegment.image(img))
                     a = 0
                     while a < 40 and not ShipSecletProcess[qqid].state:
                         a += 1
@@ -196,8 +197,9 @@ async def post_MyShipRank_yuyuko(accountId,ranking,serverId,shipId):
         return
     
     
-async def get_ShipInfoRecent(server_type,qqid,info,bot):
+async def get_ShipInfoRecent(server_type,qqid,info,ev):
     try:
+        bot = get_bot()
         params,day = None,0
         if datetime.now().hour < 7:
             day = 1
@@ -262,7 +264,7 @@ async def get_ShipInfoRecent(server_type,qqid,info,bot):
                         msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
                     ShipSecletProcess[qqid] = ShipSlectState(False, None, shipList)
                     img = await text_to_pic(text=msg,css_path = template_path/"text-ship.css",width=250)
-                    await bot.send(MessageSegment.image(img))
+                    await bot.send(ev,MessageSegment.image(img))
                     a = 0
                     while a < 40 and not ShipSecletProcess[qqid].state:
                         a += 1
