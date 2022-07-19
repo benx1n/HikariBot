@@ -234,11 +234,11 @@ async def check_version():
         logger.warning(traceback.format_exc())
         return
         
-#@driver.on_startup
+@driver.on_startup
 async def startup():
     try:
         loop = asyncio.get_running_loop()
-        url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/template_Hikari/template.json'
+        url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/template_Hikari_Latest/template.json'
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, timeout=20)
             result = resp.json()
