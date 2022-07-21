@@ -146,7 +146,7 @@ async def selet_command(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg
                 await bot.send(ev,MessageSegment.image(msg))
                 return
         else:
-            await bot.send(ev,'呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
+            await bot.send(ev,'没有获取到数据，可能是内部问题')
             return
     except ActionFailed:
         logger.warning(traceback.format_exc())
