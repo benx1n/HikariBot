@@ -25,7 +25,7 @@ async def get_nation_list():
     except Exception:
         logger.error(traceback.format_exc())
         
-async def get_ship_name(infolist:List):
+async def get_ship_name(server_type,infolist:List,bot,ev):
     msg = ''
     try:
         param_nation,infolist = await match_keywords(infolist,nations)

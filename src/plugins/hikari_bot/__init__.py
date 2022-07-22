@@ -6,16 +6,10 @@ from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
 from nonebot_plugin_guild_patch import GuildMessageEvent
 from nonebot.log import logger
-from .publicAPI import get_nation_list,get_ship_name,get_ship_byName
-from .wws_info import get_AccountInfo
-from .wws_recent import get_RecentInfo
-from .wws_bind import set_BindInfo,get_BindInfo,change_BindInfo,set_special_BindInfo,delete_BindInfo
-from .wws_ship import get_ShipInfo,get_ShipInfoRecent,ShipSecletProcess
-from .wws_clan import get_ClanInfo,ClanSecletProcess
-from .wws_record import get_record
-from .wws_shiprank import get_ShipRank
-from .data_source import command_list
-from .utils import find_and_replace_keywords,DailyNumberLimiter,FreqLimiter,get_bot
+from .wws_ship import ShipSecletProcess
+from .wws_clan import ClanSecletProcess
+from .utils import DailyNumberLimiter,FreqLimiter,get_bot
+from .command_select import select_command
 from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
 import httpx
@@ -40,7 +34,7 @@ bot_checkversion = on_command("wws 检查更新",priority=5,block=False)
 driver = get_driver()
 
 @bot.handle()
-async def selet_command(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg()):
+async def main(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg()):
     try:
         server_type = None
         if isinstance(ev, PrivateMessageEvent) and (driver.config.private or str(ev.user_id) in driver.config.superusers):       #私聊事件,superusers默认不受影响
@@ -56,7 +50,7 @@ async def selet_command(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg
             return
         msg = ''
         qqid = ev.user_id
-        select_command,replace_name = None,None
+        replace_name = None
         if not _nlmt.check(qqid):
             await bot.send(ev,EXCEED_NOTICE, at_sender=True)
             return
@@ -69,75 +63,20 @@ async def selet_command(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg
         if not searchtag:
             await bot.send(ev,"请发送wws help查看相关帮助")
             return
+        if searchtag == 'help':
+            msg = await send_bot_help()
+            await bot.send(ev,MessageSegment.image(msg))
+            return
         match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
         if match:
             replace_name = match.group(2)
             search_list = searchtag.replace(match.group(0),'').split()
         else:
             search_list = searchtag.split()
-        select_command,search_list = await find_and_replace_keywords(search_list,command_list)
-        if not select_command:
-            if replace_name:
-                search_list.append(replace_name)
-            msg = await get_AccountInfo(server_type,qqid,search_list)
-        elif select_command == 'ship':
-            select_command = None
-            select_command,search_list = await find_and_replace_keywords(search_list,command_list)         #第二次匹配
-            if replace_name:
-                search_list.append(replace_name)
-            if not select_command:
-                msg = await get_ShipInfo(server_type,qqid,search_list,ev)
-            elif select_command == 'recent':
-                msg = await get_ShipInfoRecent(server_type,qqid,search_list,ev)
-            else:
-                msg = '看不懂指令QAQ'
-        elif select_command == 'recent':
-            select_command = None
-            select_command,search_list = await find_and_replace_keywords(search_list,command_list)             #第二次匹配
-            if replace_name:
-                search_list.append(replace_name)
-            if not select_command:
-                msg = await get_RecentInfo(server_type,qqid,search_list)
-            elif select_command == 'ship':
-                msg = await get_ShipInfoRecent(server_type,qqid,search_list,ev)
-            else:
-                msg = '看不懂指令QAQ'
-        elif select_command == 'clan':
-            select_command = None
-            select_command,search_list = await find_and_replace_keywords(search_list,command_list) 
-            if not select_command:                  #查询公会详情信息
-                msg = await get_ClanInfo(server_type,qqid,search_list,ev)
-            elif select_command == 'record':        #查询公会历史记录
-                msg = await get_record(server_type,qqid,search_list,"clan")
-        elif select_command == 'record':
-            select_command = None
-            select_command,search_list = await find_and_replace_keywords(search_list,command_list) 
-            if replace_name:
-                search_list.append(replace_name)
-            if not select_command:                  #查询个人历史记录
-                msg = await get_record(server_type,qqid,search_list,"personal")
-            elif select_command == 'clan':          #查询公会历史记录
-                msg = await get_record(server_type,qqid,search_list,"clan")
-        elif select_command == 'ship_rank':
-            msg = await get_ShipRank(qqid,search_list,ev)   
-        elif select_command == 'bind':
-            if replace_name:
-                search_list.append(replace_name)
-            msg = await set_BindInfo(server_type,qqid,search_list)
-        elif select_command == 'special_bind':
-            msg = await set_special_BindInfo(server_type,qqid,search_list)
-        elif select_command == 'bindlist':
-            msg = await get_BindInfo(server_type,qqid,search_list)
-        elif select_command == 'changebind':
-            msg = await change_BindInfo(server_type,qqid,search_list)
-        elif select_command == 'delete_bind':
-            msg = await delete_BindInfo(server_type,qqid,search_list)
-        elif select_command == 'searchship':
-            msg = await get_ship_name(search_list)
-        elif select_command == 'help':
-            msg = await send_bot_help()
-        else:
-            msg = '看不懂指令QAQ'
+        command,search_list = await select_command(search_list)
+        if replace_name:
+            search_list.append(replace_name)
+        msg = await command(server_type,search_list,bot,ev)
         if msg:
             if isinstance(msg,str):
                 await bot.send(ev,msg)
@@ -158,7 +97,7 @@ async def selet_command(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg
     except Exception:
         logger.error(traceback.format_exc())
         await bot.send(ev,'呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
-                
+             
 async def send_bot_help():
     try:
         url = 'https://benx1n.oss-cn-beijing.aliyuncs.com/version.json'

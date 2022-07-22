@@ -14,7 +14,7 @@ headers = {
     'Authorization': get_driver().config.api_token
 }
 
-async def get_BindInfo(server_type,user,info):
+async def get_BindInfo(server_type,info,bot,ev):
     try:
         url,params = '',''
         if isinstance(info,List) and len(info) == 1:
@@ -23,7 +23,7 @@ async def get_BindInfo(server_type,user,info):
                     url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
                     params = {
                     "platformType": server_type,
-                    "platformId": user,
+                    "platformId": ev.user_id,
                     }
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
@@ -67,7 +67,7 @@ async def get_BindInfo(server_type,user,info):
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
     
-async def set_BindInfo(server_type,user,info):
+async def set_BindInfo(server_type,info,bot,ev):
     try:
         param_server = None
         if isinstance (info,List):
@@ -79,7 +79,7 @@ async def set_BindInfo(server_type,user,info):
                         url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
                         params = {
                         "platformType": server_type,
-                        "platformId": str(user),
+                        "platformId": str(ev.user_id),
                         "accountId": param_accountid
                         }
                     else:
@@ -108,13 +108,13 @@ async def set_BindInfo(server_type,user,info):
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
 
-async def change_BindInfo(server_type,user,info):
+async def change_BindInfo(server_type,info,bot,ev):
     try:
         if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit():
             url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
             params = {
             "platformType": server_type,
-            "platformId": user,
+            "platformId": ev.user_id,
             }
         else:
             return '参数似乎出了问题呢，请跟随要切换的序号'
@@ -131,7 +131,7 @@ async def change_BindInfo(server_type,user,info):
                 url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
                 params = {
                 "platformType": server_type,
-                "platformId": str(user),
+                "platformId": str(ev.user_id),
                 "accountId": param_accountid
                 }
             else:
@@ -158,7 +158,7 @@ async def change_BindInfo(server_type,user,info):
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
     
-async def set_special_BindInfo(server_type,user,info):
+async def set_special_BindInfo(server_type,info,bot,ev):
     try:
         param_server = None
         if isinstance (info,List):
@@ -169,7 +169,7 @@ async def set_special_BindInfo(server_type,user,info):
                         url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
                         params = {
                         "platformType": server_type,
-                        "platformId": str(user),
+                        "platformId": str(ev.user_id),
                         "accountId": int(info[0])
                         }
                     else:
@@ -198,13 +198,13 @@ async def set_special_BindInfo(server_type,user,info):
         logger.error(traceback.format_exc())
         return 'wuwuwu出了点问题，请联系麻麻解决'
     
-async def delete_BindInfo(server_type,user,info):
+async def delete_BindInfo(server_type,info,bot,ev):
     try:
         if isinstance(info,List) and len(info) == 1 and str(info[0]).isdigit():
             url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
             params = {
             "platformType": server_type,
-            "platformId": user,
+            "platformId": ev.user_id,
             }
         else:
             return '参数似乎出了问题呢，请跟随要切换的序号'
@@ -219,7 +219,7 @@ async def delete_BindInfo(server_type,user,info):
                 url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/remove'
                 params = {
                 "platformType": server_type,
-                "platformId": str(user),
+                "platformId": str(ev.user_id),
                 "accountId": param_accountid
                 }
             else:

@@ -25,7 +25,7 @@ headers = {
     'Authorization': get_driver().config.api_token
 }
   
-async def get_AccountInfo(server_type,qqid,info):
+async def get_AccountInfo(server_type,info,bot,ev):
     try:
         url,params = '',''
         if isinstance(info,List):
@@ -33,7 +33,7 @@ async def get_AccountInfo(server_type,qqid,info):
                 if str(i).lower() == 'me':
                     params = {
                     "server": server_type,
-                    "accountId": int(qqid)
+                    "accountId": int(ev.user_id)
                     }
                     break
                 match = re.search(r"CQ:at,qq=(\d+)",i)
