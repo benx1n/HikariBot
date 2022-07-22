@@ -20,26 +20,6 @@ class command:
     func: Func
     default_func: Func = None
     
-async def findFunction_and_replaceKeywords(match_list,command_List,default_func):
-    for com in command_List :                        
-        for kw in com.keywords:
-            for i,match_kw in enumerate(match_list):
-                if (match_kw.find(kw)+1):
-                    match_list[i] = str(match_kw).replace(kw,"")
-                    if match_list[i] == '':                     #为空时才删除，防止未加空格没有被split切割
-                        match_list.remove('')
-                    return com,match_list
-    return command(None,default_func,None),match_list
-
-    
-async def select_command(search_list):
-    command,search_list = await findFunction_and_replaceKeywords(search_list,first_command_list,get_AccountInfo)
-    if command.func == None:
-        command,search_list = await findFunction_and_replaceKeywords(search_list,second_command_list,command.default_func)
-    return command.func,search_list
-    
-    
-    
 first_command_list = [        #同指令中越长的匹配词越靠前
     command(("切换绑定","更换绑定","更改绑定"),change_BindInfo),
     command(("查询绑定","绑定查询","绑定列表","查绑定"),get_BindInfo),
@@ -60,3 +40,22 @@ second_command_list = [
     command(("clan","军团","公会","工会"),get_record),
     command(("record","历史记录"),get_record),
 ]
+
+async def findFunction_and_replaceKeywords(match_list,command_List,default_func):
+    for com in command_List :                        
+        for kw in com.keywords:
+            for i,match_kw in enumerate(match_list):
+                if (match_kw.find(kw)+1):
+                    match_list[i] = str(match_kw).replace(kw,"")
+                    if match_list[i] == '':                     #为空时才删除，防止未加空格没有被split切割
+                        match_list.remove('')
+                    return com,match_list
+    return command(None,default_func,None),match_list
+
+    
+async def select_command(search_list):
+    command,search_list = await findFunction_and_replaceKeywords(search_list,first_command_list,get_AccountInfo)
+    if command.func == None:
+        command,search_list = await findFunction_and_replaceKeywords(search_list,second_command_list,command.default_func)
+    return command.func,search_list
+    
