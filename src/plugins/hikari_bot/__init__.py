@@ -20,6 +20,8 @@ import asyncio
 import re
 import html
 import os
+import platform
+import sys
 from nonebot import require
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
@@ -141,7 +143,7 @@ async def change_select_state(ev:MessageEvent):
     except Exception:
         logger.warning(traceback.format_exc())
         return
-    
+
 @bot_update.handle()
 async def update_Hikari(ev:MessageEvent,bot:Bot):
     try:
@@ -156,8 +158,20 @@ async def update_Hikari(ev:MessageEvent,bot:Bot):
         os.system(f'python -m pip install --upgrade nonebot-plugin-gocqhttp')
         Reloader.reload(delay=1)
     except RuntimeError:
-        logger.error(traceback.format_exc())
-        await bot.send(ev,'不支持nb run启动的方式更新哦，请使用python bot.py 启动Hikari')
+        if str(platform.system()).lower() == 'linux':
+            try:
+                import multiprocessing
+                for child in multiprocessing.active_children():
+                    child.terminate()
+                sys.stdout.flush()
+                #not compatible with cmdline with '\n' 
+                os.execv(os.readlink('/proc/self/exe'), open('/proc/self/cmdline', 'rb').read().replace(b'\0', b'\n').decode().split('\n')[:-1])
+            except Exception:
+                logger.error(traceback.format_exc())
+                await bot.send(ev,'自动更新失败了QAQ，请登录服务器查看具体报错日志')
+        else:
+            logger.error(traceback.format_exc())
+            await bot.send(ev,'不支持nb run启动的方式更新哦，请使用python bot.py 启动Hikari')
     except Exception:
         logger.error(traceback.format_exc())
         await bot.send(ev,'自动更新失败了QAQ，请登录服务器查看具体报错日志')
