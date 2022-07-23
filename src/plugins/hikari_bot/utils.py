@@ -87,5 +87,6 @@ async def download(url, path, proxy = {}):
     async with httpx.AsyncClient(proxies=proxy) as client:
         resp = await client.get(url, timeout=None)
         content = resp.read()
+        content = content.replace(b'\n', b'\r\n')
         with open(path, 'wb') as f:
             f.write(content)

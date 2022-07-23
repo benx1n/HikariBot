@@ -147,10 +147,11 @@ async def update_Hikari(ev:MessageEvent,bot:Bot):
     try:
         from nonebot_plugin_reboot import Reloader
         await bot.send(ev,'正在更新Hikari，完成后将自动重启，如果没有回复您已上线的消息，请登录服务器查看')
-        await asyncio.gather(*[download(
-            each['url'],
-            f"{get_driver().config.nb2_path}\{each['name']}"
-            ) for each in nb2_file])
+        if hasattr(driver.config,'nb2_path'):
+            await asyncio.gather(*[download(
+                each['url'],
+                f"{driver.config.nb2_path}\{each['name']}"
+                ) for each in nb2_file])
         os.system(f'python -m pip install --upgrade hikari-bot')
         os.system(f'python -m pip install --upgrade nonebot-plugin-gocqhttp')
         Reloader.reload(delay=1)
@@ -169,7 +170,7 @@ async def check_version():
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, timeout=10)
             result = json.loads(resp.text)
-        superid = get_driver().config.superusers
+        superid = driver.config.superusers
         match,msg = False,f'发现新版本'
         for each in result['data']:
             if each['version'] > __version__:
@@ -215,7 +216,7 @@ async def startup():
     
 @driver.on_bot_connect
 async def remind(bot: Bot):
-    superid = get_driver().config.superusers
+    superid = driver.config.superusers
     for each in superid:
         await bot.send_private_msg(user_id=int(each),message='Hikari已上线')
 
