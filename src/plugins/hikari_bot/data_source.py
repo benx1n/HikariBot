@@ -74,15 +74,15 @@ number_url_homes={
 nb2_file = [
     {
         "name":"bot.py",
-        "url":"https://gitee.com/benx1n/HikariBot/raw/master/bot.py"
+        "url":"https://raw.fastgit.org/benx1n/HikariBot/master/bot.py"
     },
     {
         "name":".env",
-        "url":"https://gitee.com/benx1n/HikariBot/raw/master/.env"
+        "url":"https://raw.fastgit.org/benx1n/HikariBot/master/.env"
     },
     {
         "name":"pyproject.toml",
-        "url":"https://gitee.com/benx1n/HikariBot/raw/master/pyproject.toml"
+        "url":"https://raw.fastgit.org/benx1n/HikariBot/master/pyproject.toml"
     }
 ]
 
