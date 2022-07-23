@@ -71,6 +71,21 @@ number_url_homes={
     "cn": None
 }
 
+nb2_file = [
+    {
+        "name":"bot.py",
+        "url":"https://gitee.com/benx1n/HikariBot/raw/master/bot.py"
+    },
+    {
+        "name":".env",
+        "url":"https://gitee.com/benx1n/HikariBot/raw/master/.env"
+    },
+    {
+        "name":"pyproject.toml",
+        "url":"https://gitee.com/benx1n/HikariBot/raw/master/pyproject.toml"
+    }
+]
+
 pr_select = [
     {
         "value": 0,

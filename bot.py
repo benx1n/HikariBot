@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+import sys
 import nonebot
 from nonebot.adapters.onebot.v11 import Adapter as ONEBOT_V11Adapter
 from nonebot.log import logger,default_format
+from pathlib import Path
 
 logger.add(
     "logs/error.log",
@@ -38,13 +39,17 @@ app = nonebot.get_asgi()
 
 driver = nonebot.get_driver()
 driver.register_adapter(ONEBOT_V11Adapter)
+config = nonebot.get_driver().config
+config.nb2_path = Path(__file__).parent
 
-nonebot.load_from_toml("pyproject.toml")
 
-if driver.config.use_plugin_go_cqhttp:
-    nonebot.load_plugin('nonebot_plugin_gocqhttp')
+if __name__ == "__mp_main__" or ("run" in sys.argv and "nb" in sys.argv[0]): 
+    if driver.config.use_plugin_go_cqhttp:
+        nonebot.load_plugin('nonebot_plugin_gocqhttp')
+    nonebot.load_from_toml("pyproject.toml")
+    # ...
     
-
 if __name__ == "__main__":
-    logger.warning("Always use `nb run` to start the bot instead of manually running!")
+    #logger.warning("Always use `nb run` to start the bot instead of manually running!")
+    nonebot.load_plugin("nonebot_plugin_reboot")
     nonebot.run(app="__mp_main__:app")

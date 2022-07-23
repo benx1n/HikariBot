@@ -3,12 +3,14 @@ import nonebot.adapters.onebot.v11
 from loguru import logger
 from nonebot import on_command, on_message, get_driver
 from nonebot.params import CommandArg
+from nonebot.permission import SUPERUSER
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
 from nonebot_plugin_guild_patch import GuildMessageEvent
 from nonebot.log import logger
 from .wws_ship import ShipSecletProcess
 from .wws_clan import ClanSecletProcess
-from .utils import DailyNumberLimiter,FreqLimiter,get_bot
+from .utils import DailyNumberLimiter,FreqLimiter,get_bot,download
+from .data_source import nb2_file
 from .command_select import select_command
 from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
@@ -17,6 +19,7 @@ import json
 import asyncio
 import re
 import html
+import os
 from nonebot import require
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
@@ -29,8 +32,9 @@ dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
 bot = on_command("wws", block=False, aliases={"WWS"},priority=5)
+bot_checkversion = on_command("wws 检查更新",priority=5,block=True)
+bot_update = on_command("wws 更新Hikari",priority=5,block=True,permission=SUPERUSER)
 bot_listen = on_message(priority=5,block=False)
-bot_checkversion = on_command("wws 检查更新",priority=5,block=False)
 driver = get_driver()
 
 @bot.handle()
@@ -137,6 +141,25 @@ async def change_select_state(ev:MessageEvent):
     except Exception:
         logger.warning(traceback.format_exc())
         return
+    
+@bot_update.handle()
+async def update_Hikari(ev:MessageEvent,bot:Bot):
+    try:
+        from nonebot_plugin_reboot import Reloader
+        await bot.send(ev,'正在更新Hikari，完成后将自动重启，如果没有回复您已上线的消息，请登录服务器查看')
+        await asyncio.gather(*[download(
+            each['url'],
+            f"{get_driver().config.nb2_path}\{each['name']}"
+            ) for each in nb2_file])
+        os.system(f'python -m pip install --upgrade hikari-bot')
+        os.system(f'python -m pip install --upgrade nonebot-plugin-gocqhttp')
+        Reloader.reload(delay=1)
+    except RuntimeError:
+        logger.error(traceback.format_exc())
+        await bot.send(ev,'不支持nb run启动的方式更新哦，请使用python bot.py 启动Hikari')
+    except Exception:
+        logger.error(traceback.format_exc())
+        await bot.send(ev,'自动更新失败了QAQ，请登录服务器查看具体报错日志')
 
 @bot_checkversion.handle()
 async def check_version():
@@ -189,7 +212,13 @@ async def startup():
     except Exception:
         logger.error(traceback.format_exc())
         return   
-     
+    
+@driver.on_bot_connect
+async def remind(bot: Bot):
+    superid = get_driver().config.superusers
+    for each in superid:
+        await bot.send_private_msg(user_id=int(each),message='Hikari已上线')
+
 async def startup_download(url,name):
     async with httpx.AsyncClient() as client:
         resp = resp = await client.get(url, timeout=20)

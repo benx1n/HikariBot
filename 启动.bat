@@ -12,7 +12,7 @@ if not exist .env.prod (
 :start
 echo try to launch the HikariBot
 start http://127.0.0.1:8080/go-cqhttp/
-python -m nb_cli run
+python bot.py
 pause
 goto:eof
 

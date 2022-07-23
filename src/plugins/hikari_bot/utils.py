@@ -3,6 +3,7 @@ import gzip
 import pytz
 import time
 import nonebot
+import httpx
 from collections import defaultdict
 from datetime import datetime, timedelta
 from nonebot.adapters.onebot.v11 import Bot
@@ -81,3 +82,10 @@ def get_bot() -> Optional[Bot]:
         return list(nonebot.get_bots().values())[0]
     except IndexError:
         return None
+    
+async def download(url, path, proxy = {}):
+    async with httpx.AsyncClient(proxies=proxy) as client:
+        resp = await client.get(url, timeout=None)
+        content = resp.read()
+        with open(path, 'wb') as f:
+            f.write(content)
