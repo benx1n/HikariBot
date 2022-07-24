@@ -29,7 +29,7 @@ _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.3.3.5'
+__version__ = '0.3.4'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
@@ -192,6 +192,7 @@ async def check_version():
                 msg += f"\n{each['date']} v{each['version']}\n"
                 for i in each['description']:
                     msg += f"{i}\n"
+        msg += "实验性更新指令：wws 更新Hikari，请在能登录上服务器的情况下执行该命令"
         if match:
             for each in superid:
                 await bot.send_private_msg(user_id=int(each),message=msg)

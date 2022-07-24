@@ -61,6 +61,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
   - 查询军团历史记录：wws [(服务器+军团名)/@群友/me] clan record
   - 查询舰船中英文名：wws [搜/查船名] [国家][等级][类型]
   - 检查版本更新：wws 检查更新
+  - 更新：wws 更新Hikari
   - 查看帮助：wws help
 
   </details>
@@ -104,6 +105,44 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
       点击左侧添加账号，重启bot即可在网页上看到相应信息（大概率需要扫码）
     - 如果重启后go-cqhhtp一直卡在扫码或无限重启，请跳转[无法使用内嵌go-cqhttp登录](https://github.com/benx1n/HikariBot#%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E5%86%85%E5%B5%8Cgo-cqhttp%E7%99%BB%E5%BD%95bot)
 
+## Linux一键脚本
+> 仅支持Debian、CentOS、Ubuntu
+```
+wget -qO - http://www.dddns.icu/installHikari.sh | bash
+```
+
+
+## 使用Docker部署
+- Docker目录下是一个简单的Dockerfile，可以基于官方的Python容器封装一个完整的HikariBot
+  - 以`12hydrogen/hikari-bot:latest`上线官方仓库
+- 注意需要将内部的8080端口映射出来
+  ```
+  docker run -d -P 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 首次使用需输入token和qqid，-P表示将8080端口随机映射至主机
+  docker run -d -p 12345:8080 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 使用-p以指定映射在外的端口
+  ```
+- 运行上述指令后会在终端显示一串字符，即Docker容器的标识符，一般使用前几位即可唯一确定一个容器
+  ```
+  1a2b3c4d5e..... # 标识符
+  docker stop 1a2b # 使用前四位确定，stop即停止容器
+  1a2b3c4d5e.....
+  docker start 1a2b # start即启动容器
+  1a2b3c4d5e.....
+  docker restart 1a2b # restart即重启容器
+  1a2b3c4d5e.....
+  ```
+- 在更新后即上传新版本容器
+  ```
+  docker pull 12hydrogen/hikari-bot:latest # 更新
+  docker stop 1a2b
+  1a2b...
+  docker rm 1a2b # 删除旧容器，
+  1a2b...
+  docker run -d -P 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 随机映射
+  docker run -d -p 12345:8080 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 指定映射
+  9z8y... # 注意标识符变化了
+  ```
+- 将配置文件与容器分离（listed）
+
 ## 在Windows系统上完整部署
 1. 下载[Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
     >Python版本需>3.8，或参考[Hoshino版插件](https://github.com/benx1n/wows-stats-bot)中使用Conda虚拟环境
@@ -143,7 +182,8 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
     - 如果重启后go-cqhhtp一直卡在扫码或无限重启，请跳转[无法使用内嵌go-cqhttp登录](https://github.com/benx1n/HikariBot#%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E5%86%85%E5%B5%8Cgo-cqhttp%E7%99%BB%E5%BD%95bot)
 
 
-## 在Ubuntu/Debian系统上的管理
+## ~~在Linux上完整部署~~
+- Clone本仓库
 - 使用`./manage.sh`，基于原有批处理脚本
 - 无参数调用以获取使用帮助
 1. `install`
@@ -155,38 +195,6 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
     - 在当前目录下不存在`.env.prod`的情况下从参数获取token和qqid以创建相应文件，否则直接运行
     - 考虑到使用Linux部署时多数情况下本地不存在图形界面，有风险的向公网开放访问
     - 加入验证机制（listed）
-
-
-## 使用Docker部署
-- Docker目录下是一个简单的Dockerfile，可以基于官方的Python容器封装一个完整的HikariBot
-  - 以`12hydrogen/hikari-bot:latest`上线官方仓库
-- 注意需要将内部的8080端口映射出来
-  ```
-  docker run -d -P 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 首次使用需输入token和qqid，-P表示将8080端口随机映射至主机
-  docker run -d -p 12345:8080 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 使用-p以指定映射在外的端口
-  ```
-- 运行上述指令后会在终端显示一串字符，即Docker容器的标识符，一般使用前几位即可唯一确定一个容器
-  ```
-  1a2b3c4d5e..... # 标识符
-  docker stop 1a2b # 使用前四位确定，stop即停止容器
-  1a2b3c4d5e.....
-  docker start 1a2b # start即启动容器
-  1a2b3c4d5e.....
-  docker restart 1a2b # restart即重启容器
-  1a2b3c4d5e.....
-  ```
-- 在更新后即上传新版本容器
-  ```
-  docker pull 12hydrogen/hikari-bot:latest # 更新
-  docker stop 1a2b
-  1a2b...
-  docker rm 1a2b # 删除旧容器，
-  1a2b...
-  docker run -d -P 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 随机映射
-  docker run -d -p 12345:8080 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 指定映射
-  9z8y... # 注意标识符变化了
-  ```
-- 将配置文件与容器分离（listed）
 
 
 ## 作为已有Bot的插件部署（如真寻、Haruka）
@@ -214,6 +222,9 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 4.   重启bot
 
 ## 更新
+实验性更新指令：`wws 更新Hikari`  
+请确保在能登录上服务器的情况下使用  
+以下是旧更新方法
 1. 按不同版本
    - Windows一键包：下载最新一键包，复制旧版本中`accounts`文件夹和`env.prod`文件替换至新版文件夹中即可
    - 完整版：以管理员身份运行`更新.bat`或执行`./manage.sh update`
@@ -235,12 +246,16 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
-### 22-07-20    v0.3.3.2  一些修复
+### 22-07-24    v0.3.4  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置 
+- 重要更新，完整版安装请拉取最新仓库代码，一键包请下载最新版本
+- [+]新增一键更新指令，指令wws 更新Hikari
+- [#]修改部分依赖版本
 - [#]大幅改动了模板以适配后续功能
 - [#]修改框架
 - [#]修改接口url
 - [#]修复了没有完全修复的兼容性问题[#11](https://github.com/benx1n/HikariBot/issues/11) 
 - [#]修改日志输出等级，现在控制台只会打印SUCCESS级以上的日志
+
 
 
 ### 22-07-14    v0.3.3  积累更新
