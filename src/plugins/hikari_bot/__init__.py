@@ -232,7 +232,7 @@ async def startup():
 async def remind(bot: Bot):
     superid = driver.config.superusers
     for each in superid:
-        await bot.send_private_msg(user_id=int(each),message='Hikari已上线')
+        await bot.send_private_msg(user_id=int(each),message=f"Hikari已上线，当前版本{__version__}")
 
 async def startup_download(url,name):
     async with httpx.AsyncClient() as client:
