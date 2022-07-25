@@ -249,6 +249,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 ### 22-07-24    v0.3.4  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置 
 - 重要更新，完整版安装请拉取最新仓库代码，一键包请下载最新版本
 - [+]新增一键更新指令，指令wws 更新Hikari
+- [+]新增Linux一键脚本 [@94Bo](https://github.com/94Bo)
 - [#]修改部分依赖版本
 - [#]大幅改动了模板以适配后续功能
 - [#]修改框架
