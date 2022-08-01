@@ -2,7 +2,7 @@
 
 ENV_CONFIG_NAME=".env.prod"
 
-if [ $# -eq 1 ]
+if [ $# -eq 0 ]
 then
 	echo "Usage: ./manage.sh [VERB] [OPTION...]"
 	echo "Verb: "
