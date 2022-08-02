@@ -41,6 +41,7 @@ RUN pip install nb-cli hikari-bot \
 && nb plugin install nonebot-plugin-gocqhttp \
 && playwright install chromium \
 && playwright install firefox
+VOLUME ["/home/HikariBot/accounts"]
 
 WORKDIR /home/HikariBot
 ENTRYPOINT ["./manage.sh", "start"]
