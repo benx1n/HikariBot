@@ -29,11 +29,11 @@
 
 ## 简介
 
-战舰世界水表BOT，基于Nonebot2  
-水表人，出击！wws me recent！！！  
-QQ频道官方机器人已上线，请点击上方链接加入体验~  
+战舰世界水表BOT，基于Nonebot2
+水表人，出击！wws me recent！！！
+QQ频道官方机器人已上线，请点击上方链接加入体验~
 [Hoshino版插件](https://github.com/benx1n/wows-stats-bot)
-### 如果您觉得本项目还不错的话请点个Star哦~  
+### 如果您觉得本项目还不错的话请点个Star哦~
 
 
 ## 特色
@@ -51,12 +51,12 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
   - 绑定账号：wws bind/set/绑定 [服务器+游戏昵称]：
   - 查询账号绑定列表：wws [查询/查]绑定/绑定列表 [me/@群友]：
   - 切换删除绑定账号：wws [切换/删除]绑定 [序号]
-  - 查询账号总体战绩：wws [(服务器+游戏昵称)/@群友/me] 
+  - 查询账号总体战绩：wws [(服务器+游戏昵称)/@群友/me]
   - 查询账号历史记录：wws [(服务器+游戏昵称)/@群友/me] record
   - 查询账号近期战绩：wws [(服务器+游戏昵称)/@群友/me] recent [日期]
   - 查询单船总体战绩：wws [(服务器+游戏昵称)/@群友/me] ship [船名]
   - 查询单船近期战绩：wws [(服务器+游戏昵称)/@群友/me] ship [船名] recent [日期]
-  - 查询服务器排行榜：wws [服务器+战舰名] rank/ship.rank 
+  - 查询服务器排行榜：wws [服务器+战舰名] rank/ship.rank
   - 查询军团详细信息：wws [(服务器+军团名)/@群友/me] clan
   - 查询军团历史记录：wws [(服务器+军团名)/@群友/me] clan record
   - 查询舰船中英文名：wws [搜/查船名] [国家][等级][类型]
@@ -87,7 +87,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 >点我查看[视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
 
 1. 下载Hikari的[最新Release](https://github.com/benx1n/HikariBot/releases/download/Latest/release_windows.zip)并解压到合适文件夹
-2. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并按其中注释编辑  
+2. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并按其中注释编辑
     >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
     ```
     API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
@@ -98,10 +98,10 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
       - 私聊、频道默认禁用
       - 群聊默认开启，默认屏蔽官方交流群
       - 默认WEB登录账号密码为admin/admin，如有需要请自行修改，无需设置密码请删除env.prod中的配置项
-   
+
 3. 双击`启动.bat`
     - 页面加载不出请尝试刷新一下，已知IE浏览器可能存在一些问题
-    - 此时若没有报错，您可以在打开的页面`http://127.0.0.1:8080/go-cqhttp/`中  
+    - 此时若没有报错，您可以在打开的页面`http://127.0.0.1:8080/go-cqhttp/`中
       点击左侧添加账号，重启bot即可在网页上看到相应信息（大概率需要扫码）
     - 如果重启后go-cqhhtp一直卡在扫码或无限重启，请跳转[无法使用内嵌go-cqhttp登录](https://github.com/benx1n/HikariBot#%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E5%86%85%E5%B5%8Cgo-cqhttp%E7%99%BB%E5%BD%95bot)
 
@@ -135,13 +135,15 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
   docker pull 12hydrogen/hikari-bot:latest # 更新
   docker stop 1a2b
   1a2b...
+  docker run -d --volumes-from 1a2b -P 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 随机映射
+  or
+  docker run -d --volumes-from 1a2b -p 12345:8080 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 指定映射
+  9z8y... # 注意标识符变化了
   docker rm 1a2b # 删除旧容器，
   1a2b...
-  docker run -d -P 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 随机映射
-  docker run -d -p 12345:8080 12hydrogen/hikari-bot:latest -t [token] -i [qqid] # 指定映射
-  9z8y... # 注意标识符变化了
   ```
-- 将配置文件与容器分离（listed）
+- 将配置文件与容器分离
+  使用volume在宿主机保存相关账号信息，更新时按照相关步骤继承volume即可
 
 ## 在Windows系统上完整部署
 1. 下载[Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
@@ -154,16 +156,16 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 3. 打开一个合适的文件夹，鼠标右键——Git Bash here，输入以下命令（任选一条）克隆本Hikari仓库
     ```
     git clone https://github.com/benx1n/HikariBot.git
-   
+
     git clone https://gitee.com/benx1n/HikariBot.git
     ```
 3. 以管理员身份运行`一键安装.bat`
-    >等效于在cmd中执行如下代码  
+    >等效于在cmd中执行如下代码
     ```
     python -m pip install nb-cli hikari-bot nonebot-plugin-apscheduler nonebot-plugin-gocqhttp -i https://pypi.tuna.tsinghua.edu.cn/simple
     ```
-   
-4. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并按其中注释编辑  
+
+4. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并按其中注释编辑
     >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
     ```
     API_TOKEN = xxxxxxxx #无需引号，TOKEN即回复您的邮件所带的一串由[数字+冒号+英文/数字]组成的字符串
@@ -183,6 +185,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
 
 ## ~~在Linux上完整部署~~
+- 需要Python基本环境
 - Clone本仓库
 - 使用`./manage.sh`，基于原有批处理脚本
 - 无参数调用以获取使用帮助
@@ -217,13 +220,13 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     channel_list = []               #频道列表白名单，数组形式，可在控制台中获取相应的channel_id
     ban_group_list = [967546463]    #群列表黑名单，默认屏蔽了开发者交流群
     ```
-    >一般来说该文件为.env.dev  
+    >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
 4.   重启bot
 
 ## 更新
-实验性更新指令：`wws 更新Hikari`  
-请确保在能登录上服务器的情况下使用  
+实验性更新指令：`wws 更新Hikari`
+请确保在能登录上服务器的情况下使用
 以下是旧更新方法
 1. 按不同版本
    - Windows一键包：下载最新一键包，复制旧版本中`accounts`文件夹和`env.prod`文件替换至新版文件夹中即可
@@ -246,7 +249,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
-### 22-07-24    v0.3.4  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置 
+### 22-07-24    v0.3.4  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置
 - 重要更新，完整版安装请拉取最新仓库代码，一键包请下载最新版本
 - [+]新增一键更新指令，指令wws 更新Hikari
 - [+]新增Linux一键脚本 [@94Bo](https://github.com/94Bo)
@@ -254,7 +257,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 - [#]大幅改动了模板以适配后续功能
 - [#]修改框架
 - [#]修改接口url
-- [#]修复了没有完全修复的兼容性问题[#11](https://github.com/benx1n/HikariBot/issues/11) 
+- [#]修复了没有完全修复的兼容性问题[#11](https://github.com/benx1n/HikariBot/issues/11)
 - [#]修改日志输出等级，现在控制台只会打印SUCCESS级以上的日志
 
 
@@ -275,7 +278,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 - [#]默认配置改为不启用WEB登陆验证
 - [#]修复.bat的环境变量问题 [@94Bo](https://github.com/94Bo)
 
-### 22-07-04    v0.3.2.1  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置 
+### 22-07-04    v0.3.2.1  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置
 - [+]新增对QQ频道的适配（非官方bot接入，官方版bot已上线yuyuko频道）
 - [+]新增自定义开启群聊、私聊、QQ频道
 - [+]新增web登录密码
@@ -398,8 +401,8 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 - 关于该问题，您可以查看[这里](https://github.com/Mrs4s/go-cqhttp/issues/1469)获得相应解决办法，这里简单列举三种办法
   - 启动时登录方式选择`浏览器滑条`，按后续提示登录
   - 手机下载`爱加速`等代理，连接到服务器对应市级地区
-  - 在本地电脑使用go-cqhttp登录成功后，将会在exe同级目录下生成`session.token`和`device.json`两个文件  
-  将这两个文件复制到服务器对应目录下并重启  
+  - 在本地电脑使用go-cqhttp登录成功后，将会在exe同级目录下生成`session.token`和`device.json`两个文件
+  将这两个文件复制到服务器对应目录下并重启
     - 内嵌go-cqhttp为`account\QQ号`
     - 独立go-cqhttp为exe所在同级目录下，请注意使用独立go-cqhttp时需要将`.env.prod`的`USE_PLUGIN_GO_CQHTTP`的值改为`false`
 
@@ -453,10 +456,10 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
 ## 感谢以下项目的支持（排名不分先后）
 
-[Nonebot2](https://github.com/nonebot/nonebot2)  
-[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)  
-[战舰世界API平台](https://wows.shinoaki.com/)  
+[Nonebot2](https://github.com/nonebot/nonebot2)
+[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)
+[战舰世界API平台](https://wows.shinoaki.com/)
 
 ## 开源相关
-MIT  
+MIT
 修改、分发代码时请保留原作者相关信息

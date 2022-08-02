@@ -2,7 +2,17 @@
 
 ENV_CONFIG_NAME=".env.prod"
 
-if [ $1 = "install" ]
+if [ $# -eq 0 ]
+then
+	echo "Usage: ./manage.sh [VERB] [OPTION...]"
+	echo "Verb: "
+	echo "  Install"
+	echo "  Start"
+	echo "  Update"
+	echo "Option: "
+	echo "  -t, --token  Followed by token"
+	echo "  -i, --id     Followed by ID of QQ"
+elif [ $1 = "install" ]
 then
 	echo "Installing dependences."
 	sudo apt-get update
@@ -54,16 +64,6 @@ elif [ $1 = "update" ]
 then
 	pip install --upgrade hikari-bot
 	git pull
-elif [ $# -eq 1 ]
-then
-	echo "Usage: ./manage.sh [VERB] [OPTION...]"
-	echo "Verb: "
-	echo "  Install"
-	echo "  Start"
-	echo "  Update"
-	echo "Option: "
-	echo "  -t, --token  Followed by token"
-	echo "  -i, --id     Followed by ID of QQ"
 else
 	echo "Unrecognized verb $1."
 fi
