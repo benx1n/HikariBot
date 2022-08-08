@@ -127,12 +127,15 @@ async def get_ShipInfo(server_type,info,bot,ev):
             return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
+        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
         return '请求超时了，请过会儿再尝试哦~'
     except ActionFailed:
         logger.warning(traceback.format_exc())
+        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
         return '由于风控或禁言，无法发送消息'
     except Exception:
         logger.error(traceback.format_exc())
+        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
     
     
@@ -299,10 +302,13 @@ async def get_ShipInfoRecent(server_type,info,bot,ev):
             return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
+        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
         return '请求超时了，请过会儿再尝试哦~'
     except ActionFailed:
         logger.warning(traceback.format_exc())
+        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
         return '由于风控或禁言，无法发送消息'
     except Exception:
         logger.error(traceback.format_exc())
+        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
