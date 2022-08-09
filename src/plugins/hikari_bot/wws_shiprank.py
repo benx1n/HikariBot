@@ -66,7 +66,7 @@ async def get_ShipRank(server_type,info,bot,ev):
                     ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
                     return '已超时退出'
         else:
-            return '找不到船'
+            return '找不到船，请确认船名是否正确，可以使用【wws 查船名】查询船只中英文'
         content = await search_ShipRank_Yuyuko(select_shipId,param_server)
         if content:                                         #存在缓存，直接出图
             return await html_to_pic(content, wait=0, viewport={"width": 1300, "height": 100})
