@@ -12,6 +12,7 @@ from .wws_clan import ClanSecletProcess
 from .utils import DailyNumberLimiter,FreqLimiter,get_bot,download
 from .data_source import nb2_file
 from .command_select import select_command
+from .mqtt import mqtt_run
 from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
 import httpx
@@ -27,6 +28,7 @@ scheduler = require("nonebot_plugin_apscheduler").scheduler
 
 _max = 100
 EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
+is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
 __version__ = '0.3.4'
@@ -232,8 +234,13 @@ async def startup():
 @driver.on_bot_connect
 async def remind(bot: Bot):
     superid = driver.config.superusers
+    bot_info = await bot.get_login_info()
     for each in superid:
         await bot.send_private_msg(user_id=int(each),message=f"Hikari已上线，当前版本{__version__}")
+    global is_first_run
+    if is_first_run:
+        mqtt_run(bot_info['user_id'])
+        is_first_run = False
 
 async def startup_download(url,name):
     async with httpx.AsyncClient() as client:
