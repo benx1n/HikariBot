@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+
+		.ship-table-data {
+			display: flex;
+			width: 1388px;
+			text-align: center;
+			padding: 5px;
+		}
+
+		.table-header {
+			display: flex;
+			width: 684px;
+			height: 40px;
+			line-height: 40px;
+			font-size: 18px;
+		}
+
+		.ship-image {
+			width: 100px;
+		}
+
+		.ship-user {
+			width: 150px;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+
+		}
+
+		.ship-count {
+			width: 79px;
+		}
+
+		.ship-pr {
+			width: 69px;
+		}
+
+		.ship-win {
+			width: 69px;
+		}
+
+		.ship-dmg {
+			width: 79px;
+		}
+
+		.ship-frag {
+			width: 69px;
+		}
+
+		.ship-kd {
+			width: 69px;
+		}
+
+		.left-table,
+		.right-table {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.table-data {
+			width: 684px;
+			height: 60px;
+			display: flex;
+			margin: 5px 0;
+			background-color: #DCDFE650;
+		}
+
+		.table-data .ship-image {
+			width: 100px;
+			height: 60px;
+		}
+
+		.table-data .ship-image img {
+			width: 100px;
+			height: 60px;
+		}
+
+		.data-right {
+			width: 584px;
+			height: 60px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.info-row,
+		.ship-row {
+			width: 584px;
+			height: 30px;
+			display: flex;
+			line-height: 30px;
+		}
+	</style>
+	<body>
+		<div class="main-content">
+			<div class="ship-table-data">
+				<!-- 左列表 -->
+				<div class="left-table">
+					<div class="table-header">
+						<div class="ship-image"></div>
+						<div class="ship-user"></div>
+						<div class="ship-count">场次</div>
+						<div class="ship-pr">PR</div>
+						<div class="ship-win">胜率</div>
+						<div class="ship-dmg">伤害</div>
+						<div class="ship-frag">命中</div>
+						<div class="ship-kd">K/D</div>
+					</div>
+					<!-- 友军数据从table-data进入 -->
+					{% for each_player in infoList %}
+					{% if loop.index <= player_count/2 %}
+					<div class="table-data" style="border-left: red solid 5px;">
+						<!-- 船图 -->
+						<div class="ship-image">
+							<img src= "{{ each_player['shipImgSmall'] }}" />
+						</div>
+						<div class="data-right">
+							<div class="info-row">
+								<div class="ship-user">{{ each_player['userName'] }}</div>
+								<div class="ship-count">{{ each_player['pvp']['battles'] }}</div>
+								<div class="ship-pr" style="color: {{ each_player['pvp']['pr_color'] }}" >{{ each_player['pvp']['pr'] }}</div>
+								<div class="ship-win">{{ each_player['pvp']['wins'] }}%</div>
+								<div class="ship-dmg">{{ each_player['pvp']['damage'] }}</div>
+								<div class="ship-frag">info命中</div>
+								<div class="ship-kd">infoK/D</div>
+							</div>
+							<div class="ship-row">
+								<div class="ship-user">{{ each_player['shipName'] }}</div>
+								<div class="ship-count">{{ each_player['ship']['battles'] }}</div>
+								<div class="ship-pr" style="color: {{ each_player['ship']['pr_color'] }}" >{{ each_player['ship']['pr'] }}</div>
+								<div class="ship-win">{{ each_player['ship']['wins'] }}</div>
+								<div class="ship-dmg">{{ each_player['ship']['damage'] }}</div>
+								<div class="ship-frag">ship命中</div>
+								<div class="ship-kd">shipK/D</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% endfor %}
+
+				</div>
+				<!-- 中间间隔空隙 -->
+				<div style="width: 10px;"></div>
+				<!-- 右列表 -->
+				<div class="right-table">
+					<div class="table-header">
+						<div class="ship-kd">K/D</div>
+						<div class="ship-frag">命中</div>
+						<div class="ship-dmg">伤害</div>
+						<div class="ship-win">胜率</div>
+						<div class="ship-pr">PR</div>
+						<div class="ship-count">场次</div>
+						<div class="ship-user"></div>
+						<div class="ship-image"></div>
+					</div>
+					<!-- 敌军数据从table-data进入循环 -->
+					{% for each_player in infoList %}
+					{% if loop.index > player_count/2 %}
+					<div class="table-data" style="border-right: #67C23A solid 5px;">
+						<div class="data-right">
+							<div class="info-row">
+								<div class="ship-kd">infoK/D</div>
+								<div class="ship-frag">info命中</div>
+								<div class="ship-dmg">{{ each_player['pvp']['damage'] }}</div>
+								<div class="ship-win">{{ each_player['pvp']['wins'] }}%</div>
+								<div class="ship-pr" style="color: {{ each_player['pvp']['pr_color'] }}" >{{ each_player['pvp']['pr'] }}</div>
+								<div class="ship-count">{{ each_player['pvp']['battles'] }}</div>
+								<div class="ship-user">{{ each_player['userName'] }}</div>
+							</div>
+							<div class="ship-row">
+								<div class="ship-kd">shipK/D</div>
+								<div class="ship-frag">ship命中</div>
+								<div class="ship-dmg">{{ each_player['ship']['damage'] }}</div>
+								<div class="ship-win">{{ each_player['ship']['wins'] }}</div>
+								<div class="ship-pr" style="color: {{ each_player['ship']['pr_color'] }}" >{{ each_player['ship']['pr'] }}</div>
+								<div class="ship-count">{{ each_player['ship']['battles'] }}</div>
+								<div class="ship-user">{{ each_player['shipName'] }}</div>
+							</div>
+						</div>
+						<!-- 船图 -->
+						<div class="ship-image">
+							<img src= "{{ each_player['shipImgSmall'] }}" />
+						</div>
+					</div>
+					{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

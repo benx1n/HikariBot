@@ -90,6 +90,25 @@ async def get_ship_byName(shipname:str):
         logger.error(traceback.format_exc())
         return None
     
+async def get_all_shipList():
+    try:
+        url = 'https://api.wows.shinoaki.com/public/wows/encyclopedia/ship/search'
+        params = {
+        "county":'',
+        "level":'',
+        "shipName":'',
+        "shipType":''
+    }
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, params=params, timeout=None)
+            result = resp.json()
+        if result['code'] == 200 and result['data']:
+            return result['data']
+        else:
+            return None
+    except Exception:
+        return None
+    
 async def get_AccountIdByName(server:str,name:str):
     try:
         url = 'https://api.wows.shinoaki.com/public/wows/account/search/user'

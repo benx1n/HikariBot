@@ -36,9 +36,8 @@ def on_message(client, userdata, msg):
     gzipper = gzip.GzipFile(fileobj=compressedstream)
     data = gzipper.read()
     logger.success('==================接收到订阅===================')
-    print(data)
-    json_msg = json.loads(data.decode('utf-8'))
-    print(json_msg)
+    json_msg = json.loads(data)
+    logger.success(json_msg)
     asyncio.run(select_mqtt_fuction(json_msg))
     pass
 
@@ -74,7 +73,6 @@ def mqtt_run(qq_id):
     client.on_connect = on_connect
     client.on_subscribe = on_subscribe
     client.on_message = on_message
-
     # 当与代理断开连接时调用
     client.on_disconnect = on_disconnect
 
