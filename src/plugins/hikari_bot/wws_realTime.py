@@ -6,6 +6,7 @@ import re
 import time
 import asyncio
 from pathlib import Path
+from os import getcwd
 from .data_source import servers,set_damageColor,set_winColor,set_upinfo_color,select_prvalue_and_color
 from .publicAPI import get_all_shipList
 from nonebot_plugin_htmlrender import html_to_pic
@@ -16,6 +17,7 @@ from httpx import ConnectTimeout
 from asyncio.exceptions import TimeoutError
 from .utils import match_keywords,get_bot
 from threading import Thread
+from playwright.async_api import async_playwright
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -44,11 +46,19 @@ async def send_realTime_message(data):
         #loop = asyncio.new_event_loop()
         #task = loop.create_task(coroutine)
         #loop.run_until_complete(task)
-        img = await html_to_pic(content, wait=0, viewport={"width": 1800, "height": 1000})
+        async with async_playwright() as p:
+            browser = await p.chromium.launch()
+            page = await browser.new_page()
+            await page.goto(f"file://{getcwd()}")
+            await page.set_content(content, wait_until="networkidle")
+            img = await page.screenshot(full_page=True)
+            await browser.close()
+        #img = await html_to_pic(content, wait=0, viewport={"width": 1800, "height": 1000})
         #await bot.send_group_msg(group_id=574432871,message=f"[测试功能]雨季刚刚进入了一场战斗\n")
-        await bot.send_group_msg(group_id=574432871,message=MessageSegment.image(img))
-        #await bot.send_group_msg(group_id=967546463,message=f"[测试功能]雨季刚刚进入了一场战斗\n")
-        #await bot.send_group_msg(group_id=639178962,message=f"[测试功能]雨季刚刚进入了一场战斗\n")
+        await bot.send_group_msg(group_id=574432871,message=f"[测试功能]雨季刚刚进入了一场战斗\n{MessageSegment.image(img)}")
+        await bot.send_group_msg(group_id=967546463,message=f"[测试功能]雨季刚刚进入了一场战斗\n{MessageSegment.image(img)}")
+        await bot.send_group_msg(group_id=872725671,message=f"[测试功能]雨季刚刚进入了一场战斗\n{MessageSegment.image(img)}")
+        await bot.send_group_msg(group_id=639178962,message=f"[测试功能]雨季刚刚进入了一场战斗\n{MessageSegment.image(img)}")
     except Exception:
         logger.error(traceback.format_exc())
         return
@@ -66,8 +76,10 @@ async def set_realTime_params(data):
                         each_player['shipName'] = each_ship['name']
                     each_player['shipImgSmall'] = each_ship['imgSmall']
                     break
-            each_player['pvp']['pr_name'],each_player['pvp']['pr_color'] = await select_prvalue_and_color(each_player['pvp']['pr'])
-            each_player['ship']['pr_name'],each_player['ship']['pr_color'] = await select_prvalue_and_color(each_player['ship']['pr'])
+            if each_player['pvp']:
+                each_player['pvp']['pr_name'],each_player['pvp']['pr_color'] = await select_prvalue_and_color(each_player['pvp']['pr'])
+            if each_player['ship']:
+                each_player['ship']['pr_name'],each_player['ship']['pr_color'] = await select_prvalue_and_color(each_player['ship']['pr'])
         data['player_count'] = player_count
         logger.success(data)
         return data

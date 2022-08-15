@@ -185,12 +185,13 @@ async def set_shipRecentparams(List):
     except Exception:
         traceback.print_exc()
            
-async def select_prvalue_and_color(pr:int):
+async def select_prvalue_and_color(pr):
     describe,color = None,None
-    for select in pr_select :
-        if pr > select['value']:
-            describe = select['name']
-            color = select['color']
+    if pr:
+        for select in pr_select :
+            if pr > select['value']:
+                describe = select['name']
+                color = select['color']
     return describe,color
 
 

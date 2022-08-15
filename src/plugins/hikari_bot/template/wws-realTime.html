@@ -60,7 +60,9 @@
 		.ship-kd {
 			width: 69px;
 		}
-
+		.ship-none {
+            width: 434px;
+        }
 		.left-table,
 		.right-table {
 			display: flex;
@@ -118,7 +120,7 @@
 					<!-- 友军数据从table-data进入 -->
 					{% for each_player in infoList %}
 					{% if loop.index <= player_count/2 %}
-					<div class="table-data" style="border-left: red solid 5px;">
+					<div class="table-data" style="border-left: {% if each_player['pvp'] %} {{ each_player['pvp']['pr_color'] }} {% else %} white {% endif %} solid 5px;">
 						<!-- 船图 -->
 						<div class="ship-image">
 							<img src= "{{ each_player['shipImgSmall'] }}" />
@@ -126,21 +128,29 @@
 						<div class="data-right">
 							<div class="info-row">
 								<div class="ship-user">{{ each_player['userName'] }}</div>
+								{% if each_player['pvp'] %}
 								<div class="ship-count">{{ each_player['pvp']['battles'] }}</div>
 								<div class="ship-pr" style="color: {{ each_player['pvp']['pr_color'] }}" >{{ each_player['pvp']['pr'] }}</div>
 								<div class="ship-win">{{ each_player['pvp']['wins'] }}%</div>
 								<div class="ship-dmg">{{ each_player['pvp']['damage'] }}</div>
 								<div class="ship-frag">info命中</div>
 								<div class="ship-kd">infoK/D</div>
+								{% else %}
+								<div class="ship-none">无法获取战绩</div>
+								{% endif %}
 							</div>
 							<div class="ship-row">
 								<div class="ship-user">{{ each_player['shipName'] }}</div>
+								{% if each_player['ship'] %}
 								<div class="ship-count">{{ each_player['ship']['battles'] }}</div>
 								<div class="ship-pr" style="color: {{ each_player['ship']['pr_color'] }}" >{{ each_player['ship']['pr'] }}</div>
 								<div class="ship-win">{{ each_player['ship']['wins'] }}</div>
 								<div class="ship-dmg">{{ each_player['ship']['damage'] }}</div>
 								<div class="ship-frag">ship命中</div>
 								<div class="ship-kd">shipK/D</div>
+								{% else %}
+								<div class="ship-none">无法获取战绩</div>
+								{% endif %}
 							</div>
 						</div>
 					</div>
@@ -165,24 +175,32 @@
 					<!-- 敌军数据从table-data进入循环 -->
 					{% for each_player in infoList %}
 					{% if loop.index > player_count/2 %}
-					<div class="table-data" style="border-right: #67C23A solid 5px;">
+					<div class="table-data" style="border-right: {% if each_player['pvp'] %} {{ each_player['pvp']['pr_color'] }} {% else %} white {% endif %} solid 5px;">
 						<div class="data-right">
 							<div class="info-row">
+								{% if each_player['pvp'] %}
 								<div class="ship-kd">infoK/D</div>
 								<div class="ship-frag">info命中</div>
 								<div class="ship-dmg">{{ each_player['pvp']['damage'] }}</div>
 								<div class="ship-win">{{ each_player['pvp']['wins'] }}%</div>
 								<div class="ship-pr" style="color: {{ each_player['pvp']['pr_color'] }}" >{{ each_player['pvp']['pr'] }}</div>
 								<div class="ship-count">{{ each_player['pvp']['battles'] }}</div>
+								{% else %}
+								<div class="ship-none">无法获取战绩</div>
+								{% endif %}
 								<div class="ship-user">{{ each_player['userName'] }}</div>
 							</div>
 							<div class="ship-row">
+								{% if each_player['ship'] %}
 								<div class="ship-kd">shipK/D</div>
 								<div class="ship-frag">ship命中</div>
 								<div class="ship-dmg">{{ each_player['ship']['damage'] }}</div>
 								<div class="ship-win">{{ each_player['ship']['wins'] }}</div>
 								<div class="ship-pr" style="color: {{ each_player['ship']['pr_color'] }}" >{{ each_player['ship']['pr'] }}</div>
 								<div class="ship-count">{{ each_player['ship']['battles'] }}</div>
+								{% else %}
+								<div class="ship-none">无法获取战绩</div>
+								{% endif %}
 								<div class="ship-user">{{ each_player['shipName'] }}</div>
 							</div>
 						</div>
