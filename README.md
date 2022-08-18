@@ -12,7 +12,7 @@
 战舰世界水表BOT
 <!-- prettier-ignore-end -->
 
-</div>
+
 
 <p align="center">
   <a href="https://pypi.python.org/pypi/hikari-bot">
@@ -25,15 +25,17 @@
   <a href="https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&appChannel=share&inviteCode=1W4NX2S&from=181074&biz=ka#/pc">
     <img src="https://img.shields.io/badge/QQ%E9%A2%91%E9%81%93-yuyuko助手-5492ff?style=flat-square" alt="QQ Channel">
   </a>
+
+# 💘您不打算给可爱的Hikari点个Star吗QAQ
 </p>
+</div>
 
 ## 简介
 
-战舰世界水表BOT，基于Nonebot2
-水表人，出击！wws me recent！！！
-QQ频道官方机器人已上线，请点击上方链接加入体验~
+战舰世界水表BOT，基于Nonebot2  
+水表人，出击！wws me recent！！！  
+QQ频道官方机器人已上线，请点击上方链接加入体验~  
 [Hoshino版插件](https://github.com/benx1n/wows-stats-bot)
-### 如果您觉得本项目还不错的话请点个Star哦~
 
 
 ## 特色
@@ -41,6 +43,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 - [x] 账号总体、单船、近期战绩
 - [x] 全指令支持参数乱序
 - [x] 快速切换绑定账号
+- [x] 实时推送对局信息
 - [x] 支持@快速查询
 - [x] 全异步，高并发下性能更优
 - [x] 支持频道（非官方bot类型）

@@ -75,12 +75,14 @@ async def set_realTime_params(data):
                     else:
                         each_player['shipName'] = each_ship['name']
                     each_player['shipImgSmall'] = each_ship['imgSmall']
+                    each_player['shipIdValue'] = f"{each_ship['shipIdValue']}"
                     break
             if each_player['pvp']:
                 each_player['pvp']['pr_name'],each_player['pvp']['pr_color'] = await select_prvalue_and_color(each_player['pvp']['pr'])
             if each_player['ship']:
                 each_player['ship']['pr_name'],each_player['ship']['pr_color'] = await select_prvalue_and_color(each_player['ship']['pr'])
         data['player_count'] = player_count
+        data['template_path'] = template_path
         logger.success(data)
         return data
     except Exception:

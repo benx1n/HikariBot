@@ -131,7 +131,7 @@
 								{% if each_player['pvp'] %}
 								<div class="ship-count">{{ each_player['pvp']['battles'] }}</div>
 								<div class="ship-pr" style="color: {{ each_player['pvp']['pr_color'] }}" >{{ each_player['pvp']['pr'] }}</div>
-								<div class="ship-win">{{ each_player['pvp']['wins'] }}%</div>
+								<div class="ship-win">{{ '%.2f' | format(each_player['pvp']['wins']) }}%</div>
 								<div class="ship-dmg">{{ each_player['pvp']['damage'] }}</div>
 								<div class="ship-frag">info命中</div>
 								<div class="ship-kd">infoK/D</div>
@@ -144,7 +144,7 @@
 								{% if each_player['ship'] %}
 								<div class="ship-count">{{ each_player['ship']['battles'] }}</div>
 								<div class="ship-pr" style="color: {{ each_player['ship']['pr_color'] }}" >{{ each_player['ship']['pr'] }}</div>
-								<div class="ship-win">{{ each_player['ship']['wins'] }}</div>
+								<div class="ship-win">{{ '%.2f' | format(each_player['ship']['wins']) }}</div>
 								<div class="ship-dmg">{{ each_player['ship']['damage'] }}</div>
 								<div class="ship-frag">ship命中</div>
 								<div class="ship-kd">shipK/D</div>
@@ -182,7 +182,7 @@
 								<div class="ship-kd">infoK/D</div>
 								<div class="ship-frag">info命中</div>
 								<div class="ship-dmg">{{ each_player['pvp']['damage'] }}</div>
-								<div class="ship-win">{{ each_player['pvp']['wins'] }}%</div>
+								<div class="ship-win">{{ '%.2f' | format(each_player['pvp']['wins']) }}%</div>
 								<div class="ship-pr" style="color: {{ each_player['pvp']['pr_color'] }}" >{{ each_player['pvp']['pr'] }}</div>
 								<div class="ship-count">{{ each_player['pvp']['battles'] }}</div>
 								{% else %}
@@ -195,7 +195,7 @@
 								<div class="ship-kd">shipK/D</div>
 								<div class="ship-frag">ship命中</div>
 								<div class="ship-dmg">{{ each_player['ship']['damage'] }}</div>
-								<div class="ship-win">{{ each_player['ship']['wins'] }}</div>
+								<div class="ship-win">{{ '%.2f' | format(each_player['ship']['wins']) }}%</div>
 								<div class="ship-pr" style="color: {{ each_player['ship']['pr_color'] }}" >{{ each_player['ship']['pr'] }}</div>
 								<div class="ship-count">{{ each_player['ship']['battles'] }}</div>
 								{% else %}
