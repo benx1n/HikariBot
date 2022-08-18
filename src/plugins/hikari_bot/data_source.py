@@ -91,61 +91,61 @@ pr_select = [
         "value": 0,
         "name": "还需努力",
         "englishName": "Bad",
-        "color": "#FE0E00"
+        "color": "#f44336"
     },
     {
         "value": 750,
         "name": "低于平均",
         "englishName": "Below Average",
-        "color": "#FE7903"
+        "color": "#FF9800"
     },
     {
         "value": 1100,
         "name": "平均水平",
         "englishName": "Average",
-        "color": "#FFC71F"
+        "color": "#FFC107"
     },
     {
         "value": 1350,
         "name": "好",
         "englishName": "Good",
-        "color": "#44B300"
+        "color": "#8BC34A"
     },
     {
         "value": 1550,
         "name": "很好",
         "englishName": "Very Good",
-        "color": "#318000"
+        "color": "#4CAF50"
     },
     {
         "value": 1750,
         "name": "非常好",
         "englishName": "Great",
-        "color": "#02C9B3"
+        "color": "#00BCD4"
     },
     {
         "value": 2100,
         "name": "大佬水平",
         "englishName": "Unicum",
-        "color": "#D042F3"
+        "color": "#9C27B0"
     },
     {
         "value": 2450,
         "name": "神佬水平",
         "englishName": "Super Unicum",
-        "color": "#A00DC5"
+        "color": "#673AB7"
     }
 ]
 
 color_data = {
-    "Bad": "#FE0E00",
-    "Below Average": "#FE7903",
-    "Average": "#FFC71F",
-    "Good": "#44B300",
-    "Very Good": "#318000",
-    "Great": "#02C9B3",
-    "Unicum": "#D042F3",
-    "Super Unicum": "#A00DC5"
+    "Bad": "#F44336",
+    "Below Average": "#FF9800",
+    "Average": "#FFC107",
+    "Good": "#8BC34A",
+    "Very Good": "#4CAF50",
+    "Great": "#00BCD4",
+    "Unicum": "#9C27B0",
+    "Super Unicum": "#673AB7"
 }
 
 async def set_infoparams(List):
