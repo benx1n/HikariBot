@@ -327,7 +327,7 @@
 	<body>
 		<div class="main-content">
 			<div class="page-box">
-				{% if data['shipInfo']['pr']['color'] != '#828282' and data['shipInfo']['pr']['color'] != null %}
+				{% if data['shipInfo']['pr']['color'] and data['shipInfo']['pr']['color'] != '#828282' %}
 				<div class="page-header" style="background-color: {{ data['shipInfo']['pr']['color'] }};">
 				{% else %}
 				<div class="page-header" style="background-color: {{ data['rankSolo']['pr']['color'] }};">
@@ -556,7 +556,7 @@
 					</div>
 
 					<div class="footer">
-						<p>©西行寺雨季©本心</p>
+						<p>© 西行寺雨季&nbsp;&nbsp;© 本心</p>
 						<p>https://github.com/benx1n/HikariBot</p>
 						<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
 						<p>Design By 冷眠 H5 Converted By C1ystal</p>
