@@ -240,6 +240,7 @@
 		.information-body {
 			width: 880px;
 			margin: 0 60px;
+			margin-top: 30px;
 			display: flex;
 			flex-direction: column;
 			font-weight: bold;
@@ -326,17 +327,17 @@
 	<body>
 		<div class="main-content">
 			<div class="page-box">
-				{% if data['shipInfo']['pr']['color'] != '#828282' %}
+				{% if data['shipInfo']['pr']['color'] != '#828282' and data['shipInfo']['pr']['color'] != null %}
 				<div class="page-header" style="background-color: {{ data['shipInfo']['pr']['color'] }};">
-					{% else %}
-					<div class="page-header" style="background-color: {{ data['rankSolo']['pr']['color'] }};">
-						{% endif %}
+				{% else %}
+				<div class="page-header" style="background-color: {{ data['rankSolo']['pr']['color'] }};">
+				{% endif %}
 
 						<div class="clan-user-server">
 					 	{% if data['clanInfo']['tag'] %}
 							<div class="clan" style="color: {{ data['clanInfo']['colorRgb'] }};">
 								[{{ data['clanInfo']['tag'] }}]</div>
-							{% endif %}
+						{% endif %}
 							<div class="username">{{ data['userName'] }}</div>
 							<div class="server">
 								<!-- 动态设置服务器字体颜色 -->
@@ -366,14 +367,6 @@
 						</div>
 					</div>
 
-					{% if shipRank %}
-					<div class="ranking">
-						<div class="ranking_border"><span
-								style="color: #606266;">排名</span>&nbsp;&nbsp;<span>{{shipRank}}</span>
-						</div>
-					</div>
-					{% endif %}
-
 					<div class="pr">
 						<!-- 动态设置长度及颜色，填写PR即可 -->
 						<div class="pr-bar-bg">
@@ -387,10 +380,18 @@
 							<div class="pr-bar"></div>
 						</div>
 					</div>
-
+					
 					<div class="last-time">
 						<span>最后战斗时间：</span><span>{{ time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(abs(data['shipInfo']['lastBattlesTime']))) }}</span>
 					</div>
+					
+					{% if shipRank %}
+					<div class="ranking">
+						<div class="ranking_border"><span
+								style="color: #606266;">排名</span>&nbsp;&nbsp;<span>{{shipRank}}</span>
+						</div>
+					</div>
+					{% endif %}
 
 					<div class="data-change">
 						<div class="change-header">
@@ -668,4 +669,5 @@
 		let ship_level_roma = level_roma[level_number.indexOf(ship_level)]
 		document.querySelector(".ship-level").innerText = ship_level_roma;
 	</script>
+	
 </html>
