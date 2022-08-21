@@ -24,7 +24,6 @@
 		}
 
 		.page-header {
-			color: #FFFFFF;
 			font-size: 40px;
 			padding: 20px;
 		}
@@ -98,16 +97,17 @@
 			display: flex;
 			justify-content: space-around;
 			align-content: space-around;
-			height: 60xp;
+			height: 60px;
 			line-height: 40px;
 			font-weight: bold;
+			margin-bottom: 15px;
 		}
 
 		.ranking_border {
 			margin-top: 10px;
 			height: 40px;
 			border-radius: 28px;
-			padding: 4px 10px;
+			padding: 4px 20px;
 			background-color: #F2F2F2;
 		}
 
@@ -327,11 +327,7 @@
 	<body>
 		<div class="main-content">
 			<div class="page-box">
-				{% if data['shipInfo']['pr']['color'] and data['shipInfo']['pr']['color'] != '#828282' %}
-				<div class="page-header" style="background-color: {{ data['shipInfo']['pr']['color'] }};">
-				{% else %}
-				<div class="page-header" style="background-color: {{ data['rankSolo']['pr']['color'] }};">
-				{% endif %}
+				<div class="page-header">
 
 						<div class="clan-user-server">
 					 	{% if data['clanInfo']['tag'] %}
@@ -358,11 +354,11 @@
 							<div class="ship-name">{{ data['rankSolo']['shipInfo']['nameCn'] }}</div>
 							{% endif %}
 							<div class="ship-icon"><img
-									src={% if data['shipInfo']['shipInfo']['shipType'] == 'Destroyer' or data['rankSolo']['shipInfo']['shipType'] == 'Destroyer' %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_destroyer_big.png"
-									{% elif data['shipInfo']['shipInfo']['shipType'] == 'Cruiser' or data['rankSolo']['shipInfo']['shipType'] == 'Cruiser' %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_cruiser_big.png"
-									{% elif data['shipInfo']['shipInfo']['shipType'] == 'Battleship' or data['rankSolo']['shipInfo']['shipType'] == 'Battleship' %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_battleship_big.png"
-									{% elif data['shipInfo']['shipInfo']['shipType'] == 'AirCarrier' or data['rankSolo']['shipInfo']['shipType'] == 'AirCarrier' %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_aircarrier_big.png"
-									{% else %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_submarine_big.png"
+									src={% if data['shipInfo']['shipInfo']['shipType'] == 'Destroyer' or data['rankSolo']['shipInfo']['shipType'] == 'Destroyer' %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_destroyer.png"
+									{% elif data['shipInfo']['shipInfo']['shipType'] == 'Cruiser' or data['rankSolo']['shipInfo']['shipType'] == 'Cruiser' %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_cruiser.png"
+									{% elif data['shipInfo']['shipInfo']['shipType'] == 'Battleship' or data['rankSolo']['shipInfo']['shipType'] == 'Battleship' %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_battleship.png"
+									{% elif data['shipInfo']['shipInfo']['shipType'] == 'AirCarrier' or data['rankSolo']['shipInfo']['shipType'] == 'AirCarrier' %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_aircarrier.png"
+									{% else %} "https://hikari-resource.oss-cn-shanghai.aliyuncs.com/shipType_Icon/icon_sunk_submarine.png"
 									{% endif %} /></div>
 						</div>
 					</div>
@@ -370,7 +366,7 @@
 					<div class="pr">
 						<!-- 动态设置长度及颜色，填写PR即可 -->
 						<div class="pr-bar-bg">
-							{% if data['shipInfo']['pr']['color'] != '#828282' %}
+							{% if data['shipInfo']['pr']['color'] and data['shipInfo']['pr']['color'] != '#828282' %}
 							<span class="pr-number">{{ data['shipInfo']['pr']['value'] }} &nbsp;&nbsp;&nbsp;&nbsp;<span
 									class="pr-text"></span></span>
 							{% else %}
@@ -417,13 +413,13 @@
 							<div class="overview-item">
 								<div class="overview-item-title">胜率</div>
 								<div class="overview-item-data"
-									style="color: {{ set_winColor(data['shipInfo']['wins']) }};">
+									style="color: {{ data['shipInfo']['winsData']['color'] }};">
 									{{ data['shipInfo']['wins'] }}%</div>
 							</div>
 							<div class="overview-item">
 								<div class="overview-item-title">场均</div>
 								<div class="overview-item-data"
-									style="color: {{ set_damageColor(data['shipInfo']['shipInfo']['shipType'],data['shipInfo']['damage']) }};">
+									style="color: {{ data['shipInfo']['damageData']['color'] }};">
 									{{ data['shipInfo']['damage'] }}</div>
 							</div>
 						</div>
@@ -461,12 +457,12 @@
 						<div class="information-body-data">
 							<div class="information-item" style="color: #909399;">单野</div>
 							<div class="information-item">{{ data['shipSolo']['battles'] }}</div>
-							<div class="information-item" style="color: {{ set_winColor(data['shipSolo']['wins']) }};">
+							<div class="information-item" style="color: {{ data['shipSolo']['winsData']['color'] }};">
 								{{ data['shipSolo']['wins'] }}%</div>
 							<div class="information-item" style="color: {{ data['shipSolo']['pr']['color'] }};">
 								{{ data['shipSolo']['pr']['value'] }}</div>
 							<div class="information-item"
-								style="color: {{ set_damageColor(data['shipInfo']['shipInfo']['shipType'],data['shipSolo']['damage']) }};">
+								style="color: {{ data['shipSolo']['damageData']['color'] }};">
 								{{ data['shipSolo']['damage'] }}</div>
 							<div class="information-item">{{ '%.2f' | format(data['shipSolo']['frags']) }}</div>
 						</div>
@@ -475,12 +471,12 @@
 						<div class="information-body-data">
 							<div class="information-item" style="color: #909399;">自行车</div>
 							<div class="information-item">{{ data['shipTwo']['battles'] }}</div>
-							<div class="information-item" style="color: {{ set_winColor(data['shipTwo']['wins']) }};">
+							<div class="information-item" style="color: {{ data['shipTwo']['winsData']['color'] }};">
 								{{ data['shipTwo']['wins'] }}%</div>
 							<div class="information-item" style="color: {{ data['shipTwo']['pr']['color'] }};">
 								{{ data['shipTwo']['pr']['value'] }}</div>
 							<div class="information-item"
-								style="color: {{ set_damageColor(data['shipInfo']['shipInfo']['shipType'],data['shipTwo']['damage']) }};">
+								style="color: {{ data['shipTwo']['damageData']['color'] }};">
 								{{ data['shipTwo']['damage'] }}</div>
 							<div class="information-item">{{ '%.2f' | format(data['shipTwo']['frags']) }}</div>
 						</div>
@@ -489,12 +485,12 @@
 						<div class="information-body-data">
 							<div class="information-item" style="color: #909399;">三轮车</div>
 							<div class="information-item">{{ data['shipThree']['battles'] }}</div>
-							<div class="information-item" style="color: {{ set_winColor(data['shipThree']['wins']) }};">
+							<div class="information-item" style="color: {{ data['shipThree']['winsData']['color'] }};">
 								{{ data['shipThree']['wins'] }}%</div>
 							<div class="information-item" style="color: {{ data['shipThree']['pr']['color'] }};">
 								{{ data['shipThree']['pr']['value'] }}</div>
 							<div class="information-item"
-								style="color: {{ set_damageColor(data['shipInfo']['shipInfo']['shipType'],data['shipThree']['damage']) }};">
+								style="color: {{ data['shipThree']['damageData']['color'] }};">
 								{{ data['shipThree']['damage'] }}</div>
 							<div class="information-item">{{ '%.2f' | format(data['shipThree']['frags']) }}</div>
 						</div>
@@ -503,12 +499,12 @@
 						<div class="information-body-data">
 							<div class="information-item" style="color: #909399;">排位</div>
 							<div class="information-item">{{ data['rankSolo']['battles'] }}</div>
-							<div class="information-item" style="color: {{ set_winColor(data['rankSolo']['wins']) }};">
+							<div class="information-item" style="color: {{ data['rankSolo']['winsData']['color'] }};">
 								{{ data['rankSolo']['wins'] }}%</div>
 							<div class="information-item" style="color: {{ data['rankSolo']['pr']['color'] }};">
 								{{ data['rankSolo']['pr']['value'] }}</div>
 							<div class="information-item"
-								style="color: {{ set_damageColor(data['shipInfo']['shipInfo']['shipType'],data['rankSolo']['damage']) }};">
+								style="color: {{ data['rankSolo']['damageData']['color'] }};">
 								{{ data['rankSolo']['damage'] }}</div>
 							<div class="information-item">{{ '%.2f' | format(data['rankSolo']['frags']) }}</div>
 						</div>
@@ -652,13 +648,6 @@
 			document.querySelector(".change-pr").style.color = "#70AD47";
 		} else {
 			document.querySelector(".change-pr").style.color = "#FF0000";
-		}
-	</script>
-
-	<script>
-		let pr_color = document.querySelector(".page-header").style.backgroundColor;
-		if (pr_color == "rgb(255, 193, 7)") {
-			document.querySelector(".page-header").style.color = "#303133";
 		}
 	</script>
 
