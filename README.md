@@ -436,7 +436,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     ```
     USE_PLUGIN_GO_CQHTTP = false
     ```
-5. 在文件夹下打开终端，输入`python boy.py`启动bot
+5. 在文件夹下打开终端，输入`python bot.py`启动bot
 
 
 ### 出现ZoneInfoNotFoundError报错
