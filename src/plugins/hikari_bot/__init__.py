@@ -237,10 +237,10 @@ async def remind(bot: Bot):
     bot_info = await bot.get_login_info()
     for each in superid:
         await bot.send_private_msg(user_id=int(each),message=f"Hikari已上线，当前版本{__version__}")
-    global is_first_run
-    if is_first_run:
-        mqtt_run(bot_info['user_id'])
-        is_first_run = False
+    #global is_first_run
+    #if is_first_run:
+    #    mqtt_run(bot_info['user_id'])
+    #    is_first_run = False
 
 async def startup_download(url,name):
     async with httpx.AsyncClient() as client:

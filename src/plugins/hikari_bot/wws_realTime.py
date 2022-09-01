@@ -42,10 +42,6 @@ async def send_realTime_message(data):
         template_data = await set_realTime_params(data)
         content = await template.render_async(template_data)
         print(content)
-        #coroutine = send_message(content)
-        #loop = asyncio.new_event_loop()
-        #task = loop.create_task(coroutine)
-        #loop.run_until_complete(task)
         async with async_playwright() as p:
             browser = await p.chromium.launch()
             page = await browser.new_page()
@@ -53,11 +49,6 @@ async def send_realTime_message(data):
             await page.set_content(content, wait_until="networkidle")
             img = await page.screenshot(full_page=True)
             await browser.close()
-        #img = await html_to_pic(content, wait=0, viewport={"width": 1800, "height": 1000})
-        #await bot.send_group_msg(group_id=574432871,message=f"[测试功能]雨季刚刚进入了一场战斗\n")
-        await bot.send_group_msg(group_id=574432871,message=f"[测试功能]雨季刚刚进入了一场战斗\n{MessageSegment.image(img)}")
-        await bot.send_group_msg(group_id=967546463,message=f"[测试功能]雨季刚刚进入了一场战斗\n{MessageSegment.image(img)}")
-        await bot.send_group_msg(group_id=872725671,message=f"[测试功能]雨季刚刚进入了一场战斗\n{MessageSegment.image(img)}")
         await bot.send_group_msg(group_id=639178962,message=f"[测试功能]雨季刚刚进入了一场战斗\n{MessageSegment.image(img)}")
     except Exception:
         logger.error(traceback.format_exc())
