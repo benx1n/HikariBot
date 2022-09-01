@@ -524,10 +524,10 @@
 			</div>
 		</div>
 	</body>
-	{% if template_path and template_path/"Chart.min.js" and template_path/"chartjs-plugin-datalabels@1.0.0.js" %}
+	{% if template_path and template_path/"echarts.js" %}
 	<script src="{{template_path}}/echarts.js"></script>
 	{% else %}
-	<script src="https://benx1n.oss-cn-beijing.aliyuncs.com/template_Hikari_Latest/echarts.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.js"></script>
 	{% endif %}
 	<script>
 		window.onload = function () {
