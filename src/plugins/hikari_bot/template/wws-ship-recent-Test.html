@@ -541,11 +541,11 @@
 											{% if each|string == value and eachShipData[each]['battles'] %}
 											<div class="day-data">
 												<div class="day-col">
-													<div class="day-col-item">{{ ['单野','自行车','三轮车','排位'][index] }}</div>
+													<div class="day-col-item" style="color: #606266;;">{{ ['单野','自行车','三轮车','排位'][index] }}</div>
 													<div class="day-col-item">{{ eachShipData[each]['battles'] }}</div>
-													<div class="day-col-item" style="color: {{ eachShipData[each]['winsData']['color'] }};">{{ eachShipData[each]['wins'] }}</div>
+													<div class="day-col-item" style="color: {{ eachShipData[each]['winsData']['color'] }};">{{ eachShipData[each]['wins'] }}%</div>
 													<div class="day-col-item" style="color: {{ eachShipData[each]['pr']['color'] }};">{{ eachShipData[each]['pr']['value'] }}</div>
-													<div class="day-col-item" style="color: {{ eachShipData[each]['winsData']['color'] }};">{{ eachShipData[each]['damage'] }}</div>
+													<div class="day-col-item" style="color: {{ eachShipData[each]['damageData']['color'] }};">{{ eachShipData[each]['damage'] }}</div>
 													<div class="day-col-item">{{ '%.2f' | format(eachShipData[each]['frags']) }}</div>
 												</div>
 											</div>
