@@ -31,9 +31,9 @@ black = "^22.1.0"
 nonebot-plugin-gocqhttp = "^0.5.6"
 
 [tool.nonebot]
-#plugins = ["nonebot_plugin_apscheduler", "nonebot_plugin_htmlrender","nonebot_plugin_guild_patch"]
-plugins = ["nonebot_plugin_apscheduler", "nonebot_plugin_htmlrender","nonebot_plugin_guild_patch","hikari_bot"]
-#plugin_dirs = ["src/plugins"]
+plugins = ["nonebot_plugin_apscheduler", "nonebot_plugin_htmlrender","nonebot_plugin_guild_patch"]
+#plugins = ["nonebot_plugin_apscheduler", "nonebot_plugin_htmlrender","nonebot_plugin_guild_patch","hikari_bot"]
+plugin_dirs = ["src/plugins"]
 
 [[tool.poetry.source]]
 name = "tsinghua"
