@@ -410,7 +410,7 @@
 							<div class="ship-data-col-item" style="color: {{ data['type']['Battleship']['winsData']['color'] }};">{{ data['type']['Battleship']['wins'] }}%</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Battleship']['pr']['color'] }};">{{ data['type']['Battleship']['pr']['value'] }}</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Battleship']['damageData']['color'] }};">{{ data['type']['Battleship']['damage'] }}</div>
-							<div class="ship-data-col-item">{{ data['type']['Battleship']['hit'] }}%</div>
+							<div class="ship-data-col-item">{{ '%.2f' | format(data['type']['Battleship']['hit']) }}%</div>
 						</div>
 						{% endif %}
 
@@ -421,7 +421,7 @@
 							<div class="ship-data-col-item" style="color: {{ data['type']['Cruiser']['winsData']['color'] }};">{{ data['type']['Cruiser']['wins'] }}%</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Cruiser']['pr']['color'] }};">{{ data['type']['Cruiser']['pr']['value'] }}</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Cruiser']['damageData']['color'] }};">{{ data['type']['Cruiser']['damage'] }}</div>
-							<div class="ship-data-col-item">{{ data['type']['Cruiser']['hit'] }}%</div>
+							<div class="ship-data-col-item">{{ '%.2f' | format(data['type']['Cruiser']['hit']) }}%</div>
 						</div>
 						{% endif %}
 
@@ -433,7 +433,7 @@
 							<div class="ship-data-col-item" style="color: {{ data['type']['Destroyer']['winsData']['color'] }};">{{ data['type']['Destroyer']['wins'] }}%</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Destroyer']['pr']['color'] }};">{{ data['type']['Destroyer']['pr']['value'] }}</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Destroyer']['damageData']['color'] }};">{{ data['type']['Destroyer']['damage'] }}</div>
-							<div class="ship-data-col-item">{{ data['type']['Destroyer']['hit'] }}%</div>
+							<div class="ship-data-col-item">{{ '%.2f' | format(data['type']['Destroyer']['hit']) }}%</div>
 						</div>
 						{% endif %}
 
@@ -444,7 +444,7 @@
 							<div class="ship-data-col-item" style="color: {{ data['type']['AirCarrier']['winsData']['color'] }};">{{ data['type']['AirCarrier']['wins'] }}%</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['AirCarrier']['pr']['color'] }};">{{ data['type']['AirCarrier']['pr']['value'] }}</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['AirCarrier']['damageData']['color'] }};">{{ data['type']['AirCarrier']['damage'] }}</div>
-							<div class="ship-data-col-item">{{ data['type']['AirCarrier']['hit'] }}%</div>
+							<div class="ship-data-col-item">{{ '%.2f' | format(data['type']['AirCarrier']['hit']) }}%</div>
 						</div>
 						{% endif %}
 
