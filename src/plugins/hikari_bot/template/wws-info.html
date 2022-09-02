@@ -369,7 +369,7 @@
 								</div>
 								<div class="change-win-box bottom-mini-item-right">
 									<div class="mini-item-top">胜率</div>
-									<div class="mini-item-bottom change-win">{{ '%.2f' | format(data['dwpDataVO']['wins']) }}%</div>
+									<div class="mini-item-bottom change-win">{{ '%+.2f' | format(data['dwpDataVO']['wins']) }}%</div>
 								</div>
 							</div>
 						</div>
@@ -385,7 +385,7 @@
 								</div>
 								<div class="overview-hit-box bottom-mini-item-right">
 									<div class="mini-item-top">命中</div>
-									<div class="mini-item-bottom">{{ data['pvp']['hit'] }}%</div>
+									<div class="mini-item-bottom">{{ '%.2f' | format(data['pvp']['hit']) }}%</div>
 								</div>
 							</div>
 						</div>
@@ -410,7 +410,7 @@
 							<div class="ship-data-col-item" style="color: {{ data['type']['Battleship']['winsData']['color'] }};">{{ data['type']['Battleship']['wins'] }}%</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Battleship']['pr']['color'] }};">{{ data['type']['Battleship']['pr']['value'] }}</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Battleship']['damageData']['color'] }};">{{ data['type']['Battleship']['damage'] }}</div>
-							<div class="ship-data-col-item">{{ '%.2f' | format(data['type']['Battleship']['hit']) }}%</div>
+							<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['Battleship']['hit']) }}%</div>
 						</div>
 						{% endif %}
 
@@ -421,7 +421,7 @@
 							<div class="ship-data-col-item" style="color: {{ data['type']['Cruiser']['winsData']['color'] }};">{{ data['type']['Cruiser']['wins'] }}%</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Cruiser']['pr']['color'] }};">{{ data['type']['Cruiser']['pr']['value'] }}</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Cruiser']['damageData']['color'] }};">{{ data['type']['Cruiser']['damage'] }}</div>
-							<div class="ship-data-col-item">{{ '%.2f' | format(data['type']['Cruiser']['hit']) }}%</div>
+							<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['Cruiser']['hit']) }}%</div>
 						</div>
 						{% endif %}
 
@@ -433,7 +433,7 @@
 							<div class="ship-data-col-item" style="color: {{ data['type']['Destroyer']['winsData']['color'] }};">{{ data['type']['Destroyer']['wins'] }}%</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Destroyer']['pr']['color'] }};">{{ data['type']['Destroyer']['pr']['value'] }}</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['Destroyer']['damageData']['color'] }};">{{ data['type']['Destroyer']['damage'] }}</div>
-							<div class="ship-data-col-item">{{ '%.2f' | format(data['type']['Destroyer']['hit']) }}%</div>
+							<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['Destroyer']['hit']) }}%</div>
 						</div>
 						{% endif %}
 
@@ -444,7 +444,18 @@
 							<div class="ship-data-col-item" style="color: {{ data['type']['AirCarrier']['winsData']['color'] }};">{{ data['type']['AirCarrier']['wins'] }}%</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['AirCarrier']['pr']['color'] }};">{{ data['type']['AirCarrier']['pr']['value'] }}</div>
 							<div class="ship-data-col-item" style="color: {{ data['type']['AirCarrier']['damageData']['color'] }};">{{ data['type']['AirCarrier']['damage'] }}</div>
-							<div class="ship-data-col-item">{{ '%.2f' | format(data['type']['AirCarrier']['hit']) }}%</div>
+							<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['AirCarrier']['hit']) }}%</div>
+						</div>
+						{% endif %}
+						
+						{% if data['type']['Submarine']['battles'] %}
+						<div class="ship-data-col">
+							<div class="ship-data-col-item ship-data-type">潜艇</div>
+							<div class="ship-data-col-item">{{ data['type']['Submarine']['battles'] }}</div>
+							<div class="ship-data-col-item" style="color: {{ data['type']['Submarine']['winsData']['color'] }};">{{ data['type']['Submarine']['wins'] }}%</div>
+							<div class="ship-data-col-item" style="color: {{ data['type']['Submarine']['pr']['color'] }};">{{ data['type']['Submarine']['pr']['value'] }}</div>
+							<div class="ship-data-col-item" style="color: {{ data['type']['Submarine']['damageData']['color'] }};">{{ data['type']['Submarine']['damage'] }}</div>
+							<div class="ship-data-col-item">{{ '%.2f' | format (data['type']['Submarine']['hit']) }}%</div>
 						</div>
 						{% endif %}
 
@@ -540,6 +551,12 @@
 			var barOption = {
 				animation: false,
 				tooltip: {},
+				label: {
+					position: 'top',
+					show: true,
+					fontSize: '15',
+					color: '#303133',
+				},
 				xAxis: {
 					data: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', '★'],
 					axisLabel: {
@@ -568,7 +585,15 @@
 						{{ data['battleCountAll']['9'] }},
 						{{ data['battleCountAll']['10'] }},
 						{{ data['battleCountAll']['11'] }},
-					]
+					],
+					itemStyle: {
+						color: '#D6ECFB40',
+					    borderWidth: 1,
+					    borderType: 'solid',
+					    borderColor: '#9FB8FF',
+					    shadowColor: '#9FB8FF',
+					    shadowBlur: 3
+					},
 				}]
 			};
 	
@@ -580,45 +605,49 @@
 			var pieOption = {
 				animation: false,
 				tooltip: {},
-				legend: {
-					orient: 'vertical',
-					right: 30,
-					top: 'center',
-					itemHeight: 20,
-					itemGap: 30,
-					textStyle: {
-						fontSize: 20,
-					},
-					data: ['BB', 'CA', 'DD', 'CV']
-				},
-				series: [{
-					name: '场次',
-					type: 'pie',
-					label: {
-						show: false,
-					},
-					data: [{
-							value: {{ data['type']['Battleship']['battles'] }},
-							name: 'BB',
-						},
-						{
-							value: {{ data['type']['Cruiser']['battles'] }},
-							name: 'CA',
-						},
-						{
-							value: {{ data['type']['Destroyer']['battles'] }},
-							name: 'DD',
-						},
-						{
-							value: {{ data['type']['AirCarrier']['battles'] }},
-							name: 'CV',
-						}
-					],
-					radius: ['30%', '70%'],
-					center: ['40%', '50%']
-				}]
+				color: ["#FBE5D6", "#E2F0D9", "#F2E2E2", "#DAE3F3", "#D9FFFF"],
+				series: [
+			    {
+			        name: this.title,
+			        type: 'pie',
+			        selectedMode: 'single',
+			        radius: ['30%', '80%'],
+			        clockwise: false,
+			        itemStyle: {
+			            borderWidth: 5,
+			            borderColor: '#fff'
+			        },
+			        label: {
+			            position: 'inside',
+			            formatter: '{b}\n{d}%',
+			            fontSize: 20,
+			            fontWeight: 'bold',
+			        },
+			        data: [
+			            { value: {{ data['type']['Battleship']['battles'] }}, name: 'BB' },
+			            { value: {{ data['type']['Cruiser']['battles'] }}, name: 'CA' },
+			            { value: {{ data['type']['Destroyer']['battles'] }}, name: 'DD' },
+			            { value: {{ data['type']['AirCarrier']['battles'] }}, name: 'CV' },
+			            { value: {{ data['type']['Submarine']['battles'] }}, name: 'SS' }
+			        ]
+			    }],
+				graphic: {
+			    elements: [{
+			        type: 'text', 
+			        left: 'center',
+			        top: 'center',
+			        style: {
+			            text: '舰船\n场次',
+			            fontSize: 40, 
+			            textAlign: 'center', 
+			            width: 30,
+			            height: 30,
+			            fill: 'darkgray'
+			        }
+			    }]
+			}
 			};
-	
+				
 			pieChart.setOption(pieOption);
 		}
 	</script>
