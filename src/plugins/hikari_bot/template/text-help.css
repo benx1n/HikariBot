@@ -1,17 +1,17 @@
 body {
-    font-family: "Microsoft YaHei UI";
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 35px;
+	font-family: "Microsoft YaHei";
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 35px;
 }
 
 .text {
-    margin-top: 5px;
-    word-break: break-all;
-    white-space: pre-wrap;
-    
+	margin-top: 5px;
+	word-break: break-all;
+	white-space: pre-wrap;
+
 }
 
 .main-box {
-    padding: 5px;
+	padding: 5px;
 }
