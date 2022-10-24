@@ -418,7 +418,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
     > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_386.exe](https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc1/go-cqhttp_windows_386.exe)
 
-2. 双击go-cqhttp，提示释出bat，重新运行bat，选择websocket反向代理，go-cqhttp将会在同文件夹内自动创建一个`config.yml`，右键使用notepad++打开,根据注释填写QQ账号密码，并将以下内容写入文件结尾（需替换原有的ws-reverse节点）：
+2. 双击go-cqhttp，提示释出bat，重新运行bat，选择websocket反向代理，go-cqhttp将会在同文件夹内自动创建一个`config.yml`，右键使用notepad++打开，根据注释填写QQ账号密码，并将以下内容写入文件结尾（需替换原有的ws-reverse节点）：
 
     ```yaml
       - ws-reverse:
@@ -461,25 +461,30 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 ### Ubuntu系统下部署字体不正常(针对一些云服务器的Ubuntu镜像，不保证成功，只是提供一个解决方案)
   1. 执行以下命令，完善字体库并将中文设置成默认语言（部分Ubuntu可能不需要该步骤，可直接从第二步开始）
     ```
-    sudo apt install fonts-noto
-    sudo locale-gen zh_CN zh_CN.UTF-8
-    sudo update-locale LC_ALL=zh_CN.UTF-8 LANG=zh_CN.UTF-8
+    sudo apt install fonts-noto 
+    sudo locale-gen zh_CN zh_CN.UTF-8 
+    sudo update-locale LC_ALL=zh_CN.UTF-8 LANG=zh_CN.UTF-8 
     sudo fc-cache -fv
     ```
+  
   2. 在你的Windows电脑上打开`C:\Windows\fonts`文件夹，找到里面的微软雅黑字体，将其复制出来，放在任意目录，应该会得到`msyh.ttc`，`mshybd.ttc`，`msyhl.ttc`三个文件。（不会有人还用Win7吧？）
+
   3. 进入到`/usr/share/fonts`文件夹下，创建一个文件夹命名为`msyh`，然后进入其中
     ```
-    cd /usr/share/fonts
-    sudo mkdir msyh
+    cd /usr/share/fonts 
+    sudo mkdir msyh 
     cd msyh
     ```
+  
   4. 将三个字体文件上传到`msyh`文件夹中(过程中遇到的问题请自行解决)
+
   5. 执行以下命令（此时你应该是在`msyh`文件夹下），加载字体
     ```
-    sudo mkfontscale
-    sudo mkfontdir
+    sudo mkfontscale 
+    sudo mkfontdir 
     sudo fc-cache -fv
     ```
+  
   6. （可选，若不正常可尝试）重启Hikari。
 
 ## 感谢以下项目的支持（排名不分先后）
