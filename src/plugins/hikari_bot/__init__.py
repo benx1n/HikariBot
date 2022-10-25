@@ -13,6 +13,7 @@ from .utils import DailyNumberLimiter,FreqLimiter,get_bot,download
 from .data_source import nb2_file
 from .command_select import select_command
 from .mqtt import mqtt_run
+from .game.pupu import get_pupu_msg
 from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
 import httpx
@@ -36,6 +37,7 @@ dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
 bot = on_command("wws", block=False, aliases={"WWS"},priority=5)
+bot_pupu = on_command("噗噗", block=True, priority=5)
 bot_checkversion = on_command("wws 检查更新",priority=5,block=True)
 bot_update = on_command("wws 更新Hikari",priority=5,block=True,permission=SUPERUSER)
 bot_listen = on_message(priority=5,block=False)
@@ -258,3 +260,20 @@ scheduler.add_job(
     "cron",
     hour = 4
 )
+
+
+
+@bot_pupu.handle()
+async def send_pupu_msg(ev:MessageEvent,bot:Bot):
+    try:
+        if driver.config.pupu:
+            msg = await get_pupu_msg()
+            await bot.send(ev,msg)
+    except ActionFailed:
+        logger.warning(traceback.format_exc())
+        try:
+            await bot.send(ev,'噗噗寄了>_<可能被风控了QAQ')
+        except Exception:
+            pass
+        return
+    
