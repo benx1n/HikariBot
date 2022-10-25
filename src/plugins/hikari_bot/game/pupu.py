@@ -1,15 +1,7 @@
 from typing import List
 import httpx
 import traceback
-import jinja2
-import re
-import time
 from pathlib import Path
-from ..data_source import servers,set_infoparams,set_damageColor,set_winColor,set_upinfo_color
-from ..utils import match_keywords
-from ..publicAPI import get_AccountIdByName
-from nonebot_plugin_htmlrender import html_to_pic
-from nonebot import get_driver
 from nonebot.log import logger
 from httpx import ConnectTimeout
 from asyncio.exceptions import TimeoutError

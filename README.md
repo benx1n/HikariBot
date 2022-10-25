@@ -222,6 +222,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     all_channel = false             #是否全频道生效，无论此项配置如何，channel_list中的频道一定会开启
     channel_list = []               #频道列表白名单，数组形式，可在控制台中获取相应的channel_id
     ban_group_list = [967546463]    #群列表黑名单，默认屏蔽了开发者交流群
+    pupu = true                     #是否开启噗噗
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
@@ -252,6 +253,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
+### 22-10-25    v0.3.5.2  新增噗噗
 ### 22-07-24    v0.3.5  适配nontbo2 v2.0.0rc1  
 ### 22-07-24    v0.3.4  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置
 - 重要更新，完整版安装请拉取最新仓库代码，一键包请下载最新版本
@@ -291,15 +293,15 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 - [#]info适配V3接口
 - [#]recent显示时间区间
 
+
+<details>
+<summary><b>更以前的更新日志</b></summary>
+
 ### 22-06-23    v0.3.1  **重要功能更新**
 - [+]新增单船近期战绩，可显示每日详细信息，指令`wws ship recent`
 - [+]新增docker部署 [@12hydrogen](https://github.com/12hydrogen)
 - [#]修复国服特殊字符ID无法查询的bug
 - [#]修复船只选择过期后发送数字序号仍被识别的bug
-
-
-<details>
-<summary><b>更以前的更新日志</b></summary>
 
 ### 22-06-15    v0.3.0.1  **重要功能更新**
 - [+]支持显示军团评级颜色
