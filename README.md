@@ -225,6 +225,8 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     ban_group_list = [967546463]    #群列表黑名单，默认屏蔽了开发者交流群
     pupu = true                     #是否开启噗噗
     check_cache = true              #是否开启缓存上报
+    proxy_on = false                #是否启用代理
+    proxy = http://localhost:7890   #代理地址，如果上面选项开启，这边替换为你本地的
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
