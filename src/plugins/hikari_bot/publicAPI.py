@@ -15,6 +15,13 @@ from base64 import b64encode
 headers = {
     'Authorization': get_driver().config.api_token
 }
+if get_driver().config.proxy_on:
+    proxy={
+        'https://': get_driver().config.proxy
+    }
+else:
+    proxy={
+    }
 
 async def get_nation_list():
     try:
@@ -181,10 +188,12 @@ async def check_yuyuko_cache(server,id):
                     for key in result['data']:
                         tasks.append(asyncio.ensure_future(get_wg_info(cache_data,key, result['data'][key])))
                     await asyncio.gather(*tasks)
+                if not cache_data:
+                    return False
                 data_base64 = b64encode(gzip.compress(json.dumps(cache_data).encode('utf-8'))).decode()
                 params['data'] = data_base64
                 async with httpx.AsyncClient(headers=headers) as client:
-                    resp = await client.post(yuyuko_cache_url, json=params, timeout=10)
+                    resp = await client.post(yuyuko_cache_url, json=params, timeout=5)
                     result = resp.json()
                     logger.success(result)
                 if result['code'] == 200:
@@ -199,12 +208,13 @@ async def check_yuyuko_cache(server,id):
     
 async def get_wg_info(params,key,url):
     try:
-        async with httpx.AsyncClient(headers=headers) as client:
-            resp = await client.get(url, timeout=10, follow_redirects = True)
+        async with httpx.AsyncClient(headers=headers,proxies=proxy) as client:
+            resp = await client.get(url, timeout=3, follow_redirects = True)
             wg_result = resp.json()
         if resp.status_code == 200 and wg_result['status'] == 'ok':
             params[key] = resp.text
     except Exception:
         logger.error(traceback.format_exc())
+        logger.error(f"上报url：{url}")
         return
         
