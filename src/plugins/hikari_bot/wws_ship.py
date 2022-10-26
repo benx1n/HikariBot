@@ -10,7 +10,7 @@ from .data_source import servers,set_shipparams,set_shipRecentparams,tiers,numbe
 from .utils import match_keywords,get_bot
 from nonebot_plugin_htmlrender import html_to_pic,text_to_pic
 from nonebot.adapters.onebot.v11 import MessageSegment,ActionFailed
-from.publicAPI import get_ship_byName,get_AccountIdByName
+from.publicAPI import get_ship_byName,get_AccountIdByName,check_yuyuko_cache
 from collections import defaultdict, namedtuple
 from nonebot import get_driver
 from nonebot.log import logger
@@ -103,6 +103,11 @@ async def get_ShipInfo(server_type,info,bot,ev):
                 return '找不到船，请确认船名是否正确，可以使用【wws 查船名】查询船只中英文'
         else:
             return '参数似乎出了问题呢'
+        is_cache = await check_yuyuko_cache(params['server'],params['accountId'])
+        if is_cache:
+            logger.success('上报数据成功')
+        else:
+            logger.success('跳过上报数据，直接请求')
         url = 'https://api.wows.shinoaki.com/public/wows/account/ship/info'
         logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         ranking = await get_MyShipRank_yuyuko(params)
@@ -284,6 +289,11 @@ async def get_ShipInfoRecent(server_type,info,bot,ev):
                 return '找不到船，请确认船名是否正确，可以使用【wws 查船名】查询船只中英文'
         else:
             return '参数似乎出了问题呢'
+        is_cache = await check_yuyuko_cache(params['server'],params['accountId'])
+        if is_cache:
+            logger.success('上报数据成功')
+        else:
+            logger.success('跳过上报数据，直接请求')
         url = 'https://api.wows.shinoaki.com/api/wows/recent/v2/recent/info/ship'
         logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:

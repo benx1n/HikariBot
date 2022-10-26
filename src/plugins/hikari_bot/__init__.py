@@ -1,7 +1,7 @@
 import traceback
 import nonebot.adapters.onebot.v11
 from loguru import logger
-from nonebot import on_command, on_message, get_driver
+from nonebot import on_command, on_message, on_fullmatch, get_driver
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
@@ -32,12 +32,12 @@ EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.3.5.2'
+__version__ = '0.3.5.3'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
 bot = on_command("wws", block=False, aliases={"WWS"},priority=5)
-bot_pupu = on_command("噗噗", block=True, priority=5)
+bot_pupu = on_fullmatch("噗噗", block=True, priority=5)
 bot_checkversion = on_command("wws 检查更新",priority=5,block=True)
 bot_update = on_command("wws 更新Hikari",priority=5,block=True,permission=SUPERUSER)
 bot_listen = on_message(priority=5,block=False)
@@ -266,7 +266,7 @@ scheduler.add_job(
 @bot_pupu.handle()
 async def send_pupu_msg(ev:MessageEvent,bot:Bot):
     try:
-        if driver.config.pupu:
+        if driver.config.pupu and isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:
             msg = await get_pupu_msg()
             await bot.send(ev,msg)
     except ActionFailed:

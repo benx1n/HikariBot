@@ -66,6 +66,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
   - 检查版本更新：wws 检查更新
   - 更新：wws 更新Hikari
   - 查看帮助：wws help
+  - 噗噗：一言
 
   </details>
   <details>
@@ -223,6 +224,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     channel_list = []               #频道列表白名单，数组形式，可在控制台中获取相应的channel_id
     ban_group_list = [967546463]    #群列表黑名单，默认屏蔽了开发者交流群
     pupu = true                     #是否开启噗噗
+    check_cache = true              #是否开启缓存上报
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
@@ -253,6 +255,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
+### 22-10-26    v0.3.5.3  添加缓存上报机制，修复噗噗误触发的bug
 ### 22-10-25    v0.3.5.2  新增噗噗
 ### 22-07-24    v0.3.5  适配nontbo2 v2.0.0rc1  
 ### 22-07-24    v0.3.4  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置
