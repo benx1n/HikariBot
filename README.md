@@ -180,6 +180,9 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
       - 私聊、频道默认禁用
       - 群聊默认开启，默认屏蔽官方交流群`
       - 默认WEB登录账号密码为admin/admin，如有需要请自行修改，无需设置密码请删除env.prod中的配置项
+      - 默认开启噗噗
+      - 默认开启缓存上报
+      - 默认关闭代理
 
 5. 双击`启动.bat`，在打开的浏览器中添加bot账号密码，重新启动Hikari
     - 页面加载不出请尝试刷新一下，已知IE浏览器可能存在一些问题
@@ -224,7 +227,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     channel_list = []               #频道列表白名单，数组形式，可在控制台中获取相应的channel_id
     ban_group_list = [967546463]    #群列表黑名单，默认屏蔽了开发者交流群
     pupu = true                     #是否开启噗噗
-    check_cache = true              #是否开启缓存上报
+    check_cache = true              #是否开启缓存上报,可降低高峰期延迟,如果错误日志中频繁报错上报url:XXXXXXXX,请关闭此项或配置代理
     proxy_on = false                #是否启用代理
     proxy = http://localhost:7890   #代理地址，如果上面选项开启，这边替换为你本地的
     ```

@@ -209,7 +209,7 @@ async def check_yuyuko_cache(server,id):
 async def get_wg_info(params,key,url):
     try:
         async with httpx.AsyncClient(headers=headers,proxies=proxy) as client:
-            resp = await client.get(url, timeout=3, follow_redirects = True)
+            resp = await client.get(url, timeout=5, follow_redirects = True)
             wg_result = resp.json()
         if resp.status_code == 200 and wg_result['status'] == 'ok':
             params[key] = resp.text
