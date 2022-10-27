@@ -158,8 +158,8 @@ async def update_Hikari(ev:MessageEvent,bot:Bot):
                 each['url'],
                 f"{driver.config.nb2_path}\{each['name']}"
                 ) for each in nb2_file])
-        os.system(f'python -m pip install --upgrade hikari-bot')
-        os.system(f'python -m pip install --upgrade nonebot-plugin-gocqhttp')
+        os.system(f'{sys.executable} -m pip install --upgrade hikari-bot')
+        os.system(f'{sys.executable} -m pip install --upgrade nonebot-plugin-gocqhttp')
         Reloader.reload(delay=1)
     except RuntimeError:
         if str(platform.system()).lower() == 'linux':
