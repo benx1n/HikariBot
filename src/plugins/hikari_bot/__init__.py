@@ -158,6 +158,7 @@ async def update_Hikari(ev:MessageEvent,bot:Bot):
                 each['url'],
                 f"{driver.config.nb2_path}\{each['name']}"
                 ) for each in nb2_file])
+        logger.info(f"当前解释器路径{sys.executable}")
         os.system(f'{sys.executable} -m pip install --upgrade hikari-bot')
         os.system(f'{sys.executable} -m pip install --upgrade nonebot-plugin-gocqhttp')
         Reloader.reload(delay=1)
