@@ -14,7 +14,7 @@ from .data_source import nb2_file
 from .command_select import select_command
 from .mqtt import mqtt_run
 from .game.pupu import get_pupu_msg
-from .game.ocr import pic2txt_byOCR,upload_OcrResult
+from .game.ocr import pic2txt_byOCR,upload_OcrResult,downlod_OcrResult
 from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
 import httpx
@@ -42,6 +42,7 @@ bot_pupu = on_fullmatch("噗噗", block=False, priority=5)
 bot_checkversion = on_command("wws 检查更新",priority=5,block=False)
 bot_update = on_command("wws 更新Hikari",priority=5,block=False,permission=SUPERUSER)
 bot_listen = on_message(priority=5,block=False)
+ocr_listen = on_message(priority=6,block=False)
 driver = get_driver()
 
 @bot.handle()
@@ -150,7 +151,7 @@ async def change_select_state(ev:MessageEvent):
         logger.warning(traceback.format_exc())
         return
     
-@bot_listen.handle()
+@ocr_listen.handle()
 async def OCR_listen(bot:Bot, ev:MessageEvent):
     try:
         if not driver.config.ocr_on:
@@ -161,14 +162,15 @@ async def OCR_listen(bot:Bot, ev:MessageEvent):
         for seg in ev.message:
             if seg.type == 'image':
                 tencent_url = seg.data['url']
-        ocr_text,img_md5 = await pic2txt_byOCR(tencent_url)
+                filename = str(seg.data['file']).replace(".image","")
+        ocr_text = await pic2txt_byOCR(tencent_url,filename)
         if ocr_text:
             match = re.search(r"^(/?)wws(.*?)$",ocr_text)
             if match:
                 searchtag = re.sub(r"^(/?)wws","",ocr_text)        #删除wws和/wws
                 is_send = await main(bot,ev,searchtag)
                 if is_send:
-                    await upload_OcrResult(ocr_text,img_md5)
+                    await upload_OcrResult(ocr_text,filename)
     except Exception:
         logger.error(traceback.format_exc())
         return
@@ -285,6 +287,11 @@ scheduler.add_job(
     startup,
     "cron",
     hour = 4
+)
+scheduler.add_job(
+    downlod_OcrResult,
+    "interval",
+    minutes = 10
 )
 
 
