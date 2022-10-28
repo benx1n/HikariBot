@@ -14,6 +14,7 @@ from .data_source import nb2_file
 from .command_select import select_command
 from .mqtt import mqtt_run
 from .game.pupu import get_pupu_msg
+from .game.ocr import pic2txt_byOCR
 from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
 import httpx
@@ -146,6 +147,27 @@ async def change_select_state(ev:MessageEvent):
                 await bot.send(ev,'请选择列表中的序号哦~') 
     except Exception:
         logger.warning(traceback.format_exc())
+        return
+    
+@bot_listen.handle()
+async def OCR_listen(bot:Bot, ev:MessageEvent):
+    try:
+        if not driver.config.ocr_on:
+            return
+        if not (str(ev.message).find("[CQ:image")+1):  #判断收到的信息是否为图片，不是就退出
+            return
+        tencent_url = ''
+        for seg in ev.message:
+            if seg.type == 'image':
+                tencent_url = seg.data['url']
+        ocr_text = await pic2txt_byOCR(tencent_url)
+        if ocr_text:
+            match = re.search(r"^(/?)wws(.*?)$",ocr_text)
+            if match:
+                searchtag = re.sub(r"^(/?)wws","",ocr_text)        #删除wws和/wws
+                await main(bot,ev,searchtag)
+    except Exception:
+        logger.error(traceback.format_exc())
         return
 
 @bot_update.handle()
