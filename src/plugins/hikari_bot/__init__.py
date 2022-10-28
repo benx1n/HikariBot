@@ -33,7 +33,7 @@ EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.3.5.4'
+__version__ = '0.3.5.5'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
@@ -154,6 +154,7 @@ async def change_select_state(ev:MessageEvent):
 @ocr_listen.handle()
 async def OCR_listen(bot:Bot, ev:MessageEvent):
     try:
+        import time
         if not driver.config.ocr_on:
             return
         if not (str(ev.message).find("[CQ:image")+1):  #判断收到的信息是否为图片，不是就退出
@@ -174,6 +175,7 @@ async def OCR_listen(bot:Bot, ev:MessageEvent):
     except Exception:
         logger.error(traceback.format_exc())
         return
+    
 
 @bot_update.handle()
 async def update_Hikari(ev:MessageEvent,bot:Bot):

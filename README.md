@@ -230,6 +230,9 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     check_cache = true              #是否开启缓存上报,可降低高峰期延迟,如果错误日志中频繁报错上报url:XXXXXXXX,请关闭此项或配置代理
     proxy_on = false                #是否启用代理
     proxy = http://localhost:7890   #代理地址，如果上面选项开启，这边替换为你本地的
+    ocr_on = true                   #是否开启ocr(识图指令)
+    ocr_offline = false             #是否只使用hash验证，即设置为true后只能识别服务器已记录的图片，如果群较多(>300)导致响应延迟较高可以开启
+    ocr_url = http://mc.youthnp.cn:23338/OCR/           #默认ocr地址，一般不用动
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
@@ -260,6 +263,8 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
+### 22-10-29    v0.3.5.5  添加测试功能OCR，支持图片指令
+### 22-10-27    v0.3.5.4  修复一键更新指令bug
 ### 22-10-26    v0.3.5.3  添加缓存上报机制，修复噗噗误触发的bug
 ### 22-10-25    v0.3.5.2  新增噗噗
 ### 22-07-24    v0.3.5  适配nontbo2 v2.0.0rc1  

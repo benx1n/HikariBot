@@ -40,12 +40,15 @@ async def pic2txt_byOCR(img_path,filename):
         if config.ocr_offline:
             return ''
         async with httpx.AsyncClient() as client:
-            logger.success(f"图片地址{img_path}")
-            resp = await client.get(img_path)
-            img_base64 = str(b64encode(resp.content),encoding='utf-8')
+            #logger.success(f"图片地址{img_path}")
+            #resp = await client.get(img_path)
+            #img_base64 = str(b64encode(resp.content),encoding='utf-8')
             start = time.time()
+            #params = {
+            #    "image":img_base64
+            #}
             params = {
-                "image":img_base64
+                "url":img_path
             }
             resp = await client.post(ocr_url, data=params, timeout=5,follow_redirects=True)
         end = time.time()
