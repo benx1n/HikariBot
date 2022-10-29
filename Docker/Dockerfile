@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.10
 
 LABEL author=12hydrogen
 LABEL email=da584003729@outlook.com
