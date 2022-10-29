@@ -4,6 +4,7 @@ import pytz
 import time
 import nonebot
 import httpx
+import hashlib
 from collections import defaultdict
 from datetime import datetime, timedelta
 from nonebot.adapters.onebot.v11 import Bot
@@ -90,3 +91,7 @@ async def download(url, path, proxy = {}):
         content = content.replace(b'\n', b'\r\n')
         with open(path, 'wb') as f:
             f.write(content)
+            
+async def byte2md5(bytes):
+    res = hashlib.md5(bytes).hexdigest()
+    return res

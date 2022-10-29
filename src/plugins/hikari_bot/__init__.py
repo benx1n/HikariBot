@@ -1,7 +1,7 @@
 import traceback
 import nonebot.adapters.onebot.v11
 from loguru import logger
-from nonebot import on_command, on_message, get_driver
+from nonebot import on_command, on_message, on_fullmatch, get_driver
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
@@ -13,6 +13,8 @@ from .utils import DailyNumberLimiter,FreqLimiter,get_bot,download
 from .data_source import nb2_file
 from .command_select import select_command
 from .mqtt import mqtt_run
+from .game.pupu import get_pupu_msg
+from .game.ocr import pic2txt_byOCR,upload_OcrResult,downlod_OcrResult
 from nonebot_plugin_htmlrender import text_to_pic
 from pathlib import Path
 import httpx
@@ -31,14 +33,16 @@ EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.3.4.1'
+__version__ = '0.3.5.5'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
-bot = on_command("wws", block=False, aliases={"WWS"},priority=5)
-bot_checkversion = on_command("wws 检查更新",priority=5,block=True)
-bot_update = on_command("wws 更新Hikari",priority=5,block=True,permission=SUPERUSER)
+bot = on_command("wws", block=False, aliases={"WWS"},priority=54)
+bot_pupu = on_fullmatch("噗噗", block=False, priority=5)
+bot_checkversion = on_command("wws 检查更新",priority=5,block=False)
+bot_update = on_command("wws 更新Hikari",priority=5,block=False,permission=SUPERUSER)
 bot_listen = on_message(priority=5,block=False)
+ocr_listen = on_message(priority=6,block=False)
 driver = get_driver()
 
 @bot.handle()
@@ -53,28 +57,28 @@ async def main(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg()):
             if driver.config.all_channel or ev.channel_id in driver.config.channel_list:
                 server_type = 'QQ_CHANNEL'
             else:
-                return
+                return False
         else:
-            return
+            return False
         msg = ''
         qqid = ev.user_id
         replace_name = None
         if not _nlmt.check(qqid):
             await bot.send(ev,EXCEED_NOTICE, at_sender=True)
-            return
+            return False
         if not _flmt.check(qqid):
             await bot.send(ev,'您冲得太快了，请稍候再冲', at_sender=True)
-            return
+            return False
         _flmt.start_cd(qqid)
         _nlmt.increase(qqid) 
         searchtag = html.unescape(str(matchmsg)).strip()
         if not searchtag:
             await bot.send(ev,"请发送wws help查看相关帮助")
-            return
+            return False
         if searchtag == 'help':
             msg = await send_bot_help()
             await bot.send(ev,MessageSegment.image(msg))
-            return
+            return True
         match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
         if match:
             replace_name = match.group(2)
@@ -88,20 +92,21 @@ async def main(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg()):
         if msg:
             if isinstance(msg,str):
                 await bot.send(ev,msg)
-                return
+                return True
             else:
                 await bot.send(ev,MessageSegment.image(msg))
-                return
+                return True
         else:
             await bot.send(ev,'没有获取到数据，可能是内部问题')
-            return
+            return False
     except ActionFailed:
         logger.warning(traceback.format_exc())
         try:
             await bot.send(ev,'发不出图片，可能被风控了QAQ')
+            return True
         except Exception:
             pass
-        return
+        return False
     except Exception:
         logger.error(traceback.format_exc())
         await bot.send(ev,'呜呜呜发生了错误，可能是网络问题，如果过段时间不能恢复请联系麻麻哦~')
@@ -145,6 +150,32 @@ async def change_select_state(ev:MessageEvent):
     except Exception:
         logger.warning(traceback.format_exc())
         return
+    
+@ocr_listen.handle()
+async def OCR_listen(bot:Bot, ev:MessageEvent):
+    try:
+        import time
+        if not driver.config.ocr_on:
+            return
+        if not (str(ev.message).find("[CQ:image")+1):  #判断收到的信息是否为图片，不是就退出
+            return
+        tencent_url = ''
+        for seg in ev.message:
+            if seg.type == 'image':
+                tencent_url = seg.data['url']
+                filename = str(seg.data['file']).replace(".image","")
+        ocr_text = await pic2txt_byOCR(tencent_url,filename)
+        if ocr_text:
+            match = re.search(r"^(/?)wws(.*?)$",ocr_text)
+            if match:
+                searchtag = re.sub(r"^(/?)wws","",ocr_text)        #删除wws和/wws
+                is_send = await main(bot,ev,searchtag)
+                if is_send:
+                    await upload_OcrResult(ocr_text,filename)
+    except Exception:
+        logger.error(traceback.format_exc())
+        return
+    
 
 @bot_update.handle()
 async def update_Hikari(ev:MessageEvent,bot:Bot):
@@ -156,8 +187,9 @@ async def update_Hikari(ev:MessageEvent,bot:Bot):
                 each['url'],
                 f"{driver.config.nb2_path}\{each['name']}"
                 ) for each in nb2_file])
-        os.system(f'python -m pip install --upgrade hikari-bot')
-        os.system(f'python -m pip install --upgrade nonebot-plugin-gocqhttp')
+        logger.info(f"当前解释器路径{sys.executable}")
+        os.system(f'{sys.executable} -m pip install --upgrade hikari-bot')
+        os.system(f'{sys.executable} -m pip install --upgrade nonebot-plugin-gocqhttp')
         Reloader.reload(delay=1)
     except RuntimeError:
         if str(platform.system()).lower() == 'linux':
@@ -258,3 +290,25 @@ scheduler.add_job(
     "cron",
     hour = 4
 )
+scheduler.add_job(
+    downlod_OcrResult,
+    "interval",
+    minutes = 10
+)
+
+
+
+@bot_pupu.handle()
+async def send_pupu_msg(ev:MessageEvent,bot:Bot):
+    try:
+        if driver.config.pupu and isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:
+            msg = await get_pupu_msg()
+            await bot.send(ev,msg)
+    except ActionFailed:
+        logger.warning(traceback.format_exc())
+        try:
+            await bot.send(ev,'噗噗寄了>_<可能被风控了QAQ')
+        except Exception:
+            pass
+        return
+    

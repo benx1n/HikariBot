@@ -30,7 +30,7 @@ headers = {
     'Authorization': get_driver().config.api_token
 }
 
-all_shipList = asyncio.run(get_all_shipList())
+#all_shipList = asyncio.run(get_all_shipList())
 
 async def send_realTime_message(data):
     try:

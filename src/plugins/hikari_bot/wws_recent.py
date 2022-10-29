@@ -9,7 +9,7 @@ from pathlib import Path
 from .data_source import servers,set_recentparams,set_damageColor,set_winColor,set_upinfo_color
 from .utils import match_keywords
 from nonebot_plugin_htmlrender import html_to_pic
-from .publicAPI import get_AccountIdByName
+from .publicAPI import get_AccountIdByName,check_yuyuko_cache
 from nonebot import get_driver
 from nonebot.log import logger
 from httpx import ConnectTimeout
@@ -75,6 +75,11 @@ async def get_RecentInfo(server_type,info,bot,ev):
                 return '您似乎准备用游戏昵称查询水表，请检查参数中是否包含服务器和游戏昵称，以空格区分'
         else:
             return '参数似乎出了问题呢'
+        is_cache = await check_yuyuko_cache(params['server'],params['accountId'])
+        if is_cache:
+            logger.success('上报数据成功')
+        else:
+            logger.success('跳过上报数据，直接请求')
         url = 'https://api.wows.shinoaki.com//api/wows/recent/v2/recent/info'
         logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:

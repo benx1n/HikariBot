@@ -7,10 +7,21 @@ from nonebot import get_driver
 from nonebot.log import logger
 from httpx import ConnectTimeout
 from asyncio.exceptions import TimeoutError
+import gzip
+import asyncio
+import json
+from base64 import b64encode
 
 headers = {
     'Authorization': get_driver().config.api_token
 }
+if get_driver().config.proxy_on:
+    proxy={
+        'https://': get_driver().config.proxy
+    }
+else:
+    proxy={
+    }
 
 async def get_nation_list():
     try:
@@ -154,3 +165,56 @@ async def get_ClanIdByName(server:str,tag:str):
     except Exception:
         logger.error(traceback.format_exc())
         return None
+    
+async def check_yuyuko_cache(server,id):
+    try:
+        if get_driver().config.check_cache:
+            yuyuko_cache_url = 'https://api.wows.shinoaki.com/api/wows/cache/check'
+            params = {
+                "accountId": id,
+                "server": server
+            }
+            print(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
+            async with httpx.AsyncClient(headers=headers) as client:
+                resp = await client.post(yuyuko_cache_url, json=params, timeout=5)
+                result = resp.json()
+            cache_data = {}
+            if result['code'] == 201:
+                if 'DEV' in result['data']:
+                    await get_wg_info(cache_data,'DEV',result['data']['DEV'])
+                elif 'pvp' in result['data']:
+                    tasks = []
+                    loop = asyncio.get_running_loop()
+                    for key in result['data']:
+                        tasks.append(asyncio.ensure_future(get_wg_info(cache_data,key, result['data'][key])))
+                    await asyncio.gather(*tasks)
+                if not cache_data:
+                    return False
+                data_base64 = b64encode(gzip.compress(json.dumps(cache_data).encode('utf-8'))).decode()
+                params['data'] = data_base64
+                async with httpx.AsyncClient(headers=headers) as client:
+                    resp = await client.post(yuyuko_cache_url, json=params, timeout=5)
+                    result = resp.json()
+                    logger.success(result)
+                if result['code'] == 200:
+                    return True
+                else:
+                    return False
+            return False
+        return False
+    except Exception:
+        logger.error(traceback.format_exc())
+        return False
+    
+async def get_wg_info(params,key,url):
+    try:
+        async with httpx.AsyncClient(headers=headers,proxies=proxy) as client:
+            resp = await client.get(url, timeout=5, follow_redirects = True)
+            wg_result = resp.json()
+        if resp.status_code == 200 and wg_result['status'] == 'ok':
+            params[key] = resp.text
+    except Exception:
+        logger.error(traceback.format_exc())
+        logger.error(f"上报url：{url}")
+        return
+        

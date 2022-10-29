@@ -66,6 +66,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
   - 检查版本更新：wws 检查更新
   - 更新：wws 更新Hikari
   - 查看帮助：wws help
+  - 噗噗：一言
 
   </details>
   <details>
@@ -179,6 +180,9 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
       - 私聊、频道默认禁用
       - 群聊默认开启，默认屏蔽官方交流群`
       - 默认WEB登录账号密码为admin/admin，如有需要请自行修改，无需设置密码请删除env.prod中的配置项
+      - 默认开启噗噗
+      - 默认开启缓存上报
+      - 默认关闭代理
 
 5. 双击`启动.bat`，在打开的浏览器中添加bot账号密码，重新启动Hikari
     - 页面加载不出请尝试刷新一下，已知IE浏览器可能存在一些问题
@@ -222,6 +226,13 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     all_channel = false             #是否全频道生效，无论此项配置如何，channel_list中的频道一定会开启
     channel_list = []               #频道列表白名单，数组形式，可在控制台中获取相应的channel_id
     ban_group_list = [967546463]    #群列表黑名单，默认屏蔽了开发者交流群
+    pupu = true                     #是否开启噗噗
+    check_cache = true              #是否开启缓存上报,可降低高峰期延迟,如果错误日志中频繁报错上报url:XXXXXXXX,请关闭此项或配置代理
+    proxy_on = false                #是否启用代理
+    proxy = http://localhost:7890   #代理地址，如果上面选项开启，这边替换为你本地的
+    ocr_on = true                   #是否开启ocr(识图指令)
+    ocr_offline = false             #是否只使用hash验证，即设置为true后只能识别服务器已记录的图片，如果群较多(>300)导致响应延迟较高可以开启
+    ocr_url = http://mc.youthnp.cn:23338/OCR/           #默认ocr地址，一般不用动
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
@@ -252,6 +263,11 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
+### 22-10-29    v0.3.5.5  添加测试功能OCR，支持图片指令
+### 22-10-27    v0.3.5.4  修复一键更新指令bug
+### 22-10-26    v0.3.5.3  添加缓存上报机制，修复噗噗误触发的bug
+### 22-10-25    v0.3.5.2  新增噗噗
+### 22-07-24    v0.3.5  适配nontbo2 v2.0.0rc1  
 ### 22-07-24    v0.3.4  **配置项及入口文件更新**  请完整拉取最新仓库，并同步添加`env.prod-example`中新增的配置
 - 重要更新，完整版安装请拉取最新仓库代码，一键包请下载最新版本
 - [+]新增一键更新指令，指令wws 更新Hikari
@@ -290,15 +306,15 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 - [#]info适配V3接口
 - [#]recent显示时间区间
 
+
+<details>
+<summary><b>更以前的更新日志</b></summary>
+
 ### 22-06-23    v0.3.1  **重要功能更新**
 - [+]新增单船近期战绩，可显示每日详细信息，指令`wws ship recent`
 - [+]新增docker部署 [@12hydrogen](https://github.com/12hydrogen)
 - [#]修复国服特殊字符ID无法查询的bug
 - [#]修复船只选择过期后发送数字序号仍被识别的bug
-
-
-<details>
-<summary><b>更以前的更新日志</b></summary>
 
 ### 22-06-15    v0.3.0.1  **重要功能更新**
 - [+]支持显示军团评级颜色
@@ -456,6 +472,35 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 - 降低Hikari版本至3.1，等待后续版本修复
 - 使用Hikari一键包，其中自带了3.10的python虚拟环境
 - 修改依赖包代码，见[这里](https://github.com/mnixry/nonebot-plugin-guild-patch/pull/6/files)
+
+### Ubuntu系统下部署字体不正常(针对一些云服务器的Ubuntu镜像，不保证成功，只是提供一个解决方案)
+  1. 执行以下命令，完善字体库并将中文设置成默认语言（部分Ubuntu可能不需要该步骤，可直接从第二步开始）
+  ```
+  sudo apt install fonts-noto  
+  sudo locale-gen zh_CN zh_CN.UTF-8  
+  sudo update-locale LC_ALL=zh_CN.UTF-8 LANG=zh_CN.UTF-8  
+  sudo fc-cache -fv
+  ```
+  
+  2. 在你的Windows电脑上打开`C:\Windows\fonts`文件夹，找到里面的微软雅黑字体，将其复制出来，放在任意目录，应该会得到`msyh.ttc`，`mshybd.ttc`，`msyhl.ttc`三个文件。（不会有人还用Win7吧？）
+
+  3. 进入到`/usr/share/fonts`文件夹下，创建一个文件夹命名为`msyh`，然后进入其中
+  ```
+  cd /usr/share/fonts 
+  sudo mkdir msyh 
+  cd msyh
+  ```
+  
+  4. 将三个字体文件上传到`msyh`文件夹中(过程中遇到的问题请自行解决)
+
+  5. 执行以下命令（此时你应该是在`msyh`文件夹下），加载字体
+  ```
+  sudo mkfontscale 
+  sudo mkfontdir 
+  sudo fc-cache -fv
+  ```
+  
+  6. （可选，若不正常可尝试）重启Hikari。
 
 ## 感谢以下项目的支持（排名不分先后）
 

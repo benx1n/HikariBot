@@ -145,3 +145,4 @@ logs
 .env.prod
 pyenv
 echarts.js
+src/plugins/hikari_bot/game/ocr_data.json
