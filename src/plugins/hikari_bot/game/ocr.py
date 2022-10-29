@@ -20,17 +20,6 @@ headers = {
     'Authorization': config.api_token
 }
 
-try:
-    with open(ocr_data_path, 'w', encoding='UTF-8') as f:
-        resp = httpx.get(download_url,headers=headers)
-        result = resp.json()
-        json.dump(result['data'], f)
-    global ocr_filename_data
-    ocr_filename_data = result['data']
-except:
-    logger.error(traceback.format_exc())
-    
-
 async def pic2txt_byOCR(img_path,filename):
     try:
         global ocr_filename_data

@@ -215,6 +215,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 2. 在bot的bot.py中加入
     ```
     nonebot.load_plugin('hikari_bot')
+    nonebot.load_plugin('nonebot_plugin_htmlrender')
     ```
 3. 在环境文件中加入以下配置项
     ```
