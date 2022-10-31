@@ -503,6 +503,20 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
   
   6. （可选，若不正常可尝试）重启Hikari。
 
+### 首次启动时plugin-gocqhttp的startup方法报错(traceback中一般还有ssl的错误)
+
+1. 下载 go-cqhttp
+
+    - github 发布页：https://github.com/Mrs4s/go-cqhttp/releases
+
+    > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_386.exe](https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc1/go-cqhttp_windows_386.exe)
+
+2. 重命名为`go-cqhttp.exe`并放入`HikariBot\accounts\binary`文件夹下
+
+3. 重新启动Hikari
+
+
+
 ## 感谢以下项目的支持（排名不分先后）
 
 [Nonebot2](https://github.com/nonebot/nonebot2)
