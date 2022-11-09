@@ -33,16 +33,23 @@ RUN cd /home \
 && mkdir HikariBot \
 && cd HikariBot \
 && git init \
-&& git remote add origin https://github.com/12hydrogen/HikariBot.git \
-&& git fetch origin master \
-&& git merge origin/master
+&& git remote add origin https://github.com/benx1n/HikariBot.git \
+&& git config core.sparsecheckout true \
+&& echo "!/src" >> ./.git/info/sparsecheckout \
+&& echo "!/Docker" >> ./.git/info/sparsecheckout \
+&& echo "!/.github" >> ./.git/info/sparsecheckout \
+&& echo "!*.bat" >> ./.git/info/sparsecheckout \
+&& git pull origin master \
+&& rm -rf .git
 RUN pip install nb-cli hikari-bot \
 && nb plugin install nonebot-plugin-apscheduler \
 && nb plugin install nonebot-plugin-gocqhttp \
 && playwright install chromium \
 && playwright install firefox
+
 VOLUME ["/home/HikariBot/accounts"]
 
 WORKDIR /home/HikariBot
+RUN nb run
 ENTRYPOINT ["./manage.sh", "start"]
 CMD ["-t", "123456", "-i", "123456"]
