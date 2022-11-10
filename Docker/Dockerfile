@@ -49,7 +49,8 @@ RUN pip install nb-cli hikari-bot \
 RUN cd /home/HikariBot\
 && mkdir -p accounts/binary \
 && cd accounts/binary \
-&& wget -cO go-cqhttp https://github.com/Mrs4s/go-cqhttp/releases/latest/download/go-cqhttp_linux_amd64
+&& wget -cO temp.tar.gz https://github.com/Mrs4s/go-cqhttp/releases/latest/download/go-cqhttp_linux_amd64.tar.gz \
+&& tar xf temp.tar.gz
 
 VOLUME ["/home/HikariBot/accounts"]
 
