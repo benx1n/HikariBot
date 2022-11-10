@@ -46,10 +46,13 @@ RUN pip install nb-cli hikari-bot \
 && nb plugin install nonebot-plugin-gocqhttp \
 && playwright install chromium \
 && playwright install firefox
+RUN cd /home/HikariBot\
+&& mkdir -p accounts/binary \
+&& cd accounts/binary \
+&& wget -cO go-cqhttp https://github.com/Mrs4s/go-cqhttp/releases/latest/download/go-cqhttp_linux_amd64
 
 VOLUME ["/home/HikariBot/accounts"]
 
 WORKDIR /home/HikariBot
-RUN nb run
 ENTRYPOINT ["./manage.sh", "start"]
 CMD ["-t", "123456", "-i", "123456"]
