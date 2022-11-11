@@ -33,14 +33,25 @@ RUN cd /home \
 && mkdir HikariBot \
 && cd HikariBot \
 && git init \
-&& git remote add origin https://github.com/12hydrogen/HikariBot.git \
-&& git fetch origin master \
-&& git merge origin/master
+&& git remote add origin https://github.com/benx1n/HikariBot.git \
+&& git config core.sparsecheckout true \
+&& echo "!/src" >> ./.git/info/sparsecheckout \
+&& echo "!/Docker" >> ./.git/info/sparsecheckout \
+&& echo "!/.github" >> ./.git/info/sparsecheckout \
+&& echo "!*.bat" >> ./.git/info/sparsecheckout \
+&& git pull origin master \
+&& rm -rf .git
 RUN pip install nb-cli hikari-bot \
 && nb plugin install nonebot-plugin-apscheduler \
 && nb plugin install nonebot-plugin-gocqhttp \
 && playwright install chromium \
 && playwright install firefox
+RUN cd /home/HikariBot\
+&& mkdir -p accounts/binary \
+&& cd accounts/binary \
+&& wget -cO temp.tar.gz https://github.com/Mrs4s/go-cqhttp/releases/latest/download/go-cqhttp_linux_amd64.tar.gz \
+&& tar xf temp.tar.gz
+
 VOLUME ["/home/HikariBot/accounts"]
 
 WORKDIR /home/HikariBot
