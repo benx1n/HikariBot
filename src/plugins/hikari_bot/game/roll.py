@@ -8,7 +8,7 @@ from ..utils import match_keywords
 from ..publicAPI import get_AccountIdByName,check_yuyuko_cache
 from ..data_source import nations,shiptypes,levels
 from nonebot.log import logger
-from nonebot import get_driver()
+from nonebot import get_driver
 from httpx import ConnectTimeout
 from asyncio.exceptions import TimeoutError
 

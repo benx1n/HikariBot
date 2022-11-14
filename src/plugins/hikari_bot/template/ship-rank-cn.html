@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .td-strong {
+        font-weight: bold;
+    }
+    .td-strong span,
+    .td-strong small.hint {
+        white-space: nowrap;
+    }
+    .td-strong span small {
+        white-space: normal;
+    }
+
+    html {
+        position: relative;
+        min-height: 100%;
+    }
+
+    .ranking-table th {
+        vertical-align: middle ! important;
+    }
+    .cells-middle td {
+        vertical-align: middle ! important;
+    }
+    .th-middle th {
+        vertical-align: middle ! important;
+    }
+
+    .ranking-table td {
+        line-height: 30px ! important;
+    }
+
+    html {
+        font-family: sans-serif;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%; }
+
+    body {
+        margin: 0; }
+
+    table {
+        border-collapse: collapse;
+        text-align: center;
+        border-spacing: 0; }
+
+    td,
+    th {
+        padding: 0; }
+
+    html {
+        font-size: 10px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+
+    body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.42857;
+        color: #333333;
+        background-color: #fff; }
+
+    a {
+        color: #337ab7;
+        text-decoration: none; }
+    a:hover, a:focus {
+        color: #23527c;
+        text-decoration: underline; }
+    a:focus {
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px; }
+
+    table {
+        background-color: transparent; }
+    table col[class*="col-"] {
+        position: static;
+        display: table-column;
+        float: none; }
+    table td[class*="col-"],
+    table th[class*="col-"] {
+        position: static;
+        display: table-cell;
+        float: none; }
+
+    th {
+        text-align: left; }
+
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px; }
+    .table > thead > tr > th,
+    .table > thead > tr > td,
+    .table > tbody > tr > th,
+    .table > tbody > tr > td,
+    .table > tfoot > tr > th,
+    .table > tfoot > tr > td {
+        padding: 8px;
+        line-height: 1.42857;
+        vertical-align: top;
+        border-top: 1px solid #ddd; }
+    .table > thead > tr > th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #ddd; }
+    .table > caption + thead > tr:first-child > th,
+    .table > caption + thead > tr:first-child > td,
+    .table > colgroup + thead > tr:first-child > th,
+    .table > colgroup + thead > tr:first-child > td,
+    .table > thead:first-child > tr:first-child > th,
+    .table > thead:first-child > tr:first-child > td {
+        border-top: 0; }
+    .table > tbody + tbody {
+        border-top: 2px solid #ddd; }
+    .table .table {
+        background-color: #fff; }
+
+    .table-condensed > thead > tr > th,
+    .table-condensed > thead > tr > td,
+    .table-condensed > tbody > tr > th,
+    .table-condensed > tbody > tr > td,
+    .table-condensed > tfoot > tr > th,
+    .table-condensed > tfoot > tr > td {
+        padding: 5px; }
+
+    .table-bordered {
+        border: 1px solid #ddd; }
+    .table-bordered > thead > tr > th,
+    .table-bordered > thead > tr > td,
+    .table-bordered > tbody > tr > th,
+    .table-bordered > tbody > tr > td,
+    .table-bordered > tfoot > tr > th,
+    .table-bordered > tfoot > tr > td {
+        border: 1px solid #ddd; }
+    .table-bordered > thead > tr > th,
+    .table-bordered > thead > tr > td {
+        border-bottom-width: 2px; }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: #f9f9f9; }
+</style>
+<body>
+    <div class="table-responsive" style="clear:both;">
+        <table class="table table-bordered ranking-table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>玩家</th>
+                    <th style="text-align: center;">场次</th>
+                    <th style="text-align: center;">PR</th>
+                    <th style="text-align: center;">胜率</th>
+                    <th style="text-align: center;">场均击杀</th>
+                    <th style="text-align: center;">最高击杀</th>
+                    <th style="text-align: center;">场均伤害</th>
+                    <th style="text-align: center;">最高伤害</th>
+                    <th style="text-align: center;">场均经验</th>
+                    <th style="text-align: center;">最高经验</th>
+                    <th style="text-align: center;">场均击落</th>
+                    <th style="text-align: center;">最高击落</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for each in data %}
+                <tr class="cells-middle"">
+                    <td>{{ each['sortValue'] }}</td>
+                    <td style="text-align: left;  ">
+                        {% if each['clanTag'] %}
+                            <a>[{{ each['clanTag'] }}]</a>
+                        {% endif %}
+                        <a>{{ each['userName'] }}</a>
+                    </td> 
+                    <td class="td-strong"><span>{{ each['battles'] }}</span></td>
+                    <td><span style="font-weight: bold;">{{ each['pr'] }}</span></td>
+                    <td class="td-strong"><span>{{ each['wins'] }}%</span></td>
+                    <td class="td-strong">null</td>
+                    <td class="td-strong">null</td>
+                    <td class="td-strong"><span>{{ each['damage'] }}</span></td>
+                    <td class="td-strong"><span>{{ each['maxDamage'] }}</span></td>
+                    <td class="td-strong"><span>{{ each['xp'] }}</span></td>
+                    <td class="td-strong"><span>{{ each['maxXp'] }}</span></td>
+                    <td class="td-strong">null</td>
+                    <td class="td-strong">null</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
