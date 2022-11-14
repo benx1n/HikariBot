@@ -39,7 +39,7 @@ async def get_ClanInfo(server_type,info,bot,ev):
                     url = ''
                     params = {
                     "server": server_type,
-                    "clanId": ev.user_id,
+                    "clanId": ev.get_user_id(),
                     }
                     info.remove("me")
                 match = re.search(r"CQ:at,qq=(\d+)",i)
@@ -66,16 +66,16 @@ async def get_ClanInfo(server_type,info,bot,ev):
                             for each in clanList:
                                 flag += 1
                                 msg += f"{flag}：[{each['tag']}]\n"
-                            ClanSecletProcess[ev.user_id] = ClanSlectState(False, None, clanList)
+                            ClanSecletProcess[ev.get_user_id()] = ClanSlectState(False, None, clanList)
                             img = await text_to_pic(text=msg,css_path = template_path/"text-ship.css",width=250)
                             await bot.send(ev,MessageSegment.image(img))
                             a = 0
-                            while a < 40 and not ClanSecletProcess[ev.user_id].state:
+                            while a < 40 and not ClanSecletProcess[ev.get_user_id()].state:
                                 a += 1
                                 await asyncio.sleep(0.5)
-                            if ClanSecletProcess[ev.user_id].state and ClanSecletProcess[ev.user_id].SlectIndex <= len(clanList):
-                                selectClanId = clanList[ClanSecletProcess[ev.user_id].SlectIndex-1]['clanId']
-                                ClanSecletProcess[ev.user_id] = ClanSlectState(False, None, None)
+                            if ClanSecletProcess[ev.get_user_id()].state and ClanSecletProcess[ev.get_user_id()].SlectIndex <= len(clanList):
+                                selectClanId = clanList[ClanSecletProcess[ev.get_user_id()].SlectIndex-1]['clanId']
+                                ClanSecletProcess[ev.get_user_id()] = ClanSlectState(False, None, None)
                             else:
                                 return '已超时退出'
                     else:

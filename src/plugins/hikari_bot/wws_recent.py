@@ -41,7 +41,7 @@ async def get_RecentInfo(server_type,info,bot,ev):
                 if i == 'me':
                     params = {
                     "server": server_type,
-                    "accountId": int(ev.user_id),
+                    "accountId": int(ev.get_user_id()),
                     "day": day,
                     "status": 0
                     }

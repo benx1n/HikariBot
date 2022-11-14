@@ -1,10 +1,14 @@
 import traceback
-import nonebot.adapters.onebot.v11
+import io
+import nonebot.adapters.telegram
 from loguru import logger
 from nonebot import on_command, on_message, on_fullmatch, get_driver
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
-from nonebot.adapters.onebot.v11 import Message, MessageSegment,MessageEvent,Bot,ActionFailed,GroupMessageEvent,PrivateMessageEvent
+from nonebot.adapters.telegram.bot import Bot
+from nonebot.adapters.telegram.event import GroupMessageEvent,PrivateMessageEvent,MessageEvent
+from nonebot.adapters.telegram.message import Message, MessageSegment,File
+from nonebot.adapters.telegram.exception import ActionFailed
 from nonebot_plugin_guild_patch import GuildMessageEvent
 from nonebot.log import logger
 from .wws_ship import ShipSecletProcess
@@ -48,20 +52,20 @@ driver = get_driver()
 @bot.handle()
 async def main(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg()):
     try:
-        server_type = None
-        if isinstance(ev, PrivateMessageEvent) and (driver.config.private or str(ev.user_id) in driver.config.superusers):       #私聊事件,superusers默认不受影响
-            server_type = 'QQ'
-        elif isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:         #群聊事件
-            server_type = 'QQ'
-        elif isinstance(ev, GuildMessageEvent) and driver.config.channel:       #频道事件
-            if driver.config.all_channel or ev.channel_id in driver.config.channel_list:
-                server_type = 'QQ_CHANNEL'
-            else:
-                return False
-        else:
-            return False
+        server_type = "TELEGRAM"
+        # if isinstance(ev, PrivateMessageEvent) and (driver.config.private or str(ev.get_user_id()) in driver.config.superusers):       #私聊事件,superusers默认不受影响
+        #     server_type = 'QQ'
+        # elif isinstance(ev, GroupMessageEvent) and driver.config.group and ev.get_session_id() not in driver.config.ban_group_list:         #群聊事件
+        #     server_type = 'QQ'
+        # elif isinstance(ev, GuildMessageEvent) and driver.config.channel:       #频道事件
+        #     if driver.config.all_channel or ev.channel_id in driver.config.channel_list:
+        #         server_type = 'QQ_CHANNEL'
+        #     else:
+        #         return False
+        # else:
+        #     return False
         msg = ''
-        qqid = ev.user_id
+        qqid = ev.get_user_id()
         replace_name = None
         if not _nlmt.check(qqid):
             await bot.send(ev,EXCEED_NOTICE, at_sender=True)
@@ -77,7 +81,7 @@ async def main(bot:Bot, ev:MessageEvent, matchmsg: Message = CommandArg()):
             return False
         if searchtag == 'help':
             msg = await send_bot_help()
-            await bot.send(ev,MessageSegment.image(msg))
+            await bot.send(ev,File.photo(msg))
             return True
         match = re.search(r"(\(|（)(.*?)(\)|）)",searchtag)
         if match:
@@ -134,7 +138,7 @@ async def change_select_state(ev:MessageEvent):
     try:
         bot = get_bot()
         msg = str(ev.message)
-        qqid = ev.user_id
+        qqid = ev.get_user_id()
         if ShipSecletProcess[qqid].SelectList and str(msg).isdigit():
             if int(msg) <= len( ShipSecletProcess[qqid].SelectList):
                 ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state = True)
@@ -264,16 +268,16 @@ async def startup():
         logger.error(traceback.format_exc())
         return   
     
-@driver.on_bot_connect
-async def remind(bot: Bot):
-    superid = driver.config.superusers
-    bot_info = await bot.get_login_info()
-    for each in superid:
-        await bot.send_private_msg(user_id=int(each),message=f"Hikari已上线，当前版本{__version__}")
-    #global is_first_run
-    #if is_first_run:
-    #    mqtt_run(bot_info['user_id'])
-    #    is_first_run = False
+# @driver.on_bot_connect
+# async def remind(bot: Bot):
+#     superid = driver.config.superusers
+#     bot_info = await bot.get_login_info()
+#     for each in superid:
+#         await bot.send_private_msg(user_id=int(each),message=f"Hikari已上线，当前版本{__version__}")
+#     #global is_first_run
+#     #if is_first_run:
+#     #    mqtt_run(bot_info['user_id'])
+#     #    is_first_run = False
 
 async def startup_download(url,name):
     async with httpx.AsyncClient() as client:
@@ -302,7 +306,8 @@ scheduler.add_job(
 @bot_pupu.handle()
 async def send_pupu_msg(ev:MessageEvent,bot:Bot):
     try:
-        if driver.config.pupu and isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:
+        # 没有测试群组 所以把这个地方关于群组的操作全去掉了
+        if driver.config.pupu:# and isinstance(ev, GroupMessageEvent) and driver.config.group and ev.get_session_id() not in driver.config.ban_group_list:
             msg = await get_pupu_msg()
             await bot.send(ev,msg)
     except ActionFailed:

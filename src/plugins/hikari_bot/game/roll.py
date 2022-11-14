@@ -32,7 +32,7 @@ async def roll_ship(server_type,infolist,bot,ev):
         if not param_level:
             param_level = ''
         params = {
-            "accountId": ev.user_id,
+            "accountId": ev.get_user_id(),
             "server": server_type,
             "county":param_nation,
             "level":param_level,

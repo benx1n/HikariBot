@@ -42,7 +42,7 @@ async def get_ShipInfo(server_type,info,bot,ev):
                 if str(i).lower() == 'me':
                     params = {
                     "server": server_type,
-                    "accountId": int(ev.user_id),
+                    "accountId": int(ev.get_user_id()),
                     }
                     info.remove(str(i))
                 match = re.search(r"CQ:at,qq=(\d+)",i)
@@ -86,18 +86,18 @@ async def get_ShipInfo(server_type,info,bot,ev):
                     for each in shipList:
                         flag += 1
                         msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
-                    ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, shipList)
+                    ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, shipList)
                     img = await text_to_pic(text=msg,css_path = str(template_path/"text-ship.css"),width=250) 
                     await bot.send(ev,MessageSegment.image(img))
                     a = 0
-                    while a < 40 and not ShipSecletProcess[ev.user_id].state:
+                    while a < 40 and not ShipSecletProcess[ev.get_user_id()].state:
                         a += 1
                         await asyncio.sleep(0.5)
-                    if ShipSecletProcess[ev.user_id].state and ShipSecletProcess[ev.user_id].SlectIndex <= len(shipList):
-                        params["shipId"] = shipList[ShipSecletProcess[ev.user_id].SlectIndex-1][0]
-                        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+                    if ShipSecletProcess[ev.get_user_id()].state and ShipSecletProcess[ev.get_user_id()].SlectIndex <= len(shipList):
+                        params["shipId"] = shipList[ShipSecletProcess[ev.get_user_id()].SlectIndex-1][0]
+                        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
                     else:
-                        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+                        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
                         return '已超时退出'
             else:
                 return '找不到船，请确认船名是否正确，可以使用【wws 查船名】查询船只中英文'
@@ -132,15 +132,15 @@ async def get_ShipInfo(server_type,info,bot,ev):
             return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
-        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
         return '请求超时了，请过会儿再尝试哦~'
     except ActionFailed:
         logger.warning(traceback.format_exc())
-        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
         return '由于风控或禁言，无法发送消息'
     except Exception:
         logger.error(traceback.format_exc())
-        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
     
     
@@ -225,7 +225,7 @@ async def get_ShipInfoRecent(server_type,info,bot,ev):
                 if i == 'me':
                     params = {
                     "server": server_type,
-                    "accountId": int(ev.user_id),
+                    "accountId": int(ev.get_user_id()),
                     "day": day
                     }
                     info.remove("me")
@@ -272,18 +272,18 @@ async def get_ShipInfoRecent(server_type,info,bot,ev):
                     for each in shipList:
                         flag += 1
                         msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
-                    ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, shipList)
+                    ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, shipList)
                     img = await text_to_pic(text=msg,css_path = template_path/"text-ship.css",width=250)
                     await bot.send(ev,MessageSegment.image(img))
                     a = 0
-                    while a < 40 and not ShipSecletProcess[ev.user_id].state:
+                    while a < 40 and not ShipSecletProcess[ev.get_user_id()].state:
                         a += 1
                         await asyncio.sleep(0.5)
-                    if ShipSecletProcess[ev.user_id].state and ShipSecletProcess[ev.user_id].SlectIndex <= len(shipList):
-                        params["shipId"] = shipList[ShipSecletProcess[ev.user_id].SlectIndex-1][0]
-                        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+                    if ShipSecletProcess[ev.get_user_id()].state and ShipSecletProcess[ev.get_user_id()].SlectIndex <= len(shipList):
+                        params["shipId"] = shipList[ShipSecletProcess[ev.get_user_id()].SlectIndex-1][0]
+                        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
                     else:
-                        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+                        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
                         return '已超时退出'
             else:
                 return '找不到船，请确认船名是否正确，可以使用【wws 查船名】查询船只中英文'
@@ -312,13 +312,13 @@ async def get_ShipInfoRecent(server_type,info,bot,ev):
             return f"{result['message']}"
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
-        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
         return '请求超时了，请过会儿再尝试哦~'
     except ActionFailed:
         logger.warning(traceback.format_exc())
-        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
         return '由于风控或禁言，无法发送消息'
     except Exception:
         logger.error(traceback.format_exc())
-        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~'
