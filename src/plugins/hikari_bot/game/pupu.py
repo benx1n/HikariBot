@@ -1,4 +1,3 @@
-from typing import List
 import httpx
 import traceback
 from pathlib import Path

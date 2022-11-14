@@ -214,8 +214,8 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     ```
 2. 在bot的bot.py中加入
     ```
-    nonebot.load_plugin('hikari_bot')
     nonebot.load_plugin('nonebot_plugin_htmlrender')
+    nonebot.load_plugin('hikari_bot')
     ```
 3. 在环境文件中加入以下配置项
     ```
@@ -511,7 +511,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
     > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_386.exe](https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc1/go-cqhttp_windows_386.exe)
 
-2. 重命名为`go-cqhttp.exe`并放入`HikariBot\accounts\binary`文件夹下
+2. 重命名为`go-cqhttp.*`(*为所选择版本后缀,如windowx就是go-cqhttp.exe)并放入`HikariBot\accounts\binary`文件夹下
 
 3. 重新启动Hikari
 

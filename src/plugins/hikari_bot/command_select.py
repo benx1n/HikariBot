@@ -9,6 +9,9 @@ from .wws_ship import get_ShipInfo,get_ShipInfoRecent,ShipSecletProcess
 from .wws_clan import get_ClanInfo,ClanSecletProcess
 from .wws_record import get_record
 from .wws_shiprank import get_ShipRank
+from .game.roll import roll_ship
+from .game.sx import get_sx_info
+from .game.box_check import check_christmas_box
 
 class Func(Protocol):
     async def __call__(self, **kwargs):
@@ -31,6 +34,9 @@ first_command_list = [        #同指令中越长的匹配词越靠前
     command(("ship","单船",),None,get_ShipInfo),
     command(("record","历史记录"),None,get_record),
     command(("clan","军团","公会","工会"),None,get_ClanInfo),
+    command(("roll","随机"),roll_ship),
+    command(("sx","扫雪"),get_sx_info),
+    command(("box","圣诞船池"),check_christmas_box),
     command(("搜船名","查船名","船名"),get_ship_name),
 ]
 
