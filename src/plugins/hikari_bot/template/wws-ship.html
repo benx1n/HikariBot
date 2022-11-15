@@ -389,6 +389,14 @@
 						</div>
 					</div>
 					{% endif %}
+					
+					{% if data['rank'] != -1 %}
+					<div class="ranking">
+						<div class="ranking_border"><span
+								style="color: #606266;">排名</span>&nbsp;&nbsp;<span>{{data['rank']}}</span>
+						</div>
+					</div>
+					{% endif %}
 
 					<div class="data-change">
 						<div class="change-header">
