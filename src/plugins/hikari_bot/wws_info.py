@@ -33,7 +33,7 @@ async def get_AccountInfo(server_type,info,bot,ev):
                 if str(i).lower() == 'me':
                     params = {
                     "server": server_type,
-                    "accountId": int(ev.user_id)
+                    "accountId": int(ev.get_user_id())
                     }
                     break
                 match = re.search(r"CQ:at,qq=(\d+)",i)

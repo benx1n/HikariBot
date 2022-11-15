@@ -23,7 +23,7 @@ async def get_BindInfo(server_type,info,bot,ev):
                     url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
                     params = {
                     "platformType": server_type,
-                    "platformId": ev.user_id,
+                    "platformId": ev.get_user_id(),
                     }
                 match = re.search(r"CQ:at,qq=(\d+)",i)
                 if match:
@@ -79,7 +79,7 @@ async def set_BindInfo(server_type,info,bot,ev):
                         url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
                         params = {
                         "platformType": server_type,
-                        "platformId": str(ev.user_id),
+                        "platformId": str(ev.get_user_id()),
                         "accountId": param_accountid
                         }
                     else:
@@ -114,7 +114,7 @@ async def change_BindInfo(server_type,info,bot,ev):
             url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
             params = {
             "platformType": server_type,
-            "platformId": ev.user_id,
+            "platformId": ev.get_user_id(),
             }
         else:
             return '参数似乎出了问题呢，请跟随要切换的序号'
@@ -131,7 +131,7 @@ async def change_BindInfo(server_type,info,bot,ev):
                 url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
                 params = {
                 "platformType": server_type,
-                "platformId": str(ev.user_id),
+                "platformId": str(ev.get_user_id()),
                 "accountId": param_accountid
                 }
             else:
@@ -169,7 +169,7 @@ async def set_special_BindInfo(server_type,info,bot,ev):
                         url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/put'
                         params = {
                         "platformType": server_type,
-                        "platformId": str(ev.user_id),
+                        "platformId": str(ev.get_user_id()),
                         "accountId": int(info[0])
                         }
                     else:
@@ -204,7 +204,7 @@ async def delete_BindInfo(server_type,info,bot,ev):
             url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
             params = {
             "platformType": server_type,
-            "platformId": ev.user_id,
+            "platformId": ev.get_user_id(),
             }
         else:
             return '参数似乎出了问题呢，请跟随要切换的序号'
@@ -219,7 +219,7 @@ async def delete_BindInfo(server_type,info,bot,ev):
                 url = 'https://api.wows.shinoaki.com/api/wows/bind/account/platform/bind/remove'
                 params = {
                 "platformType": server_type,
-                "platformId": str(ev.user_id),
+                "platformId": str(ev.get_user_id()),
                 "accountId": param_accountid
                 }
             else:

@@ -51,19 +51,19 @@ async def get_ShipRank(server_type,info,bot,ev):
                 for each in shipList:
                     flag += 1
                     msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
-                ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, shipList)
+                ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, shipList)
                 img = await text_to_pic(text=msg,css_path = str(template_path/"text-ship.css"),width=250) 
                 await bot.send(ev,MessageSegment.image(img))
                 a = 0
-                while a < 40 and not ShipSecletProcess[ev.user_id].state:
+                while a < 40 and not ShipSecletProcess[ev.get_user_id()].state:
                     a += 1
                     await asyncio.sleep(0.5)
-                if ShipSecletProcess[ev.user_id].state and ShipSecletProcess[ev.user_id].SlectIndex <= len(shipList):
-                    select_shipId = int(shipList[ShipSecletProcess[ev.user_id].SlectIndex-1][0])
-                    number_url += f"{select_shipId},{shipList[ShipSecletProcess[ev.user_id].SlectIndex-1][2]}"
-                    ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+                if ShipSecletProcess[ev.get_user_id()].state and ShipSecletProcess[ev.get_user_id()].SlectIndex <= len(shipList):
+                    select_shipId = int(shipList[ShipSecletProcess[ev.get_user_id()].SlectIndex-1][0])
+                    number_url += f"{select_shipId},{shipList[ShipSecletProcess[ev.get_user_id()].SlectIndex-1][2]}"
+                    ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
                 else:
-                    ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+                    ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
                     return '已超时退出'
         else:
             return '找不到船，请确认船名是否正确，可以使用【wws 查船名】查询船只中英文'
@@ -86,11 +86,11 @@ async def get_ShipRank(server_type,info,bot,ev):
                 return 'wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~' 
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
-        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
         return '请求超时了，请过会儿再尝试哦~'
     except Exception:
         logger.error(traceback.format_exc())
-        ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
+        ShipSecletProcess[ev.get_user_id()] = ShipSlectState(False, None, None)
         return 'wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~' 
    
 async def search_ShipRank_Yuyuko(shipId,server):
