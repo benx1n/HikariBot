@@ -67,7 +67,7 @@ async def get_sx_info(server_type,info,bot,ev):
             logger.success('上报数据成功')
         else:
             logger.success('跳过上报数据，直接请求')
-        url = 'https://api.wows.shinoaki.com/public/public/wows/christmas/ship/christmas'
+        url = 'https://api.wows.shinoaki.com/public/wows/christmas/ship/christmas'
         logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=None)
