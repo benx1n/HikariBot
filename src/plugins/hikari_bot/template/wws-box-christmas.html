@@ -85,7 +85,7 @@
 		}
 		
 		.total-ship .up {
-			font-size: 60px;
+			font-size: 80px;
 			font-weight: normal;
 			color: #767171;
 			flex: 1;
@@ -100,29 +100,30 @@
 		}
 		
 		.inbox-col {
-			flex: 1;
+			flex: 2;
 			display: flex;
 			flex-direction: column;
 		}
 		
 		.in-port-col {
-			flex: 1;
+			flex: 2;
 			display: flex;
 			flex-direction: column;
 		}
 		
 		.mini-title {
 			font-weight: normal;
+			font-size: 40px;
 			color: #767171;
 		}
 		
 		.in-port {
-			font-size: 50px;
+			font-size: 60px;
 			color: #92D050;
 		}
 		
 		.inbox {
-			font-size: 50px;
+			font-size: 60px;
 			color: #E60000;
 		}
 		
@@ -192,37 +193,55 @@
 		}
 		
 		.rare-row .left {
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			flex: 1;
 		}
 		
 		.rare-row .right {
 			flex: 2;
+			max-width: 1000px;
 			display: flex;
-			
-		}
+			flex-flow: row;
+			flex-wrap: wrap;
 		
-		.x-row, .ix-row, .vii-row {
-			flex: 1;
-			text-align: center;
 		}
 		
 		.ship-item {
+			min-width: 333px;
+			max-width: 333px;
 			height: 60px;
 			line-height: 60px;
 			font-weight: normal;
 		}
 		
-		.tip {
+		.tips {
+			padding: 10px 0;
 			margin: 0 50px;
-			background-color: #F2F2F2;
 			margin-top: 30px;
+			background-color: #F2F2F2;
+			border-radius: 16px;
+			font-weight: normal;
+			text-align: center;
+			color: #909399;
+		}
+		
+		.auth-status {
+			color: #767171;
+			margin: 0 50px;
 			height: 60px;
+			background-color: #F2F2F2;
+			border-radius: 16px;
 			line-height: 60px;
 			font-weight: normal;
 			text-align: center;
-			border-radius: 16px;
-			color: #909399;
 		}
+		
+		.status {
+			font-weight: bold;
+		}
+		
 	</style>
 	
 	<body>
@@ -230,18 +249,24 @@
 			<div class="page-box">
 				<div class="page-header">
 					<div class="clan-user-server">
-						<div class="clan" style="color: gold;">NaN</div>
-						<div class="user">NaN</div>
+						{% if data['clanInfo']['tag'] %}
+						<div class="clan" style="color: {{ data['clanInfo']['colorRgb'] }};">[{{ data['clanInfo']['tag'] }}]</div>
+						{% endif %}
+						<div class="user">{{ data['userName'] }}</div>
 						<div class="server">
 							<div class="server-border">
-								NaN
+								{{ data['serverName'] }}
 							</div>
 						</div>
 					</div>
 				</div>
 				
-				<div class="tip">
-					tips：注意潜艇直营服查不到，检测方式是检查的前提条件是这条船你开过。(随机人机什么都可以)
+				<div class="auth-status">
+					{%if data['auth'] %}
+					<span>授权状态：</span><span style="color: #47A123; font-weight: bold;">已授权</span>
+					{% else %}
+					<span>授权状态：</span><span style="color: #E60000; font-weight: bold;">未授权</span>
+					{% endif %}
 				</div>
 				
 				<div class="total-ship-row">
@@ -303,63 +328,103 @@
 					</div>
 					
 					<div class="right">
-						<div class="x-row">
-							{% for rare in data['rare'] %}
-								{% if rare['level'] == 10 %}
-									<div class="ship-item">
-										<span class="level">{{ rare['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ rare['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-						</div>
-						<div class="ix-row">
-							{% for rare in data['rare'] %}
-								{% if rare['level'] == 9 %}
-									<div class="ship-item">
-										<span class="level">{{ rare['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ rare['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-							
-							{% for rare in data['rare'] %}
-								{% if rare['level'] == 8 %}
-									<div class="ship-item">
-										<span class="level">{{ rare['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ rare['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-						</div>
-						<div class="vii-row">
-							{% for rare in data['rare'] %}
-								{% if rare['level'] == 7 %}
-									<div class="ship-item">
-										<span class="level">{{ rare['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ rare['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-							
-							{% for rare in data['rare'] %}
-								{% if rare['level'] == 6 %}
-									<div class="ship-item">
-										<span class="level">{{ rare['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ rare['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-							
-							{% for rare in data['rare'] %}
-								{% if rare['level'] == 5 %}
-									<div class="ship-item">
-										<span class="level">{{ rare['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ rare['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-						</div>
+						{% for haveData in data['rareHaveList'] %}
+							{% if haveData['level'] == 10 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for haveData in data['rareHaveList'] %}
+							{% if haveData['level'] == 9 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for haveData in data['rareHaveList'] %}
+							{% if haveData['level'] == 8 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for haveData in data['rareHaveList'] %}
+							{% if haveData['level'] == 7 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for haveData in data['rareHaveList'] %}
+							{% if haveData['level'] == 6 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for haveData in data['rareHaveList'] %}
+							{% if haveData['level'] == 5 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						
+						{% for unHave in data['rareList'] %}
+							{% if unHave['level'] == 10 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for unHave in data['rareList'] %}
+							{% if unHave['level'] == 9 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for unHave in data['rareList'] %}
+							{% if unHave['level'] == 8 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for unHave in data['rareList'] %}
+							{% if unHave['level'] == 7 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for unHave in data['rareList'] %}
+							{% if unHave['level'] == 6 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for unHave in data['rareList'] %}
+							{% if unHave['level'] == 5 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
 					</div>
 				</div>
 				
@@ -385,56 +450,101 @@
 					</div>
 					
 					<div class="right">
-						<div class="x-row">
-							{% for ship in data['data'] %}
-								{% if ship['level'] == 9 %}
-									<div class="ship-item">
-										<span class="level">{{ ship['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ ship['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-						</div>
-						<div class="ix-row">
-							{% for ship in data['data'] %}
-								{% if ship['level'] == 8 %}
-									<div class="ship-item">
-										<span class="level">{{ ship['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ ship['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-						</div>
-						<div class="vii-row">
-							{% for ship in data['data'] %}
-								{% if ship['level'] == 7 %}
-									<div class="ship-item">
-										<span class="level">{{ ship['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ ship['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-							
-							{% for ship in data['data'] %}
-								{% if ship['level'] == 6 %}
-									<div class="ship-item">
-										<span class="level">{{ ship['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ ship['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-							
-							{% for ship in data['data'] %}
-								{% if ship['level'] == 5 %}
-									<div class="ship-item">
-										<span class="level">{{ ship['level'] }}</span>&nbsp;&nbsp;
-										<span class="ship-name">{{ ship['nameCn'] }}</span>
-									</div>
-								{% endif %}
-							{% endfor %}
-						</div>
+						{% for haveData in data['dataHaveList'] %}
+							{% if haveData['level'] == 9 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for haveData in data['dataHaveList'] %}
+							{% if haveData['level'] == 8 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for haveData in data['dataHaveList'] %}
+							{% if haveData['level'] == 7 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for haveData in data['dataHaveList'] %}
+							{% if haveData['level'] == 6 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for haveData in data['dataHaveList'] %}
+							{% if haveData['level'] == 5 %}
+							<div class="ship-item" style="color: #DF9B2D;">
+								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ haveData['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						
+						{% for unHave in data['dataList'] %}
+							{% if unHave['level'] == 9 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for unHave in data['dataList'] %}
+							{% if unHave['level'] == 8 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for unHave in data['dataList'] %}
+							{% if unHave['level'] == 7 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for unHave in data['dataList'] %}
+							{% if unHave['level'] == 6 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
+						{% for unHave in data['dataList'] %}
+							{% if unHave['level'] == 5 %}
+							<div class="ship-item">
+								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+								<span class="ship-name">{{ unHave['nameCn'] }}</span>
+							</div>
+							{% endif %}
+						{% endfor %}
 					</div>
 				</div>
+				
+				{% if not data['auth'] %}
+				<div class="tips">
+					<span>tips：未授权数据不准确，仅支持统计已战斗过的舰船</span><br />
+					<span>如需统计更精准数据请前往网页版授权。</span><br />
+					<span>网页版地址：https://wows.mgaia.top/</span>
+				</div>
+				{% else %}
+				<div class="tips">
+					<span>tips：没出过港的船只不会被统计在内</span>
+				</div>
+				{% endif %}
 				
 				<div style="height: 30px;"></div>
 			</div>

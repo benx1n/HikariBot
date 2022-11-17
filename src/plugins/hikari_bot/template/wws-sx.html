@@ -69,13 +69,13 @@
 		}
 		
 		.ship-count {
-			flex: 1;
+			flex: 6;
 			background-color: #F2F2F2;
 			border-radius: 16px;
 		}
 		
 		.xi {
-			flex: 2;
+			flex: 10;
 			background-color: #F2F2F2;
 			margin-left: 20px;
 			border-radius: 16px;
@@ -83,16 +83,16 @@
 		}
 		
 		.type {
-			font-size: 50px;
+			font-size: 60px;
 			color: #767171;
 			font-weight: normal;
 			text-align: left;
 			margin-left: 75px;
-			margin-top: 70px;
+			margin-top: 55px;
 		}
 		
 		.in-port {
-			font-size: 20px;
+			font-size: 25px;
 			color: #767171;
 			font-weight: normal;
 			text-align: left;
@@ -100,7 +100,7 @@
 		}
 		
 		.number {
-			font-size: 50px;
+			font-size: 60px;
 			color: #E60000;
 			text-align: left;
 			margin-left: 75px;
@@ -112,7 +112,7 @@
 		
 		.xi-mid {
 			flex: 1;
-			margin-top: 70px;
+			margin-top: 61px;
 		}
 		
 		.xi-right {
@@ -126,17 +126,17 @@
 		
 		.up-1 {
 			color: #DF9D21;
-			font-size: 22px;
+			font-size: 30px;
 		}
 		
 		.up-2 {
 			color: #12C8AE;
-			font-size: 22px;
+			font-size: 30px;
 		}
 		
 		.up-3 {
 			color: #B400B4;
-			font-size: 22px;
+			font-size: 30px;
 		}
 		
 		.xi-right {
@@ -219,11 +219,21 @@
 			line-height: 60px;
 			font-weight: normal;
 			text-align: center;
-			font-weight: normal;
 		}
 		
 		.status {
 			font-weight: bold;
+		}
+		
+		.tips {
+			padding: 10px 0;
+			margin: 0 50px;
+			margin-top: 30px;
+			background-color: #F2F2F2;
+			border-radius: 16px;
+			font-weight: normal;
+			text-align: center;
+			color: #909399;
 		}
 	</style>
 	<body>
@@ -244,7 +254,11 @@
 				</div>
 				
 				<div class="auth-status">
-					<span>授权状态：</span><span class="status">{{ data['auth'] }}</span>
+					{%if data['auth'] %}
+					<span>授权状态：</span><span style="color: #47A123; font-weight: bold;">已授权</span>
+					{% else %}
+					<span>授权状态：</span><span style="color: #E60000; font-weight: bold;">未授权</span>
+					{% endif %}
 				</div>
 				
 				<div class="xi-row">
@@ -345,6 +359,17 @@
 						<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/coal.svg"/>
 					</div>
 				</div>
+				{% if not data['auth'] %}
+				<div class="tips">
+					<span>tips：未授权数据不准确，仅支持统计已战斗过的舰船</span><br />
+					<span>如需统计更精准数据请前往网页版授权。</span><br />
+					<span>网页版地址：https://wows.mgaia.top/</span>
+				</div>
+				{% else %}
+				<div class="tips">
+					<span>tips：没出过港的船只不会被统计在内</span>
+				</div>
+				{% endif %}
 				
 				<div class="footer">
 					<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
@@ -373,16 +398,6 @@
 		} else if (server_name == "ru") {
 			document.querySelector(".server").style.color = "#FF0000";
 			document.querySelector(".server-border").innerText = "俄服";
-		}
-	</script>
-	<script>
-		let status = document.querySelector(".status");
-		if (status.innerText == true) {
-			status.innerText = "已授权";
-			status.style.color = "#47a123";
-		} else {
-			status.innerText = "未授权";
-			status.style.color = "red";
 		}
 	</script>
 </html>
