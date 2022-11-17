@@ -72,4 +72,5 @@ async def downlod_OcrResult():
             ocr_filename_data = result['data']
         return
     except:
+        ocr_filename_data = json.load(open(ocr_data_path, 'r', encoding='utf8'))
         logger.error(traceback.format_exc())

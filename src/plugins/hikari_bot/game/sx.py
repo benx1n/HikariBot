@@ -29,6 +29,11 @@ async def get_sx_info(server_type,info,bot,ev):
     try:
         url,params = '',''
         if isinstance(info,List):
+            if len(info) == 0:
+                params = {
+                    "server": "QQ",
+                    "accountId": int(ev.user_id)
+                    }
             for i in info:
                 if str(i).lower() == 'me':
                     params = {
@@ -62,11 +67,6 @@ async def get_sx_info(server_type,info,bot,ev):
                 return '您似乎准备用游戏昵称查询，请检查参数中是否包含服务器和游戏昵称，以空格区分，如果您准备查询单船战绩，请带上ship参数'
         else:
             return '参数似乎出了问题呢'
-        is_cache = await check_yuyuko_cache(params['server'],params['accountId'])
-        if is_cache:
-            logger.success('上报数据成功')
-        else:
-            logger.success('跳过上报数据，直接请求')
         url = 'https://api.wows.shinoaki.com/public/wows/christmas/ship/christmas'
         logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
