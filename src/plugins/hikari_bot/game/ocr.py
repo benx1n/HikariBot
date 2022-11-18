@@ -6,6 +6,7 @@ from pathlib import Path
 from base64 import b64encode,b64decode
 from nonebot import get_driver
 from nonebot.log import logger
+from urllib3 import Timeout
 from ..utils import byte2md5
 
 config =  get_driver().config
@@ -63,13 +64,16 @@ async def upload_OcrResult(result_text,filename):
         
 async def downlod_OcrResult():
     try:
-        async with httpx.AsyncClient(headers=headers) as client:
+        async with httpx.AsyncClient(headers=headers,timeout=None) as client:
             resp = await client.get(download_url)
             result = resp.json()
             with open(ocr_data_path, 'w', encoding='UTF-8') as f:
-                json.dump(result['data'], f)
-            global ocr_filename_data
-            ocr_filename_data = result['data']
+                if result['code'] == 200 and result['data']:
+                    json.dump(result['data'], f)
+                    global ocr_filename_data
+                    ocr_filename_data = result['data']
+                else:
+                    ocr_filename_data = json.load(open(ocr_data_path, 'r', encoding='utf8'))
         return
     except:
         ocr_filename_data = json.load(open(ocr_data_path, 'r', encoding='utf8'))
