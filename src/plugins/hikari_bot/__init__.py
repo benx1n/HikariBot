@@ -33,7 +33,7 @@ EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '0.3.5.5'
+__version__ = '0.3.6'
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
 
