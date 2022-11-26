@@ -90,6 +90,8 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 ## 在Windows系统上快速部署
 >点我查看[视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
 
+  `windows安装python版本请勿大于3.11,建议版本3.9`
+
 1. 下载Hikari的[最新Release](https://github.com/benx1n/HikariBot/releases/download/Latest/release_windows.zip)并解压到合适文件夹
 2. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并按其中注释编辑
     >只显示了.env，没有后面的后缀？请百度`windows如何显示文件后缀名`
