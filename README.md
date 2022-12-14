@@ -529,13 +529,11 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
 ## 贡献
 
-感谢以下开发者对该项目做出的贡献：
+感谢以下开发者及项目做出的贡献与支持
 
 <a href="https://github.com//benx1n/HikariBot/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=benx1n/HikariBot" />
 </a>
-
-感谢以下项目的支持
 
 [Nonebot2](https://github.com/nonebot/nonebot2)  
 [go-cqhttp](https://github.com/Mrs4s/go-cqhttp)  
