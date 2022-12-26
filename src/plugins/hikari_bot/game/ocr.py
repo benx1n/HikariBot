@@ -6,7 +6,6 @@ from pathlib import Path
 from base64 import b64encode,b64decode
 from nonebot import get_driver
 from nonebot.log import logger
-from urllib3 import Timeout
 from ..utils import byte2md5
 
 config =  get_driver().config
