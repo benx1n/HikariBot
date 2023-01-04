@@ -75,5 +75,9 @@ async def downlod_OcrResult():
                     ocr_filename_data = json.load(open(ocr_data_path, 'r', encoding='utf8'))
         return
     except:
-        ocr_filename_data = json.load(open(ocr_data_path, 'r', encoding='utf8'))
+        logger.error('请检查token是否配置正确，如无问题请尝试重启，可能是网络波动或服务器原因')
         logger.error(traceback.format_exc())
+        try:
+            ocr_filename_data = json.load(open(ocr_data_path, 'r', encoding='utf8'))
+        except:
+            ocr_filename_data = None

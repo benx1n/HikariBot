@@ -259,7 +259,8 @@ async def startup():
                 for name, url in each.items():
                     tasks.append(asyncio.ensure_future(startup_download(url, name)))
         await asyncio.gather(*tasks)
-        await downlod_OcrResult()
+        if driver.config.ocr_on:
+            await downlod_OcrResult()
     except Exception:
         logger.error(traceback.format_exc())
         return   
