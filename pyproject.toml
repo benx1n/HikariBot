@@ -25,10 +25,11 @@ Jinja2 = "^3.0.0"
 beautifulsoup4 = "^4.11.1"
 paho-mqtt = "^1.6.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 nb-cli = "^0.6.0"
-black = "^22.1.0"
 nonebot-plugin-gocqhttp = "^0.6.2"
+black = {version = "^23.1a1", allow-prereleases = true}
+isort = "^5.12.0"
 
 [tool.nonebot]
 #plugins = ["nonebot_plugin_apscheduler", "nonebot_plugin_htmlrender","nonebot_plugin_guild_patch"]
@@ -43,3 +44,6 @@ url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
 [build-system]
 requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"

@@ -1,39 +1,48 @@
-import io
 import gzip
-import pytz
-import time
-import nonebot
-import httpx
 import hashlib
+import io
+import time
 from collections import defaultdict
 from datetime import datetime, timedelta
-from nonebot.adapters.onebot.v11 import Bot
 from typing import Optional
 
-async def match_keywords(match_list,Lists):
-    for List in Lists :                        
+import httpx
+import nonebot
+import pytz
+from nonebot.adapters.onebot.v11 import Bot
+
+
+async def match_keywords(match_list, Lists):
+    for List in Lists:
         for kw in List.keywords:
             for match_kw in match_list:
-                if match_kw == kw or match_kw.upper() == kw.upper() or match_kw.lower() == kw.lower():
+                if (
+                    match_kw == kw
+                    or match_kw.upper() == kw.upper()
+                    or match_kw.lower() == kw.lower()
+                ):
                     match_list.remove(match_kw)
-                    return List.match_keywords,match_list
-    return None,match_list
+                    return List.match_keywords, match_list
+    return None, match_list
 
-async def find_and_replace_keywords(match_list,Lists):
-    for List in Lists :                        
+
+async def find_and_replace_keywords(match_list, Lists):
+    for List in Lists:
         for kw in List.keywords:
-            for i,match_kw in enumerate(match_list):
-                if (match_kw.find(kw)+1):
-                    match_list[i] = str(match_kw).replace(kw,"")
-                    if match_list[i] == '':
-                        match_list.remove('')
-                    return List.match_keywords,match_list
-    return None,match_list
+            for i, match_kw in enumerate(match_list):
+                if match_kw.find(kw) + 1:
+                    match_list[i] = str(match_kw).replace(kw, "")
+                    if match_list[i] == "":
+                        match_list.remove("")
+                    return List.match_keywords, match_list
+    return None, match_list
+
 
 def encode_gzip(bytes):
     buf = io.BytesIO(bytes)
-    gf = gzip.GzipFile(fileobj = buf)
-    return gf.read().decode('utf-8')
+    gf = gzip.GzipFile(fileobj=buf)
+    return gf.read().decode("utf-8")
+
 
 class FreqLimiter:
     def __init__(self, default_cd_seconds):
@@ -44,13 +53,16 @@ class FreqLimiter:
         return bool(time.time() >= self.next_time[key])
 
     def start_cd(self, key, cd_time=0):
-        self.next_time[key] = time.time() + (cd_time if cd_time > 0 else self.default_cd)
+        self.next_time[key] = time.time() + (
+            cd_time if cd_time > 0 else self.default_cd
+        )
 
     def left_time(self, key) -> float:
         return self.next_time[key] - time.time()
 
+
 class DailyNumberLimiter:
-    tz = pytz.timezone('Asia/Shanghai')
+    tz = pytz.timezone("Asia/Shanghai")
 
     def __init__(self, max_num):
         self.today = -1
@@ -73,7 +85,8 @@ class DailyNumberLimiter:
 
     def reset(self, key):
         self.count[key] = 0
-        
+
+
 def get_bot() -> Optional[Bot]:
     """
     说明：
@@ -83,15 +96,17 @@ def get_bot() -> Optional[Bot]:
         return list(nonebot.get_bots().values())[0]
     except IndexError:
         return None
-    
-async def download(url, path, proxy = {}):
+
+
+async def download(url, path, proxy={}):
     async with httpx.AsyncClient(proxies=proxy) as client:
         resp = await client.get(url, timeout=None)
         content = resp.read()
-        content = content.replace(b'\n', b'\r\n')
-        with open(path, 'wb') as f:
+        content = content.replace(b"\n", b"\r\n")
+        with open(path, "wb") as f:
             f.write(content)
-            
+
+
 async def byte2md5(bytes):
     res = hashlib.md5(bytes).hexdigest()
     return res
