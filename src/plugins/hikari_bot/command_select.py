@@ -39,22 +39,8 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(("特殊绑定",), set_special_BindInfo),
     command(("ship.rank", "rank"), get_ShipRank),
     command(("bind", "绑定", "set"), set_BindInfo),
-    command(
-        (
-            "recent",
-            "近期",
-        ),
-        None,
-        get_RecentInfo,
-    ),
-    command(
-        (
-            "ship",
-            "单船",
-        ),
-        None,
-        get_ShipInfo,
-    ),
+    command(("recent","近期",),None,get_RecentInfo,),
+    command(("ship","单船",),None,get_ShipInfo,),
     command(("record", "历史记录"), None, get_record),
     command(("clan", "军团", "公会", "工会"), None, get_ClanInfo),
     command(("roll", "随机"), roll_ship),
@@ -64,20 +50,8 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
 ]
 
 second_command_list = [
-    command(
-        (
-            "recent",
-            "近期",
-        ),
-        get_ShipInfoRecent,
-    ),
-    command(
-        (
-            "ship",
-            "单船",
-        ),
-        get_ShipInfoRecent,
-    ),
+    command(("recent","近期",),get_ShipInfoRecent,),
+    command(("ship","单船",),get_ShipInfoRecent,),
     command(("clan", "军团", "公会", "工会"), get_record),
     command(("record", "历史记录"), get_record),
 ]
