@@ -41,7 +41,7 @@ RUN cd /home \
 && echo "!*.bat" >> ./.git/info/sparsecheckout \
 && git pull origin master \
 && rm -rf .git
-RUN pip install nb-cli hikari-bot \
+RUN pip install nb-cli hikari-bot nonebot2[fastapi]\
 && nb plugin install nonebot-plugin-apscheduler \
 && nb plugin install nonebot-plugin-gocqhttp \
 && playwright install chromium \
