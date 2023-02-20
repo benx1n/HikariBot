@@ -526,8 +526,11 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
 3. 重新启动Hikari
 
+## 贡献代码
 
-## 贡献
+请向dev分支提交PR
+
+## 鸣谢
 
 感谢以下开发者及项目做出的贡献与支持
 
