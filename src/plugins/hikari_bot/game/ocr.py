@@ -64,13 +64,13 @@ async def upload_OcrResult(result_text, filename):
 
 async def downlod_OcrResult():
     try:
+        global ocr_filename_data
         async with httpx.AsyncClient(headers=headers, timeout=None) as client:
             resp = await client.get(download_url)
             result = resp.json()
             with open(ocr_data_path, "w", encoding="UTF-8") as f:
                 if result["code"] == 200 and result["data"]:
                     json.dump(result["data"], f)
-                    global ocr_filename_data
                     ocr_filename_data = result["data"]
                 else:
                     ocr_filename_data = json.load(
