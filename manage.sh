@@ -16,7 +16,15 @@ elif [ $1 = "install" ]
 then
 	echo "Installing dependences."
 	sudo apt-get update
+	if [ $? -ne 0 ]
+	then 
+		yum update
+	fi
 	sudo apt-get install -y locales locales-all fonts-noto libnss3-dev libxss1 libasound2 libxrandr2 libatk1.0-0 libgtk-3-0 libgbm-dev libxshmfence1
+	if [ $? -ne 0 ]
+	then 
+		yum install -y at-spi2-atk libXcomposite libXdamage libXrandr mesa-libgbm libxkbcommon pango cairo
+	fi
 	echo "Installing HikariBot"
 	pip install nb-cli hikari-bot nonebot-plugin-gocqhttp
 	playwright install chromium
