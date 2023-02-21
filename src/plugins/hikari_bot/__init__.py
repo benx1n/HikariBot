@@ -3,6 +3,7 @@ import html
 import json
 import os
 import platform
+import random
 import re
 import sys
 import traceback
@@ -87,6 +88,9 @@ async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):
             return False
         _flmt.start_cd(qqid)
         _nlmt.increase(qqid)
+        if random.randint(1,1000) == 1:
+            await bot.send(ev, "一天到晚惦记你那b水表，就nm离谱")
+            return False
         searchtag = html.unescape(str(matchmsg)).strip()
         if not searchtag:
             await bot.send(ev, "请发送wws help查看相关帮助")
