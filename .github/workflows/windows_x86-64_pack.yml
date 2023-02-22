@@ -17,7 +17,7 @@ jobs:
         path: HikariBot
         ref: 'master'
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: 3.10
     - name: Latest-tag
@@ -33,7 +33,7 @@ jobs:
         call %CONDA%/condabin/conda.bat create --prefix .\pyenv python
         call %CONDA%/condabin/conda.bat activate .\pyenv
         python -m pip install --upgrade pip
-        python -m pip install nb-cli hikari-bot
+        python -m pip install nb-cli hikari-bot nonebot2[fastapi]
         python -m pip install nonebot-plugin-apscheduler
         python -m pip install nonebot-plugin-gocqhttp
         python -m pip install nonebot-plugin-guild-patch
@@ -48,29 +48,16 @@ jobs:
         $tmp = Get-Content "HikariBot\.git\config"
         echo $tmp |Select-String -NotMatch -Pattern "extraheader" | Set-Content "HikariBot\.git\config"
         Compress-Archive -DestinationPath release.zip -Path HikariBot
-    - name: Delete latest release
-      uses: actions/github-script@v4
+    - name: Delete and create latest release
+      uses: actions/github-script@v6
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
+          const fs = require("fs").promises;
           const { owner, repo } = context.repo
-          const { data: { id } } = await github.repos.getLatestRelease({ owner, repo })
-          await github.repos.deleteRelease({ owner, repo, release_id: id })
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: Latest
-        release_name: Latest Release
-        draft: false
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: release.zip
-        asset_name: release_windows.zip
-        asset_content_type: application/zip
+          const { data } = await github.rest.repos.listReleases({ owner, repo })
+          if ( data.length > 0){
+            const { data: { id } } = await github.rest.repos.getLatestRelease({ owner, repo })
+            await github.rest.repos.deleteRelease({ owner, repo, release_id: id })
+          }
+          const { data: { id } } = await github.rest.repos.createRelease({ owner, repo, tag_name: "Latest", name: "Latest Release" })
+          await github.rest.repos.uploadReleaseAsset({ owner, repo, release_id: id, name: "release_windows.zip", data: await fs.readFile("release.zip") })
