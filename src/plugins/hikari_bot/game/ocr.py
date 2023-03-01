@@ -84,3 +84,15 @@ async def downlod_OcrResult():
             ocr_filename_data = json.load(open(ocr_data_path, "r", encoding="utf8"))
         except:
             ocr_filename_data = None
+
+
+async def get_Random_Ocr_Pic(server_type, info, bot, ev):
+    try:
+        async with httpx.AsyncClient(headers=headers, timeout=None) as client:
+            resp = await client.post('http://mc.youthnp.cn:23338/ImageRandom/')
+            img = b64decode(resp.text)
+        return img
+    except:
+        logger.error(traceback.format_exc())  
+        return 'OCR服务器出了点问题，请稍后再试哦' 
+        

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Protocol, Tuple
 
 from .game.box_check import check_christmas_box
+from .game.ocr import get_Random_Ocr_Pic
 from .game.roll import roll_ship
 from .game.sx import get_sx_info
 from .publicAPI import get_ship_name
@@ -43,6 +44,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(("ship","单船",),None,get_ShipInfo,),
     command(("record", "历史记录"), None, get_record),
     command(("clan", "军团", "公会", "工会"), None, get_ClanInfo),
+    command(("随机表情包",), get_Random_Ocr_Pic),
     command(("roll", "随机"), roll_ship),
     command(("sx", "扫雪"), get_sx_info),
     command(("box", "sd", "圣诞船池"), check_christmas_box),
