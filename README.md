@@ -114,7 +114,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 ## Linux一键脚本
 > 仅支持Debian、CentOS、Ubuntu
 ```
-wget -qO - http://www.dddns.icu/installHikari.sh | bash
+wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | bash
 ```
 
 
