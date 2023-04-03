@@ -267,6 +267,16 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
 
 ## 最近的更新日志
 
+### 23-04-04    v0.3.7
+- [+]添加获取随机表情包，指令wws 随机表情包
+- [+]更新船只选择界面
+- [#]更新Linux脚本托管
+
+### 23-02-22    v0.3.6.4
+- [+]添加随机嘴臭，概率千分之一
+- [+]添加ocr启动报错提示
+- [#]修复一键包及Docker依赖问题 [@94Bo](https://github.com/94Bo) [@12hydrogen](https://github.com/12hydrogen)
+
 ### 22-11-18    v0.3.6  包含配置项更新，请添加`env.prod-example`中新增的配置
 - [+]新增噗噗（已于0.3.5.2实装）
 - [+]新增OCR（已于0.3.5.5实装）
