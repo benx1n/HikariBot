@@ -92,6 +92,7 @@ async def get_ship_byName(shipname: str):
                         each["shipNameCn"],
                         each["shipNameNumbers"],
                         each["tier"],
+                        each['shipType']
                     ]
                 )
             return List
