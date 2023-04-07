@@ -12,7 +12,7 @@ from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot.log import logger
 from nonebot_plugin_htmlrender import html_to_pic, text_to_pic
 
-from .data_source import number_url_homes, servers, set_ShipRank_Numbers, tiers
+from .data_source import number_url_homes, servers, set_ShipRank_Numbers, set_shipSelectparams,tiers
 from .publicAPI import get_ship_byName
 from .utils import get_bot, match_keywords
 from .wws_ship import ShipSecletProcess, ShipSlectState
@@ -49,15 +49,15 @@ async def get_ShipRank(server_type, info, bot, ev):
                 select_shipId = shipList[0][0]
                 number_url += f"{select_shipId},{shipList[0][2]}"
             else:
-                msg = f"存在多条名字相似的船\n请在20秒内选择对应的序号\n================\n"
-                flag = 0
-                for each in shipList:
-                    flag += 1
-                    msg += f"{flag}：{tiers[each[3]-1]} {each[1]}\n"
-                ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, shipList)
-                img = await text_to_pic(
-                    text=msg, css_path=str(template_path / "text-ship.css"), width=250
-                )
+                ShipSecletProcess[ev.user_id] = ShipSlectState(
+                        False, None, shipList
+                    )
+                template = env.get_template("select-ship.html")
+                template_data = await set_shipSelectparams(shipList)
+                content = await template.render_async(template_data)
+                img = await html_to_pic(
+                        content, wait=0, viewport={"width": 360, "height": 100}
+                    )
                 await bot.send(ev, MessageSegment.image(img))
                 a = 0
                 while a < 40 and not ShipSecletProcess[ev.user_id].state:
