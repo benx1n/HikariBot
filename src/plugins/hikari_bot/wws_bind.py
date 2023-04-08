@@ -252,3 +252,25 @@ async def delete_BindInfo(server_type, info, bot, ev):
     except Exception:
         logger.error(traceback.format_exc())
         return "wuwuwu出了点问题，请联系麻麻解决"
+
+
+async def get_DefaultBindInfo(platformType,platformId):
+    try:
+        url = 'https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list'
+        params = {
+            "platformType": platformType,
+            "platformId": platformId,
+        }
+        async with httpx.AsyncClient(headers=headers) as client:
+            resp = await client.get(url, params=params, timeout=None)
+            result = resp.json()
+        if result['code'] == 200 and result['message'] == "success":
+            if result['data']:
+                for each in result['data']:
+                    if each['defaultId']:
+                        return each
+            else:
+                return None
+    except Exception:
+        logger.error(traceback.format_exc())
+        return None

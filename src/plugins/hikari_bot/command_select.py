@@ -5,6 +5,7 @@ from .game.box_check import check_christmas_box
 from .game.ocr import get_Random_Ocr_Pic
 from .game.roll import roll_ship
 from .game.sx import get_sx_info
+from .game.ban_search import get_BanInfo
 from .publicAPI import get_ship_name
 from .wws_bind import (
     change_BindInfo,
@@ -47,6 +48,7 @@ first_command_list = [  # 同指令中越长的匹配词越靠前
     command(("随机表情包",), get_Random_Ocr_Pic),
     command(("roll", "随机"), roll_ship),
     command(("sx", "扫雪"), get_sx_info),
+    command(("ban","封号记录"),get_BanInfo),
     command(("box", "sd", "圣诞船池"), check_christmas_box),
     command(("搜船名", "查船名", "船名"), get_ship_name),
 ]
