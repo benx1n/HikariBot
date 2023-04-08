@@ -47,6 +47,7 @@ async def get_ShipRank(server_type, info, bot, ev):
         if shipList:
             if len(shipList) < 2:
                 select_shipId = shipList[0][0]
+                shipInfo = {"shipNameCn": shipList[0][1], "tier": shipList[0][3]}
                 number_url += f"{select_shipId},{shipList[0][2]}"
             else:
                 ShipSecletProcess[ev.user_id] = ShipSlectState(
@@ -69,6 +70,10 @@ async def get_ShipRank(server_type, info, bot, ev):
                     select_shipId = int(
                         shipList[ShipSecletProcess[ev.user_id].SlectIndex - 1][0]
                     )
+                    shipInfo = {
+                        "shipNameCn": shipList[ShipSecletProcess[ev.user_id].SlectIndex - 1][1],
+                        "tier": shipList[ShipSecletProcess[ev.user_id].SlectIndex - 1][3]
+                    }
                     number_url += f"{select_shipId},{shipList[ShipSecletProcess[ev.user_id].SlectIndex-1][2]}"
                     ShipSecletProcess[ev.user_id] = ShipSlectState(False, None, None)
                 else:
@@ -77,14 +82,14 @@ async def get_ShipRank(server_type, info, bot, ev):
         else:
             return "找不到船，请确认船名是否正确，可以使用【wws 查船名】查询船只中英文"
         if not param_server == "cn":
-            content = await search_ShipRank_Yuyuko(select_shipId, param_server)
+            content = await search_ShipRank_Yuyuko(select_shipId, param_server, shipInfo)
             if content:  # 存在缓存，直接出图
                 return await html_to_pic(
                     content, wait=0, viewport={"width": 1300, "height": 100}
                 )
             else:  # 无缓存，去Number爬
                 content, numbers_data = await search_ShipRank_Numbers(
-                    number_url, param_server, select_shipId
+                    number_url, param_server, select_shipId, shipInfo
                 )
                 if content:
                     await post_ShipRank(numbers_data)  # 上报Yuyuko
@@ -94,7 +99,7 @@ async def get_ShipRank(server_type, info, bot, ev):
                 else:
                     return "wuwuu好像出了点问题，可能是网络问题，过一会儿还是不行的话请联系麻麻~"
         else:
-            content = await search_cn_rank(select_shipId, param_server, 1)
+            content = await search_cn_rank(select_shipId, param_server, 1, shipInfo)
             if content:
                 return await html_to_pic(
                     content, wait=0, viewport={"width": 1300, "height": 100}
@@ -111,7 +116,7 @@ async def get_ShipRank(server_type, info, bot, ev):
         return "wuwuu好像出了点问题，过一会儿还是不行的话请联系麻麻~"
 
 
-async def search_ShipRank_Yuyuko(shipId, server):
+async def search_ShipRank_Yuyuko(shipId, server, shipInfo):
     try:
         content = None
         async with httpx.AsyncClient(headers=headers) as client:  # 查询是否有缓存
@@ -125,7 +130,7 @@ async def search_ShipRank_Yuyuko(shipId, server):
             logger.success(f"本次请求返回的状态码:{result['code']}")
             if result["code"] == 200 and result["data"]:
                 template = env.get_template("ship-rank.html")
-                result_data = {"data": result["data"]}
+                result_data = {"data": result["data"], "shipInfo": shipInfo}
                 content = await template.render_async(result_data)
                 return content
             else:
@@ -138,7 +143,7 @@ async def search_ShipRank_Yuyuko(shipId, server):
         return None
 
 
-async def search_ShipRank_Numbers(url, server, shipId):
+async def search_ShipRank_Numbers(url, server, shipId, shipInfo):
     try:
         content = None
         logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}")
@@ -151,7 +156,7 @@ async def search_ShipRank_Numbers(url, server, shipId):
         data = soup.select('tr[class="cells-middle"]')
         infoList = await set_ShipRank_Numbers(data, server, shipId)
         if infoList:
-            result_data = {"data": infoList}
+            result_data = {"data": infoList, "shipInfo": shipInfo}
             template = env.get_template("ship-rank.html")
             content = await template.render_async(result_data)
             return content, infoList
@@ -177,7 +182,7 @@ async def post_ShipRank(data):
         logger.error(traceback.format_exc())
 
 
-async def search_cn_rank(shipId, server, page):
+async def search_cn_rank(shipId, server, page, shipInfo):
     try:
         content = None
         async with httpx.AsyncClient(headers=headers) as client:  # 查询是否有缓存
@@ -188,8 +193,8 @@ async def search_cn_rank(shipId, server, page):
             result = resp.json()
             logger.success(f"本次请求返回的状态码:{result['code']}")
             if result["code"] == 200 and result["data"]:
-                template = env.get_template("ship-rank-cn.html")
-                result_data = {"data": result["data"]}
+                template = env.get_template("ship-rank.html")
+                result_data = {"data": result["data"], "shipInfo": shipInfo}
                 content = await template.render_async(result_data)
                 return content
             else:
