@@ -41,7 +41,10 @@ async def get_BanInfo(server_type, info, bot, ev):
             if params:
                 bindResult = await get_DefaultBindInfo(params['server'],params['accountId'])
                 if bindResult:
-                    param_accountid = int(bindResult['accountId'])
+                    if bindResult['serverType'] == 'cn':
+                        param_accountid = int(bindResult['accountId'])
+                    else:
+                        return "目前仅支持国服查询"
                 else:
                     return "未查询到该用户绑定信息，请使用wws 查询绑定 进行检查"
             elif not params and len(info) == 2:
@@ -65,11 +68,18 @@ async def get_BanInfo(server_type, info, bot, ev):
             logger.success(f"本次请求返回的状态码:{result['code']}")
             logger.success(f"本次请求服务器计算时间:{result['queryTime']}")
         if result["code"] == 200 and result["data"]:
-            template = env.get_template("wws-test.html")
+            template = env.get_template("wws-ban.html")
             template_data = {"data": result["data"]}
             content = await template.render_async(template_data)
             return await html_to_pic(
-                content, wait=0, viewport={"width": 920, "height": 1000}
+                content, wait=0, viewport={"width": 900, "height": 100}
+            )
+        elif result["code"] == 404 and result["data"]:
+            template = env.get_template("wws-unban.html")
+            template_data = {"data": result["data"]}
+            content = await template.render_async(template_data)
+            return await html_to_pic(
+                content, wait=0, viewport={"width": 900, "height": 100}
             )
         else:
             return f"{result['message']}"
