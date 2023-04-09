@@ -133,23 +133,33 @@
 			color: #909399;
 			margin-bottom: 20px;
 		}
+		
+		.ban-tip {
+			height: 75px;
+			line-height: 75px;
+			font-size: 40px;
+			margin-top: 10px;
+			border-radius: 16px;
+			border: 3px #A9D18E solid;
+			color: #A9D18E;
+		}
 	</style>
 	
 	<body>
 		<div class="main-content">
 			<div class="header">
 				<div class="clan">
-					{% if data[0]['clanInfo']['tag'] %}
-					<div class="clan-tag" style="color: {{ data[0]['clanInfo']['colorRgb'] }};">[{{ data[0]['clanInfo']['tag'] }}]</div>
+					{% if data['clanInfo'] %}
+					<div class="clan-tag" style="color: {{ data['clanInfo']['colorRgb'] }};">[{{ data['clanInfo']['tag'] }}]</div>
 					{% endif %}
-					<div class="username">{{ data[0]['userName'] }}</div>
+					<div class="username">{{ data['userName'] }}</div>
 					<div class="server">
 						<div class="server-border">
-							{{ data[0]['serverName'] }}
+							{{ data['serverName'] }}
 						</div>
 					</div>
 				</div>
-				<div class="aid">AID:{{ data[0]['accountId'] }}</div>
+				<div class="aid">AID:{{ data['accountId'] }}</div>
 			</div>
 			<div class="warnning">
 				<div>yuyuko仅对官方公布的打码封号名单（仅三方插件）进行了模糊匹配，提供匹配记录</div>
@@ -161,7 +171,8 @@
 			</div>
 			<div class="ban">
 				<div class="title">可能符合条件的历史记录</div>
-				{% for ban in data %}
+				{% if data['voList'] %}
+				{% for ban in data['voList'] %}
 				<div class="ban-item">
 					<div class="ban-left">
 						<div class="ban-col">
@@ -183,6 +194,9 @@
 					</div>
 				</div>
 				{% endfor %}
+				{% else %}
+				<div class="ban-tip">未在官方封禁历史中匹配到该用户</div>
+				{% endif %}
 			</div>
 			<div class="footer">
 				<p>©西行寺雨季&nbsp;&nbsp;©本心</p>

@@ -106,7 +106,7 @@
 		<div class="main-content">
 			<div class="header">
 				<div class="clan">
-					{% if data['clanInfo']['tag'] %}
+					{% if data['clanInfo'] %}
 					<div class="clan-tag" style="color: {{ data['clanInfo']['colorRgb'] }};">[{{ data['clanInfo']['tag'] }}]</div>
 					{% endif %}
 					<div class="username">{{ data['userName'] }}</div>
