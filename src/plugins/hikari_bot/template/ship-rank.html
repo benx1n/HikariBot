@@ -88,6 +88,14 @@
 			white-space: nowrap;
 			text-overflow: ellipsis;
 		}
+		.footer {
+			margin-top: 30px;
+			text-align: center;
+			font-weight: bold;
+			font-size: 24px;
+			color: #909399;
+			margin-bottom: 20px;
+		}
 	</style>
 	<body>
 		<div class="main-content">
@@ -117,7 +125,11 @@
 				</div>
 				{% for rank in data %}
 				<div class="rank-item">
+					{% if rank['index'] %}
 					<div class="ranks flex-2 col">{{ rank['index'] }}</div>
+					{% else %}
+					<div class="ranks flex-2 col">{{ rank['sortValue'] }}</div>
+					{% endif %}
 					{% if rank['tag'] != null %}
 					<div class="player-name flex-10 col">[{{ rank['tag'] }}]{{ rank['userName'] }}</div>
 					{% else %}
@@ -136,6 +148,14 @@
 					<div class="max-ar-frag flex-2 col">{{ rank['maxPlanesDestroyed'] }}</div>
 				</div>
 				{% endfor %}
+				
+				<div class="footer">
+					<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
+					<p>https://github.com/benx1n/HikariBot</p>
+					<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
+					<p>Design By 冷眠 H5 Converted By C1ystal</p>
+					<p>赞助鸣谢：男人们的定远号、Wishing</p>
+				</div>
 
 				<div style="margin: 0 50px; border-bottom: #008272 solid 5px; margin-bottom:20px;"></div>
 			</div>
