@@ -88,7 +88,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 
   </details>
 ## 在Windows系统上快速部署
->点我查看[视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
+>点我查看[视频教程](https://www.bilibili.com/video/BV1XP411U7rC)
 
   `windows安装python版本请勿大于3.11,建议版本3.9`
 
@@ -266,6 +266,10 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
+
+### 23-04-07    v0.3.8
+- [+]新增国服封号记录查询，指令wws ban/wws 封号记录
+- [#]修复了上次修复排行榜新产生的bug
 
 ### 23-04-04    v0.3.7
 - [+]添加获取随机表情包，指令wws 随机表情包
@@ -531,9 +535,9 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
 
 1. 下载 go-cqhttp
 
-    - github 发布页：https://github.com/Mrs4s/go-cqhttp/releases
+    - github 发布页：https://github.com/Mrs4s/go-cqhttp/releases/latest
 
-    > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_386.exe](https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc1/go-cqhttp_windows_386.exe)
+    > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_amd64.exe](https://github.com/Mrs4s/go-cqhttp/releases/latest/download/go-cqhttp_windows_amd64.exe)
 
 2. 重命名为`go-cqhttp.*`(*为所选择版本后缀,如windowx就是go-cqhttp.exe)并放入`HikariBot\accounts\binary`文件夹下
 
