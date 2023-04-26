@@ -10,6 +10,7 @@ import jinja2
 from httpx import ConnectTimeout
 from nonebot import get_driver
 from nonebot.log import logger
+from nonebot.adapters.onebot.v11 import ActionFailed, MessageSegment,Bot
 from nonebot_plugin_htmlrender import html_to_pic
 
 from .data_source import (
@@ -40,7 +41,7 @@ env.globals.update(
 headers = {"Authorization": get_driver().config.api_token}
 
 
-async def get_AccountInfo(server_type, info, bot, ev):
+async def get_AccountInfo(server_type, info, bot:Bot, ev):
     try:
         url, params = "", ""
         if isinstance(info, List):

@@ -13,7 +13,7 @@ import jinja2
 from bs4 import BeautifulSoup
 from httpx import ConnectTimeout
 from nonebot import get_driver
-from nonebot.adapters.onebot.v11 import ActionFailed, MessageSegment
+from nonebot.adapters.onebot.v11 import ActionFailed, MessageSegment,Bot
 from nonebot.log import logger
 from nonebot_plugin_htmlrender import html_to_pic, text_to_pic
 
@@ -29,7 +29,7 @@ from .data_source import (
     tiers,
 )
 from .publicAPI import check_yuyuko_cache, get_AccountIdByName, get_ship_byName
-from .utils import get_bot, match_keywords
+from .utils import match_keywords
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -52,9 +52,8 @@ ShipSlectState = namedtuple("ShipSlectState", ["state", "SlectIndex", "SelectLis
 ShipSecletProcess = defaultdict(lambda: ShipSlectState(False, None, None))
 
 
-async def get_ShipInfo(server_type, info, bot, ev):
+async def get_ShipInfo(server_type, info, bot:Bot, ev):
     try:
-        bot = get_bot()
         url, params = "", ""
         if isinstance(info, List):
             for flag, i in enumerate(info):  # 是否包含me或@，包含则调用平台接口
@@ -258,9 +257,8 @@ async def post_MyShipRank_yuyuko(accountId, ranking, serverId, shipId):
         return
 
 
-async def get_ShipInfoRecent(server_type, info, bot, ev):
+async def get_ShipInfoRecent(server_type, info, bot:Bot, ev):
     try:
-        bot = get_bot()
         params, day = None, 0
         if datetime.now().hour < 7:
             day = 1

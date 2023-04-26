@@ -10,13 +10,13 @@ import httpx
 import jinja2
 from httpx import ConnectTimeout
 from nonebot import get_driver
-from nonebot.adapters.onebot.v11 import ActionFailed, MessageSegment
+from nonebot.adapters.onebot.v11 import ActionFailed, MessageSegment,Bot
 from nonebot.log import logger
 from nonebot_plugin_htmlrender import text_to_pic
 
 from .data_source import servers
 from .publicAPI import get_ClanIdByName
-from .utils import get_bot, match_keywords
+from .utils import  match_keywords
 
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
@@ -30,9 +30,8 @@ ClanSlectState = namedtuple("ClanSlectState", ["state", "SlectIndex", "SelectLis
 ClanSecletProcess = defaultdict(lambda: ClanSlectState(False, None, None))
 
 
-async def get_ClanInfo(server_type, info, bot, ev):
+async def get_ClanInfo(server_type, info, bot:Bot, ev):
     try:
-        bot = get_bot()
         params = None
         if isinstance(info, List):
             for flag, i in enumerate(info):  # 是否包含me或@，包含则调用平台接口

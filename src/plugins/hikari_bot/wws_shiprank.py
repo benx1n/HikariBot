@@ -8,13 +8,13 @@ import jinja2
 from bs4 import BeautifulSoup
 from httpx import ConnectTimeout
 from nonebot import get_driver
-from nonebot.adapters.onebot.v11 import MessageSegment
+from nonebot.adapters.onebot.v11 import MessageSegment,Bot
 from nonebot.log import logger
 from nonebot_plugin_htmlrender import html_to_pic, text_to_pic
 
 from .data_source import number_url_homes, servers, set_ShipRank_Numbers, set_shipSelectparams,tiers
 from .publicAPI import get_ship_byName
-from .utils import get_bot, match_keywords
+from .utils import match_keywords
 from .wws_ship import ShipSecletProcess, ShipSlectState
 
 dir_path = Path(__file__).parent
@@ -31,9 +31,8 @@ headers = {
 }
 
 
-async def get_ShipRank(server_type, info, bot, ev):
+async def get_ShipRank(server_type, info, bot:Bot, ev):
     try:
-        bot = get_bot()
         if len(info) == 2:
             param_server, info = await match_keywords(info, servers)
             if param_server:

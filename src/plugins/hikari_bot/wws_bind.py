@@ -7,6 +7,7 @@ import httpx
 from httpx import ConnectTimeout
 from nonebot import get_driver
 from nonebot.log import logger
+from nonebot.adapters.onebot.v11 import ActionFailed, MessageSegment,Bot
 
 from .data_source import servers
 from .publicAPI import get_AccountIdByName
@@ -15,7 +16,7 @@ from .utils import match_keywords
 headers = {"Authorization": get_driver().config.api_token}
 
 
-async def get_BindInfo(server_type, info, bot, ev):
+async def get_BindInfo(server_type, info, bot:Bot, ev):
     try:
         url, params = "", ""
         if isinstance(info, List) and len(info) == 1:
@@ -69,7 +70,7 @@ async def get_BindInfo(server_type, info, bot, ev):
         return "wuwuwu出了点问题，请联系麻麻解决"
 
 
-async def set_BindInfo(server_type, info, bot, ev):
+async def set_BindInfo(server_type, info, bot:Bot, ev):
     try:
         param_server = None
         if isinstance(info, List):
@@ -113,7 +114,7 @@ async def set_BindInfo(server_type, info, bot, ev):
         return "wuwuwu出了点问题，请联系麻麻解决"
 
 
-async def change_BindInfo(server_type, info, bot, ev):
+async def change_BindInfo(server_type, info, bot:Bot, ev):
     try:
         if isinstance(info, List) and len(info) == 1 and str(info[0]).isdigit():
             url = "https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list"
@@ -164,7 +165,7 @@ async def change_BindInfo(server_type, info, bot, ev):
         return "wuwuwu出了点问题，请联系麻麻解决"
 
 
-async def set_special_BindInfo(server_type, info, bot, ev):
+async def set_special_BindInfo(server_type, info, bot:Bot, ev):
     try:
         param_server = None
         if isinstance(info, List):
@@ -205,7 +206,7 @@ async def set_special_BindInfo(server_type, info, bot, ev):
         return "wuwuwu出了点问题，请联系麻麻解决"
 
 
-async def delete_BindInfo(server_type, info, bot, ev):
+async def delete_BindInfo(server_type, info, bot:Bot, ev):
     try:
         if isinstance(info, List) and len(info) == 1 and str(info[0]).isdigit():
             url = "https://api.wows.shinoaki.com/public/wows/bind/account/platform/bind/list"
