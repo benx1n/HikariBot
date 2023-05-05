@@ -37,11 +37,13 @@ async def pic2txt_byOCR(img_path, filename):
             # }
             params = {"url": img_path}
             resp = await client.post(
-                ocr_url, data=params, timeout=5, follow_redirects=True
+                f"{ocr_url}/OCR/", data=params, timeout=5, follow_redirects=True
             )
         end = time.time()
-        logger.success(f"OCR结果：{resp.text},耗时{end-start:.4f}s\n图片url:{img_path}")
-        return resp.text
+        result = resp.json()
+        if result['code'] == 200:
+            logger.success(f"OCR结果：{result['data']['msg']},耗时{end-start:.4f}s\n图片url:{img_path}")
+            return result['data']['msg']
     except:
         logger.error(traceback.format_exc())
         return ""
@@ -89,7 +91,7 @@ async def downlod_OcrResult():
 async def get_Random_Ocr_Pic(server_type, info, bot, ev):
     try:
         async with httpx.AsyncClient(headers=headers, timeout=None) as client:
-            resp = await client.post('http://mc.youthnp.cn:23338/ImageRandom/')
+            resp = await client.post(f"{ocr_url}/ImageRandom/")
             img = b64decode(resp.text)
         return img
     except:
