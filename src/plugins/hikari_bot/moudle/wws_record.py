@@ -6,21 +6,20 @@ from typing import List
 
 import httpx
 import jinja2
+import orjson
 from bs4 import BeautifulSoup
 from nonebot import get_driver
 from nonebot_plugin_htmlrender import html_to_pic
 
-from .data_source import servers
+from ..data_source import servers, template_path
+from ..HttpClient_pool import client_default, client_yuyuko
+from ..utils import match_keywords
 from .publicAPI import get_AccountIdByName
-from .utils import match_keywords
 
-dir_path = Path(__file__).parent
-template_path = dir_path / "template"
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(template_path), enable_async=True
 )
 
-headers = {"Authorization": get_driver().config.api_token}
 
 
 async def get_record(server_type, info, bot, ev):
@@ -50,7 +49,7 @@ async def get_record(server_type, info, bot, ev):
                 else:
                     return "服务器参数似乎输错了呢"
             elif params:
-                print("下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦")
+                pass
             else:
                 return (
                     "您似乎准备用游戏昵称查询公会进出记录，请检查参数中时候包含服务器和游戏昵称，以空格区分，如果您准备查询单船战绩，请带上ship参数"
@@ -60,9 +59,8 @@ async def get_record(server_type, info, bot, ev):
         print(params)
         if type == "personal":
             url = "https://api.wows.shinoaki.com/upload/numbers/data/upload/user/clan/record"
-            async with httpx.AsyncClient(headers=headers) as client:
-                resp = await client.get(url, params=params, timeout=None)
-                result = resp.json()
+            resp = await client_yuyuko.get(url, params=params, timeout=None)
+            result = orjson.loads(resp.content)
             if result["code"] == 200 and result["data"]:
                 template = env.get_template("wws-personalRecord.html")
                 template_data = {"data": result["data"]}
@@ -92,9 +90,8 @@ async def get_record(server_type, info, bot, ev):
                 return f"{result['message']}"
         else:
             url = ""
-            async with httpx.AsyncClient(headers=headers) as client:
-                resp = await client.get(url, params=params, timeout=None)
-                result = resp.json()
+            resp = await client_yuyuko.get(url, params=params, timeout=None)
+            result = orjson.loads(resp.content)
             if result["code"] == 200 and result["data"]:
                 template = env.get_template("wws-clanRecord.html")
                 template_data = {"data": result["data"]}
@@ -216,14 +213,13 @@ async def get_ClanRecord_Numbers(url, clanId):
 
 async def post_personalRecord_yuyuko(post_data):
     try:
-        async with httpx.AsyncClient(headers=headers) as client:
-            url = "https://api.wows.shinoaki.com/upload/numbers/data/upload/user/clan/record"
-            resp = await client.post(url, json=post_data, timeout=None)
-            result = resp.json()
-            if result["code"] == 200 and result["data"]:
-                return result["data"]
-            else:
-                return None
+        url = "https://api.wows.shinoaki.com/upload/numbers/data/upload/user/clan/record"
+        resp = await client_yuyuko.post(url, json=post_data, timeout=None)
+        result = orjson.loads(resp.content)
+        if result["code"] == 200 and result["data"]:
+            return result["data"]
+        else:
+            return None
     except Exception:
         traceback.print_exc()
         return None

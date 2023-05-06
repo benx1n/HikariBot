@@ -1,15 +1,14 @@
 import asyncio
 import html
-import json
 import os
 import platform
 import random
 import re
 import sys
 import traceback
-from pathlib import Path
 
 import httpx
+import orjson
 from loguru import logger
 from nonebot import get_driver, on_command, on_fullmatch, on_message, require
 from nonebot.adapters.onebot.v11 import (
@@ -28,13 +27,13 @@ from nonebot_plugin_guild_patch import GuildMessageEvent
 from nonebot_plugin_htmlrender import text_to_pic
 
 from .command_select import select_command
-from .data_source import nb2_file
+from .data_source import nb2_file, template_path
 from .game.ocr import downlod_OcrResult, pic2txt_byOCR, upload_OcrResult
 from .game.pupu import get_pupu_msg
-from .mqtt import mqtt_run
+from .HttpClient_pool import client_default, client_yuyuko
+from .moudle.wws_clan import ClanSecletProcess
+from .moudle.wws_ship import ShipSecletProcess
 from .utils import DailyNumberLimiter, FreqLimiter, download, get_bot
-from .wws_clan import ClanSecletProcess
-from .wws_ship import ShipSecletProcess
 
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
@@ -44,8 +43,6 @@ is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
 __version__ = "0.3.8.1"
-dir_path = Path(__file__).parent
-template_path = dir_path / "template"
 
 bot = on_command("wws", block=False, aliases={"WWS"}, priority=54)
 bot_pupu = on_fullmatch("噗噗", block=False, priority=5)
@@ -135,14 +132,12 @@ async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):
 async def send_bot_help():
     try:
         url = "https://benx1n.oss-cn-beijing.aliyuncs.com/version.json"
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(url, timeout=10)
-            result = json.loads(resp.text)
+        resp = await client_default.get(url, timeout=10)
+        result = orjson.loads(resp.text)
         latest_version = result["latest_version"]
         url = "https://benx1n.oss-cn-beijing.aliyuncs.com/wws_help.txt"
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(url, timeout=10)
-            result = resp.text
+        resp = await client_default.get(url, timeout=10)
+        result = resp.text
         result = f"""帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}"""
         img = await text_to_pic(
             text=result, css_path=str(template_path / "text-help.css"), width=800
@@ -257,9 +252,8 @@ async def check_version():
     try:
         bot = get_bot()
         url = "https://benx1n.oss-cn-beijing.aliyuncs.com/version.json"
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(url, timeout=10)
-            result = json.loads(resp.text)
+        resp = await client_default.get(url, timeout=10)
+        result = orjson.loads(resp.text)
         superid = driver.config.superusers
         match, msg = False, f"发现新版本"
         for each in result["data"]:
@@ -299,7 +293,7 @@ async def startup():
         url = "https://benx1n.oss-cn-beijing.aliyuncs.com/template_Hikari_Latest/template.json"
         async with httpx.AsyncClient() as client:
             resp = await client.get(url, timeout=20)
-            result = resp.json()
+            result = orjson.loads(resp.content)
             for each in result:
                 for name, url in each.items():
                     tasks.append(asyncio.ensure_future(startup_download(url, name)))
@@ -327,7 +321,7 @@ async def remind(bot: Bot):
 
 async def startup_download(url, name):
     async with httpx.AsyncClient() as client:
-        resp = resp = await client.get(url, timeout=20)
+        resp = await client.get(url, timeout=20)
         with open(template_path / name, "wb+") as file:
             file.write(resp.content)
 

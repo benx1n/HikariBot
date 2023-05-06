@@ -3,23 +3,20 @@ import re
 import traceback
 from asyncio.exceptions import TimeoutError
 from collections import defaultdict, namedtuple
-from pathlib import Path
 from typing import List
 
 import httpx
 import jinja2
 from httpx import ConnectTimeout
 from nonebot import get_driver
-from nonebot.adapters.onebot.v11 import ActionFailed, MessageSegment,Bot
+from nonebot.adapters.onebot.v11 import ActionFailed, Bot, MessageSegment
 from nonebot.log import logger
 from nonebot_plugin_htmlrender import text_to_pic
 
-from .data_source import servers
+from ..data_source import servers, template_path
+from ..utils import match_keywords
 from .publicAPI import get_ClanIdByName
-from .utils import  match_keywords
 
-dir_path = Path(__file__).parent
-template_path = dir_path / "template"
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(template_path), enable_async=True
 )
@@ -108,7 +105,6 @@ async def get_ClanInfo(server_type, info, bot:Bot, ev):
                 return "您似乎准备用军团名查询军团详情，请检查参数中是否包含服务器、军团名，以空格区分"
         else:
             return "参数似乎出了问题呢"
-        logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{params}")
         async with httpx.AsyncClient(headers=headers) as client:
             resp = await client.get(url, params=params, timeout=20)
             result = resp.json()

@@ -1,35 +1,31 @@
 import asyncio
 import traceback
 from asyncio.exceptions import TimeoutError
-from pathlib import Path
 
-import httpx
 import jinja2
+import orjson
 from bs4 import BeautifulSoup
 from httpx import ConnectTimeout
-from nonebot import get_driver
-from nonebot.adapters.onebot.v11 import MessageSegment,Bot
+from nonebot.adapters.onebot.v11 import Bot, MessageSegment
 from nonebot.log import logger
 from nonebot_plugin_htmlrender import html_to_pic, text_to_pic
 
-from .data_source import number_url_homes, servers, set_ShipRank_Numbers, set_shipSelectparams,tiers
+from ..data_source import (
+    number_url_homes,
+    servers,
+    set_ShipRank_Numbers,
+    set_shipSelectparams,
+    template_path,
+    tiers,
+)
+from ..HttpClient_pool import client_default, client_yuyuko
+from ..utils import match_keywords
 from .publicAPI import get_ship_byName
-from .utils import match_keywords
 from .wws_ship import ShipSecletProcess, ShipSlectState
-
-dir_path = Path(__file__).parent
-template_path = dir_path / "template"
 
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(template_path), enable_async=True
 )
-
-headers = {
-    "Authorization": get_driver().config.api_token,
-    "accept": "application/json",
-    "Content-Type": "application/json",
-}
-
 
 async def get_ShipRank(server_type, info, bot:Bot, ev):
     try:
@@ -118,22 +114,17 @@ async def get_ShipRank(server_type, info, bot:Bot, ev):
 async def search_ShipRank_Yuyuko(shipId, server, shipInfo):
     try:
         content = None
-        async with httpx.AsyncClient(headers=headers) as client:  # 查询是否有缓存
-            url = (
-                "https://api.wows.shinoaki.com/upload/numbers/data/v2/upload/ship/rank"
-            )
-            params = {"server": server, "shipId": int(shipId)}
-            logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
-            resp = await client.get(url, params=params, timeout=None)
-            result = resp.json()
-            logger.success(f"本次请求返回的状态码:{result['code']}")
-            if result["code"] == 200 and result["data"]:
-                template = env.get_template("ship-rank.html")
-                result_data = {"data": result["data"], "shipInfo": shipInfo}
-                content = await template.render_async(result_data)
-                return content
-            else:
-                return None
+        url = "https://api.wows.shinoaki.com/upload/numbers/data/v2/upload/ship/rank"
+        params = {"server": server, "shipId": int(shipId)}
+        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        result = orjson.loads(resp.content)
+        if result["code"] == 200 and result["data"]:
+            template = env.get_template("ship-rank.html")
+            result_data = {"data": result["data"], "shipInfo": shipInfo}
+            content = await template.render_async(result_data)
+            return content
+        else:
+            return None
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return None
@@ -145,12 +136,7 @@ async def search_ShipRank_Yuyuko(shipId, server, shipInfo):
 async def search_ShipRank_Numbers(url, server, shipId, shipInfo):
     try:
         content = None
-        logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}")
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(url, timeout=None)
-            logger.success(
-                f"下面是本次请求返回的状态码，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{resp.status_code}"
-            )
+        resp = await client_default.get(url, timeout=None)
         soup = BeautifulSoup(resp.content, "html.parser")
         data = soup.select('tr[class="cells-middle"]')
         infoList = await set_ShipRank_Numbers(data, server, shipId)
@@ -168,13 +154,10 @@ async def search_ShipRank_Numbers(url, server, shipId, shipInfo):
 
 async def post_ShipRank(data):
     try:
-        async with httpx.AsyncClient(headers=headers) as client:
-            url = (
-                "https://api.wows.shinoaki.com/upload/numbers/data/v2/upload/ship/rank"
-            )
-            resp = await client.post(url, json=data, timeout=None)
-            result = resp.json()
-            logger.success(result)
+        url = "https://api.wows.shinoaki.com/upload/numbers/data/v2/upload/ship/rank"
+        resp = await client_yuyuko.post(url, json=data, timeout=None)
+        result = orjson.loads(resp.content)
+        logger.success(result)
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
     except Exception:
@@ -183,21 +166,18 @@ async def post_ShipRank(data):
 
 async def search_cn_rank(shipId, server, page, shipInfo):
     try:
-        content = None
-        async with httpx.AsyncClient(headers=headers) as client:  # 查询是否有缓存
-            url = "https://api.wows.shinoaki.com/wows/rank/ship/server"
-            params = {"server": server, "shipId": int(shipId), "page": int(page)}
-            logger.success(f"下面是本次请求的参数，如果遇到了问题，请将这部分连同报错日志一起发送给麻麻哦\n{url}\n{params}")
-            resp = await client.get(url, params=params, timeout=None)
-            result = resp.json()
-            logger.success(f"本次请求返回的状态码:{result['code']}")
-            if result["code"] == 200 and result["data"]:
-                template = env.get_template("ship-rank.html")
-                result_data = {"data": result["data"], "shipInfo": shipInfo}
-                content = await template.render_async(result_data)
-                return content
-            else:
-                return None
+        content = None               # 查询是否有缓存
+        url = "https://api.wows.shinoaki.com/wows/rank/ship/server"
+        params = {"server": server, "shipId": int(shipId), "page": int(page)}
+        resp = await client_yuyuko.get(url, params=params, timeout=None)
+        result = orjson.loads(resp.content)
+        if result["code"] == 200 and result["data"]:
+            template = env.get_template("ship-rank.html")
+            result_data = {"data": result["data"], "shipInfo": shipInfo}
+            content = await template.render_async(result_data)
+            return content
+        else:
+            return None
     except (TimeoutError, ConnectTimeout):
         logger.warning(traceback.format_exc())
         return None

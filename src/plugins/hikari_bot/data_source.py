@@ -4,8 +4,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Tuple
 
+from nonebot import get_driver
+
 dir_path = Path(__file__).parent
 template_path = dir_path / "template"
+config = get_driver().config
 
 
 @dataclass
