@@ -16,9 +16,6 @@ ocr_data_path = game_path / "ocr_data.json"
 upload_url = "https://api.wows.shinoaki.com/api/wows/cache/image/ocr"
 download_url = "https://api.wows.shinoaki.com/api/wows/cache/image/ocr"
 
-headers = {"Authorization": config.api_token}
-
-
 async def pic2txt_byOCR(img_path, filename):
     try:
         global ocr_filename_data

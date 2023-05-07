@@ -267,6 +267,10 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
 
 ## 最近的更新日志
 
+### 23-05-07    v0.3.9
+- [+]重构代码
+- [#]替换默认OCR接口
+
 ### 23-04-07    v0.3.8
 - [+]新增国服封号记录查询，指令wws ban/wws 封号记录
 - [#]修复了上次修复排行榜新产生的bug
