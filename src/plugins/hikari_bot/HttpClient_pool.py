@@ -20,14 +20,15 @@ async def before_request(request:Request):
     logger.info(f"{request.method} {request.url}")
     
 async def after_response(response:Response):
-    logger.info(f"本次响应的状态码:{response.status_code} {response.request}")
+    logger.info(f"本次响应的状态码:{response.status_code} {response.http_version} {response.request}")
     
 client_yuyuko = httpx.AsyncClient(
     headers=yuyuko_headers,
     event_hooks={
         "request":[before_request,],
         "response":[after_response,]
-        }
+        },
+    http2 = config.http2
     )
 
 client_wg = httpx.AsyncClient(
