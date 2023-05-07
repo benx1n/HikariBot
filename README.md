@@ -236,6 +236,7 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
     ocr_on = true                   #是否开启ocr(识图指令)
     ocr_offline = false             #是否只使用hash验证，即设置为true后只能识别服务器已记录的图片，如果群较多(>300)导致响应延迟较高可以开启
     ocr_url = http://mc.youthnp.cn:23338/OCR/           #默认ocr地址，一般不用动
+    http2 = true                    #是否开启http2，默认开启，如果有问题请设置为false
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
