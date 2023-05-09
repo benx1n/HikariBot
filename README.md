@@ -22,7 +22,7 @@
   </a>
   <a href="https://github.com/benx1n/HikariBot/stargazers"><img src="https://img.shields.io/github/stars/benx1n/HikariBot" alt="GitHub stars"style="max-width: 100%;">
   </a>
-
+  <br/>
   <a href="https://jq.qq.com/?_wv=1027&k=S2WcTKi5">
     <img src="https://img.shields.io/badge/QQ%E7%BE%A4-967546463-orange?style=flat-square" alt="QQ Chat Group">
   </a>
