@@ -12,13 +12,17 @@
 战舰世界水表BOT
 <!-- prettier-ignore-end -->
 
-
-
 <p align="center">
   <a href="https://pypi.python.org/pypi/hikari-bot">
     <img src="https://img.shields.io/pypi/v/hikari-bot" alt="pypi">
   </a>
   <img src="https://img.shields.io/badge/python-3.8.0+-blue" alt="python">
+  <a href="http://hits.dwyl.com/benx1n/HikariBot">
+    <img src="https://hits.dwyl.com/benx1n/HikariBot.svg?style=flat-square" alt="hits">
+  </a>
+  <a href="https://github.com/benx1n/HikariBot/stargazers"><img src="https://img.shields.io/github/stars/benx1n/HikariBot" alt="GitHub stars"style="max-width: 100%;">
+  </a>
+
   <a href="https://jq.qq.com/?_wv=1027&k=S2WcTKi5">
     <img src="https://img.shields.io/badge/QQ%E7%BE%A4-967546463-orange?style=flat-square" alt="QQ Chat Group">
   </a>
