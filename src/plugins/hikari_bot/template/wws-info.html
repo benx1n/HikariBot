@@ -539,7 +539,7 @@
 		</div>
 	</body>
 	{% if template_path and template_path/"echarts.js" %}
-	<script src="{{template_path}}/echarts.js"></script>
+	<script src="file:\\{{template_path}}/echarts.js"></script>
 	{% else %}
 	<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.js"></script>
 	{% endif %}
