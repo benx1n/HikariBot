@@ -85,7 +85,7 @@ async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):
             return False
         _flmt.start_cd(qqid)
         _nlmt.increase(qqid)
-        if random.randint(1,1000) == 1:
+        if random.randint(1, 1000) == 1:
             await bot.send(ev, "一天到晚惦记你那b水表，就nm离谱")
             return False
         searchtag = html.unescape(str(matchmsg)).strip()
@@ -138,10 +138,10 @@ async def send_bot_help():
         url = "https://benx1n.oss-cn-beijing.aliyuncs.com/wws_help.txt"
         resp = await client_default.get(url, timeout=10)
         result = resp.text
-        result = f"""帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}"""
-        img = await text_to_pic(
-            text=result, css_path=str(template_path / "text-help.css"), width=800
+        result = (
+            f"""帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}"""
         )
+        img = await text_to_pic(text=result, css_path=str(template_path / "text-help.css"), width=800)
         return img
     except Exception:
         logger.warning(traceback.format_exc())
@@ -157,17 +157,13 @@ async def change_select_state(ev: MessageEvent):
         if ShipSecletProcess[qqid].SelectList and str(msg).isdigit():
             if int(msg) <= len(ShipSecletProcess[qqid].SelectList):
                 ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(state=True)
-                ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(
-                    SlectIndex=int(msg)
-                )
+                ShipSecletProcess[qqid] = ShipSecletProcess[qqid]._replace(SlectIndex=int(msg))
             else:
                 await bot.send(ev, "请选择列表中的序号哦~")
         if ClanSecletProcess[qqid].SelectList and str(msg).isdigit():
             if int(msg) <= len(ClanSecletProcess[qqid].SelectList):
                 ClanSecletProcess[qqid] = ClanSecletProcess[qqid]._replace(state=True)
-                ClanSecletProcess[qqid] = ClanSecletProcess[qqid]._replace(
-                    SlectIndex=int(msg)
-                )
+                ClanSecletProcess[qqid] = ClanSecletProcess[qqid]._replace(SlectIndex=int(msg))
             else:
                 await bot.send(ev, "请选择列表中的序号哦~")
     except Exception:
@@ -210,10 +206,7 @@ async def update_Hikari(ev: MessageEvent, bot: Bot):
         await bot.send(ev, "正在更新Hikari，完成后将自动重启，如果没有回复您已上线的消息，请登录服务器查看")
         if hasattr(driver.config, "nb2_path"):
             await asyncio.gather(
-                *[
-                    download(each["url"], f"{driver.config.nb2_path}\{each['name']}")
-                    for each in nb2_file
-                ]
+                *[download(each["url"], f"{driver.config.nb2_path}\{each['name']}") for each in nb2_file]
             )
         logger.info(f"当前解释器路径{sys.executable}")
         os.system(f"{sys.executable} -m pip install --upgrade hikari-bot")
@@ -230,11 +223,7 @@ async def update_Hikari(ev: MessageEvent, bot: Bot):
                 # not compatible with cmdline with '\n'
                 os.execv(
                     os.readlink("/proc/self/exe"),
-                    open("/proc/self/cmdline", "rb")
-                    .read()
-                    .replace(b"\0", b"\n")
-                    .decode()
-                    .split("\n")[:-1],
+                    open("/proc/self/cmdline", "rb").read().replace(b"\0", b"\n").decode().split("\n")[:-1],
                 )
             except Exception:
                 logger.error(traceback.format_exc())
@@ -272,9 +261,7 @@ async def check_version():
                 return
         else:
             for each in superid:
-                await bot.send_private_msg(
-                    user_id=int(each), message="Hikari:当前已经是最新版本了"
-                )
+                await bot.send_private_msg(user_id=int(each), message="Hikari:当前已经是最新版本了")
             try:
                 await bot_checkversion.send("Hikari:当前已经是最新版本了")
             except Exception:
@@ -310,9 +297,7 @@ async def remind(bot: Bot):
     superid = driver.config.superusers
     bot_info = await bot.get_login_info()
     for each in superid:
-        await bot.send_private_msg(
-            user_id=int(each), message=f"Hikari已上线，当前版本{__version__}"
-        )
+        await bot.send_private_msg(user_id=int(each), message=f"Hikari已上线，当前版本{__version__}")
     # global is_first_run
     # if is_first_run:
     #    mqtt_run(bot_info['user_id'])
