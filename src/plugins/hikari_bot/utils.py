@@ -16,11 +16,7 @@ async def match_keywords(match_list, Lists):
     for List in Lists:
         for kw in List.keywords:
             for match_kw in match_list:
-                if (
-                    match_kw == kw
-                    or match_kw.upper() == kw.upper()
-                    or match_kw.lower() == kw.lower()
-                ):
+                if match_kw == kw or match_kw.upper() == kw.upper() or match_kw.lower() == kw.lower():
                     match_list.remove(match_kw)
                     return List.match_keywords, match_list
     return None, match_list
@@ -53,9 +49,7 @@ class FreqLimiter:
         return bool(time.time() >= self.next_time[key])
 
     def start_cd(self, key, cd_time=0):
-        self.next_time[key] = time.time() + (
-            cd_time if cd_time > 0 else self.default_cd
-        )
+        self.next_time[key] = time.time() + (cd_time if cd_time > 0 else self.default_cd)
 
     def left_time(self, key) -> float:
         return self.next_time[key] - time.time()
@@ -101,10 +95,11 @@ def get_bot() -> Optional[Bot]:
 async def download(url, path, proxy={}):
     async with httpx.AsyncClient(proxies=proxy) as client:
         resp = await client.get(url, timeout=None)
-        content = resp.read()
-        content = content.replace(b"\n", b"\r\n")
-        with open(path, "wb") as f:
-            f.write(content)
+        if resp.status_code == 200:
+            content = resp.read()
+            content = content.replace(b"\n", b"\r\n")
+            with open(path, "wb") as f:
+                f.write(content)
 
 
 async def byte2md5(bytes):

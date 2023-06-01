@@ -205,9 +205,13 @@ async def update_Hikari(ev: MessageEvent, bot: Bot):
 
         await bot.send(ev, "正在更新Hikari，完成后将自动重启，如果没有回复您已上线的消息，请登录服务器查看")
         if hasattr(driver.config, "nb2_path"):
-            await asyncio.gather(
-                *[download(each["url"], f"{driver.config.nb2_path}\{each['name']}") for each in nb2_file]
-            )
+            #并发fastgit会429，改为顺序请求
+            for each in nb2_file:
+                await download(each["url"], f"{driver.config.nb2_path}\{each['name']}")
+                
+            #await asyncio.gather(
+            #    *[download(each["url"], f"{driver.config.nb2_path}\{each['name']}") for each in nb2_file]
+            #)
         logger.info(f"当前解释器路径{sys.executable}")
         os.system(f"{sys.executable} -m pip install --upgrade hikari-bot")
         os.system(f"{sys.executable} -m pip install --upgrade nonebot-plugin-gocqhttp")
