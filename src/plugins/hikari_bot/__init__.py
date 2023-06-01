@@ -57,15 +57,9 @@ driver = get_driver()
 async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):
     try:
         server_type = None
-        if isinstance(ev, PrivateMessageEvent) and (
-            driver.config.private or str(ev.user_id) in driver.config.superusers
-        ):  # 私聊事件,superusers默认不受影响
+        if isinstance(ev, PrivateMessageEvent) and (driver.config.private or str(ev.user_id) in driver.config.superusers):  # 私聊事件,superusers默认不受影响
             server_type = "QQ"
-        elif (
-            isinstance(ev, GroupMessageEvent)
-            and driver.config.group
-            and ev.group_id not in driver.config.ban_group_list
-        ):  # 群聊事件
+        elif isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:  # 群聊事件
             server_type = "QQ"
         elif isinstance(ev, GuildMessageEvent) and driver.config.channel:  # 频道事件
             if driver.config.all_channel or ev.channel_id in driver.config.channel_list:
@@ -138,9 +132,7 @@ async def send_bot_help():
         url = "https://benx1n.oss-cn-beijing.aliyuncs.com/wws_help.txt"
         resp = await client_default.get(url, timeout=10)
         result = resp.text
-        result = (
-            f"""帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}"""
-        )
+        result = f"""帮助列表                                                当前版本{__version__}  最新版本{latest_version}\n{result}"""
         img = await text_to_pic(text=result, css_path=str(template_path / "text-help.css"), width=800)
         return img
     except Exception:
@@ -205,13 +197,14 @@ async def update_Hikari(ev: MessageEvent, bot: Bot):
 
         await bot.send(ev, "正在更新Hikari，完成后将自动重启，如果没有回复您已上线的消息，请登录服务器查看")
         if hasattr(driver.config, "nb2_path"):
-            #并发fastgit会429，改为顺序请求
+            # 并发fastgit会429，改为顺序请求
             for each in nb2_file:
                 await download(each["url"], f"{driver.config.nb2_path}\{each['name']}")
-                
-            #await asyncio.gather(
+                await asyncio.sleep(0.5)
+
+            # await asyncio.gather(
             #    *[download(each["url"], f"{driver.config.nb2_path}\{each['name']}") for each in nb2_file]
-            #)
+            # )
         logger.info(f"当前解释器路径{sys.executable}")
         os.system(f"{sys.executable} -m pip install --upgrade hikari-bot")
         os.system(f"{sys.executable} -m pip install --upgrade nonebot-plugin-gocqhttp")
@@ -327,12 +320,7 @@ scheduler.add_job(downlod_OcrResult, "interval", minutes=10)
 @bot_pupu.handle()
 async def send_pupu_msg(ev: MessageEvent, bot: Bot):
     try:
-        if (
-            driver.config.pupu
-            and isinstance(ev, GroupMessageEvent)
-            and driver.config.group
-            and ev.group_id not in driver.config.ban_group_list
-        ):
+        if driver.config.pupu and isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:
             msg = await get_pupu_msg()
             await bot.send(ev, msg)
     except ActionFailed:
