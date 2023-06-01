@@ -2,6 +2,7 @@ import gzip
 import hashlib
 import io
 import time
+import traceback
 from collections import defaultdict
 from datetime import datetime, timedelta
 from typing import Optional
@@ -94,12 +95,17 @@ def get_bot() -> Optional[Bot]:
 
 async def download(url, path, proxy={}):
     async with httpx.AsyncClient(proxies=proxy) as client:
-        resp = await client.get(url, timeout=None)
-        if resp.status_code == 200:
-            content = resp.read()
-            content = content.replace(b"\n", b"\r\n")
-            with open(path, "wb") as f:
-                f.write(content)
+        try:
+            resp = await client.get(url, timeout=None)
+            if resp.status_code == 200:
+                content = resp.read()
+                content = content.replace(b"\n", b"\r\n")
+                with open(path, "wb") as f:
+                    f.write(content)
+            else:
+                print(f"fastgit请求失败{resp.status_code}")
+        except:
+            print(traceback.format_exc())
 
 
 async def byte2md5(bytes):
