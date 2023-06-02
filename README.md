@@ -239,7 +239,7 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
     proxy = http://localhost:7890   #代理地址，如果上面选项开启，这边替换为你本地的
     ocr_on = true                   #是否开启ocr(识图指令)
     ocr_offline = false             #是否只使用hash验证，即设置为true后只能识别服务器已记录的图片，如果群较多(>300)导致响应延迟较高可以开启
-    ocr_url = http://mc.youthnp.cn:23338/OCR/           #默认ocr地址，一般不用动
+    ocr_url = http://ocr.benx1n.com:23338           #默认ocr地址，一般不用动
     http2 = true                    #是否开启http2，默认开启，如果有问题请设置为false
     ```
     >一般来说该文件为.env.dev
