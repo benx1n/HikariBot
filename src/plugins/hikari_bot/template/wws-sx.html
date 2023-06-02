@@ -1,404 +1,408 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-	</head>
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-		}
-		
-		.main-content {
-			width: 1000px;
-			font-size: 30px;
-			font-family: 'Microsoft YaHei';
-			font-family: "Microsoft YaHei";
-			font-weight: bold;
-		}
-		
-		.page-box {
-			width: 1000px;
-			display: flex;
-			flex-direction: column;
-		}
-		
-		.page-header {
-			display: flex;
-			flex-direction: column;
-		}
-		
-		.clan-user-server {
-			height: 120px;
-			text-align: center;
-			font-size: 45px;
-			line-height: 120px;
-		}
-		
-		.clan {
-			display: inline-block;
-			padding-right: 10px;
-			height: 120px;
-		}
-		
-		.user {
-			display: inline-block;
-			height: 120px;
-		}
-		
-		.server {
-			display: inline-block;
-			padding-left: 10px;
-		}
-		
-		.server-border {
-			width: 200px;
-			height: 50px;
-			line-height: 50px;
-			background-color: #F2F2F2;
-			border-radius: 25px;
-			font-size: 35px;
-		}
-		
-		.xi-row {
-			margin: 0 50px;
-			margin-top: 30px;
-			height: 300px;
-			display: flex;
-			text-align: center;
-		}
-		
-		.ship-count {
-			flex: 6;
-			background-color: #F2F2F2;
-			border-radius: 16px;
-		}
-		
-		.xi {
-			flex: 10;
-			background-color: #F2F2F2;
-			margin-left: 20px;
-			border-radius: 16px;
-			display: flex;
-		}
-		
-		.type {
-			font-size: 60px;
-			color: #767171;
-			font-weight: normal;
-			text-align: left;
-			margin-left: 75px;
-			margin-top: 55px;
-		}
-		
-		.in-port {
-			font-size: 25px;
-			color: #767171;
-			font-weight: normal;
-			text-align: left;
-			margin-left: 75px;
-		}
-		
-		.number {
-			font-size: 60px;
-			color: #E60000;
-			text-align: left;
-			margin-left: 75px;
-		}
-		
-		.xi-left {
-			flex: 1;
-		}
-		
-		.xi-mid {
-			flex: 1;
-			margin-top: 61px;
-		}
-		
-		.xi-right {
-			flex: 1;
-		}
-		
-		.unup {
-			font-size: 50px;
-			color: #767171;
-		}
-		
-		.up-1 {
-			color: #DF9D21;
-			font-size: 30px;
-		}
-		
-		.up-2 {
-			color: #12C8AE;
-			font-size: 30px;
-		}
-		
-		.up-3 {
-			color: #B400B4;
-			font-size: 30px;
-		}
-		
-		.xi-right {
-			margin: 20px;
-		}
-		
-		.xi-right img {
-			width: 100%;
-			margin: 44px 0;
-		}
-		
-		.x-row {
-			margin: 0 50px;
-			margin-top: 30px;
-			height: 300px;
-			background-color: #F2F2F2;
-			border-radius: 16px;
-			display: flex;
-		}
-		
-		.x-left {
-			flex: 1;
-		}
-		
-		.x-right {
-			flex: 3;
-		}
-		
-		.x-right {
-			text-align: right;
-			margin: 51px 0;
-			margin-right: 70px;
-		}
-		
-		.ix-row {
-			margin: 0 50px;
-			margin-top: 30px;
-			height: 300px;
-			background-color: #F2F2F2;
-			border-radius: 16px;
-			display: flex;
-		}
-		
-		.ix-left {
-			flex: 3;
-			text-align: right;
-		}
-		
-		.ix-mid {
-			flex: 2;
-			text-align: center;
-			margin-top: 70px;
-		}
-		
-		.ix-right {
-			flex: 3;
-			text-align: right;
-		}
-		
-		.ix-right img {
-			width: 200px;
-			margin: 50px;
-		}
-		
-		.footer {
-			margin-top: 30px;
-			text-align: center;
-			font-weight: bold;
-			font-size: 24px;
-			color: #909399;
-			margin-bottom: 20px;
-		}
-		
-		.auth-status {
-			color: #767171;
-			margin: 0 50px;
-			height: 60px;
-			background-color: #F2F2F2;
-			border-radius: 16px;
-			line-height: 60px;
-			font-weight: normal;
-			text-align: center;
-		}
-		
-		.status {
-			font-weight: bold;
-		}
-		
-		.tips {
-			padding: 10px 0;
-			margin: 0 50px;
-			margin-top: 30px;
-			background-color: #F2F2F2;
-			border-radius: 16px;
-			font-weight: normal;
-			text-align: center;
-			color: #909399;
-		}
-	</style>
-	<body>
-		<div class="main-content">
-			<div class="page-box">
-				<div class="page-header">
-					<div class="clan-user-server">
-						{% if data['clanInfo']['tag'] %}
-						<div class="clan" style="color: {{ data['clanInfo']['colorRgb'] }};">[{{ data['clanInfo']['tag'] }}]</div>
-						{% endif %}
-						<div class="user">{{ data['userName'] }}</div>
-						<div class="server">
-							<div class="server-border">
-								{{ data['serverName'] }}
-							</div>
-						</div>
+
+<head>
+	<meta charset="utf-8">
+</head>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	.main-content {
+		width: 1000px;
+		font-size: 30px;
+		font-family: 'Microsoft YaHei';
+		font-family: "Microsoft YaHei";
+		font-weight: bold;
+	}
+
+	.page-box {
+		width: 1000px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.page-header {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.clan-user-server {
+		height: 120px;
+		text-align: center;
+		font-size: 45px;
+		line-height: 120px;
+	}
+
+	.clan {
+		display: inline-block;
+		padding-right: 10px;
+		height: 120px;
+	}
+
+	.user {
+		display: inline-block;
+		height: 120px;
+	}
+
+	.server {
+		display: inline-block;
+		padding-left: 10px;
+	}
+
+	.server-border {
+		width: 200px;
+		height: 50px;
+		line-height: 50px;
+		background-color: #F2F2F2;
+		border-radius: 25px;
+		font-size: 35px;
+	}
+
+	.xi-row {
+		margin: 0 50px;
+		margin-top: 30px;
+		height: 300px;
+		display: flex;
+		text-align: center;
+	}
+
+	.ship-count {
+		flex: 6;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+	}
+
+	.xi {
+		flex: 10;
+		background-color: #F2F2F2;
+		margin-left: 20px;
+		border-radius: 16px;
+		display: flex;
+	}
+
+	.type {
+		font-size: 60px;
+		color: #767171;
+		font-weight: normal;
+		text-align: left;
+		margin-left: 75px;
+		margin-top: 55px;
+	}
+
+	.in-port {
+		font-size: 25px;
+		color: #767171;
+		font-weight: normal;
+		text-align: left;
+		margin-left: 75px;
+	}
+
+	.number {
+		font-size: 60px;
+		color: #E60000;
+		text-align: left;
+		margin-left: 75px;
+	}
+
+	.xi-left {
+		flex: 1;
+	}
+
+	.xi-mid {
+		flex: 1;
+		margin-top: 61px;
+	}
+
+	.xi-right {
+		flex: 1;
+	}
+
+	.unup {
+		font-size: 50px;
+		color: #767171;
+	}
+
+	.up-1 {
+		color: #DF9D21;
+		font-size: 30px;
+	}
+
+	.up-2 {
+		color: #12C8AE;
+		font-size: 30px;
+	}
+
+	.up-3 {
+		color: #B400B4;
+		font-size: 30px;
+	}
+
+	.xi-right {
+		margin: 20px;
+	}
+
+	.xi-right img {
+		width: 100%;
+		margin: 44px 0;
+	}
+
+	.x-row {
+		margin: 0 50px;
+		margin-top: 30px;
+		height: 300px;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		display: flex;
+	}
+
+	.x-left {
+		flex: 1;
+	}
+
+	.x-right {
+		flex: 3;
+	}
+
+	.x-right {
+		text-align: right;
+		margin: 51px 0;
+		margin-right: 70px;
+	}
+
+	.ix-row {
+		margin: 0 50px;
+		margin-top: 30px;
+		height: 300px;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		display: flex;
+	}
+
+	.ix-left {
+		flex: 3;
+		text-align: right;
+	}
+
+	.ix-mid {
+		flex: 2;
+		text-align: center;
+		margin-top: 70px;
+	}
+
+	.ix-right {
+		flex: 3;
+		text-align: right;
+	}
+
+	.ix-right img {
+		width: 200px;
+		margin: 50px;
+	}
+
+	.footer {
+		margin-top: 30px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 24px;
+		color: #909399;
+		margin-bottom: 20px;
+	}
+
+	.auth-status {
+		color: #767171;
+		margin: 0 50px;
+		height: 60px;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		line-height: 60px;
+		font-weight: normal;
+		text-align: center;
+	}
+
+	.status {
+		font-weight: bold;
+	}
+
+	.tips {
+		padding: 10px 0;
+		margin: 0 50px;
+		margin-top: 30px;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		font-weight: normal;
+		text-align: center;
+		color: #909399;
+	}
+</style>
+
+<body>
+	<div class="main-content">
+		<div class="page-box">
+			<div class="page-header">
+				<div class="clan-user-server">
+					{% if data['clanInfo']['tag'] %}
+					<div class="clan" style="color: {{ data['clanInfo']['colorRgb'] }};">[{{ data['clanInfo']['tag'] }}]
 					</div>
-				</div>
-				
-				<div class="auth-status">
-					{%if data['auth'] %}
-					<span>授权状态：</span><span style="color: #47A123; font-weight: bold;">已授权</span>
-					{% else %}
-					<span>授权状态：</span><span style="color: #E60000; font-weight: bold;">未授权</span>
 					{% endif %}
-				</div>
-				
-				<div class="xi-row">
-					<div class="ship-count">
-						<div class="type">
-							总船只
-						</div>
-						
-						<div class="in-port">
-							港口中
-						</div>
-						
-						<div class="number">
-							{{ data['totalShip'] }}
+					<div class="user">{{ data['userName'] }}</div>
+					<div class="server">
+						<div class="server-border">
+							{{ data['serverName'] }}
 						</div>
 					</div>
-					<div class="xi">
-						<div class="xi-left">
-							<div class="type">★</div>
-							
-							<div class="in-port">港口中</div>
-							
-							<div class="number">{{ data['research']['totalShip'] }}</div>
-						</div>
-						
-						<div class="xi-mid">
-							<div class="unup">{{ data['research']['bonusMap']['0'] }}</div>
-							<div class="up-1">{{ data['research']['bonusMap']['1'] }}</div>
-							<div class="up-2">{{ data['research']['bonusMap']['2'] }}</div>
-							<div class="up-3">{{ data['research']['bonusMap']['3'] }}</div>
-						</div>
-						
-						<div class="xi-right">
-							<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/research.svg">
-						</div>
-					</div>
-				</div>
-				
-				<div class="x-row">
-					<div class="x-left">
-						<div class="type">X</div>
-						
-						<div class="in-port">港口中</div>
-						
-						<div class="number">{{ data['box']['totalShip'] }}</div>
-					</div>
-					
-					<div class="x-right">
-						<div class="big" style="color: #DF9D21">
-							<span style="font-size: 50px;">{{ data['box']['smallBox'] }}</span>
-							<span>个 小型圣诞补给箱</span>
-						</div>
-						<div class="mid" style="color: #12C8AE">
-							<span style="font-size: 50px;">{{ data['box']['bigBox'] }}</span>
-							<span>个 大型圣诞补给箱</span>
-						</div>
-						<div class="small" style="color: #B400B4">
-							<span style="font-size: 50px;">{{ data['box']['hugeBox'] }}</span>
-							<span>个 超大圣诞补给箱</span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="ix-row">
-					<div class="ix-left">
-						<div class="type">VIII-IX</div>
-						
-						<div class="in-port">港口中</div>
-						
-						<div class="number">{{ data['steel']['totalShip'] }}</div>
-					</div>
-					<div class="ix-mid">
-						<div class="unup">{{ data['steel']['bonusMap']['0'] }}</div>
-						<div class="up-1">{{ data['steel']['bonusMap']['1'] }}</div>
-						<div class="up-2">{{ data['steel']['bonusMap']['2'] }}</div>
-						<div class="up-3">{{ data['steel']['bonusMap']['3'] }}</div>
-					</div>
-					<div class="ix-right">
-						<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/steel.svg"/>
-					</div>
-				</div>
-				
-				<div class="ix-row">
-					<div class="ix-left">
-						<div class="type">V-VII</div>
-						
-						<div class="in-port">港口中</div>
-						
-						<div class="number">{{ data['coal']['totalShip'] }}</div>
-					</div>
-					<div class="ix-mid">
-						<div class="unup">{{ data['coal']['bonusMap']['0'] }}</div>
-						<div class="up-1">{{ data['coal']['bonusMap']['1'] }}</div>
-						<div class="up-2">{{ data['coal']['bonusMap']['2'] }}</div>
-						<div class="up-3">{{ data['coal']['bonusMap']['3'] }}</div>
-					</div>
-					<div class="ix-right">
-						<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/coal.svg"/>
-					</div>
-				</div>
-				{% if not data['auth'] %}
-				<div class="tips">
-					<span>tips：未授权数据不准确，仅支持统计已战斗过的舰船</span><br />
-					<span>如需统计更精准数据请前往网页版授权。</span><br />
-					<span>网页版地址：https://wows.mgaia.top/</span>
-				</div>
-				{% else %}
-				<div class="tips">
-					<span>tips：没出过港的船只不会被统计在内</span>
-				</div>
-				{% endif %}
-				
-				<div class="footer">
-					<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
-					<p>https://github.com/benx1n/HikariBot</p>
-					<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
-					<p>Design By 冷眠 H5 Converted By C1ystal</p>
-					<p>赞助鸣谢：男人们的定远号、Wishing、科长</p>
 				</div>
 			</div>
+
+			<div class="auth-status">
+				{%if data['auth'] %}
+				<span>授权状态：</span><span style="color: #47A123; font-weight: bold;">已授权</span>
+				{% else %}
+				<span>授权状态：</span><span style="color: #E60000; font-weight: bold;">未授权</span>
+				{% endif %}
+			</div>
+
+			<div class="xi-row">
+				<div class="ship-count">
+					<div class="type">
+						总船只
+					</div>
+
+					<div class="in-port">
+						港口中
+					</div>
+
+					<div class="number">
+						{{ data['totalShip'] }}
+					</div>
+				</div>
+				<div class="xi">
+					<div class="xi-left">
+						<div class="type">★</div>
+
+						<div class="in-port">港口中</div>
+
+						<div class="number">{{ data['research']['totalShip'] }}</div>
+					</div>
+
+					<div class="xi-mid">
+						<div class="unup">{{ data['research']['bonusMap']['0'] }}</div>
+						<div class="up-1">{{ data['research']['bonusMap']['1'] }}</div>
+						<div class="up-2">{{ data['research']['bonusMap']['2'] }}</div>
+						<div class="up-3">{{ data['research']['bonusMap']['3'] }}</div>
+					</div>
+
+					<div class="xi-right">
+						<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/research.svg">
+					</div>
+				</div>
+			</div>
+
+			<div class="x-row">
+				<div class="x-left">
+					<div class="type">X</div>
+
+					<div class="in-port">港口中</div>
+
+					<div class="number">{{ data['box']['totalShip'] }}</div>
+				</div>
+
+				<div class="x-right">
+					<div class="big" style="color: #DF9D21">
+						<span style="font-size: 50px;">{{ data['box']['smallBox'] }}</span>
+						<span>个 小型圣诞补给箱</span>
+					</div>
+					<div class="mid" style="color: #12C8AE">
+						<span style="font-size: 50px;">{{ data['box']['bigBox'] }}</span>
+						<span>个 大型圣诞补给箱</span>
+					</div>
+					<div class="small" style="color: #B400B4">
+						<span style="font-size: 50px;">{{ data['box']['hugeBox'] }}</span>
+						<span>个 超大圣诞补给箱</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="ix-row">
+				<div class="ix-left">
+					<div class="type">VIII-IX</div>
+
+					<div class="in-port">港口中</div>
+
+					<div class="number">{{ data['steel']['totalShip'] }}</div>
+				</div>
+				<div class="ix-mid">
+					<div class="unup">{{ data['steel']['bonusMap']['0'] }}</div>
+					<div class="up-1">{{ data['steel']['bonusMap']['1'] }}</div>
+					<div class="up-2">{{ data['steel']['bonusMap']['2'] }}</div>
+					<div class="up-3">{{ data['steel']['bonusMap']['3'] }}</div>
+				</div>
+				<div class="ix-right">
+					<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/steel.svg" />
+				</div>
+			</div>
+
+			<div class="ix-row">
+				<div class="ix-left">
+					<div class="type">V-VII</div>
+
+					<div class="in-port">港口中</div>
+
+					<div class="number">{{ data['coal']['totalShip'] }}</div>
+				</div>
+				<div class="ix-mid">
+					<div class="unup">{{ data['coal']['bonusMap']['0'] }}</div>
+					<div class="up-1">{{ data['coal']['bonusMap']['1'] }}</div>
+					<div class="up-2">{{ data['coal']['bonusMap']['2'] }}</div>
+					<div class="up-3">{{ data['coal']['bonusMap']['3'] }}</div>
+				</div>
+				<div class="ix-right">
+					<img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/resource_Icon/coal.svg" />
+				</div>
+			</div>
+			{% if not data['auth'] %}
+			<div class="tips">
+				<span>tips：未授权数据不准确，仅支持统计已战斗过的舰船</span><br />
+				<span>如需统计更精准数据请前往网页版授权。</span><br />
+				<span>网页版地址：https://wows.mgaia.top/</span>
+			</div>
+			{% else %}
+			<div class="tips">
+				<span>tips：没出过港的船只不会被统计在内</span>
+			</div>
+			{% endif %}
+
+			<div class="footer">
+				<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
+				<p>https://github.com/benx1n/HikariBot</p>
+				<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
+				<p>Design By 冷眠 H5 Converted By C1ystal</p>
+				<p>赞助鸣谢：男人们的定远号、科长、海上最速暴毙传说</p>
+			</div>
 		</div>
-	</body>
-	<script>
-		// 服务器字体颜色自动填充
-		let server_name = document.querySelector(".server").innerText;
-		if (server_name == "asia") {
-			document.querySelector(".server").style.color = "#92D050";
-			document.querySelector(".server-border").innerText = "亚服";
-		} else if (server_name == "cn") {
-			document.querySelector(".server").style.color = "#BF9000";
-			document.querySelector(".server-border").innerText = "国服";
-		} else if (server_name == "eu") {
-			document.querySelector(".server").style.color = "#009664";
-			document.querySelector(".server-border").innerText = "欧服";
-		} else if (server_name == "na") {
-			document.querySelector(".server").style.color = "#6872C4";
-			document.querySelector(".server-border").innerText = "美服";
-		} else if (server_name == "ru") {
-			document.querySelector(".server").style.color = "#FF0000";
-			document.querySelector(".server-border").innerText = "俄服";
-		}
-	</script>
+	</div>
+</body>
+<script>
+	// 服务器字体颜色自动填充
+	let server_name = document.querySelector(".server").innerText;
+	if (server_name == "asia") {
+		document.querySelector(".server").style.color = "#92D050";
+		document.querySelector(".server-border").innerText = "亚服";
+	} else if (server_name == "cn") {
+		document.querySelector(".server").style.color = "#BF9000";
+		document.querySelector(".server-border").innerText = "国服";
+	} else if (server_name == "eu") {
+		document.querySelector(".server").style.color = "#009664";
+		document.querySelector(".server-border").innerText = "欧服";
+	} else if (server_name == "na") {
+		document.querySelector(".server").style.color = "#6872C4";
+		document.querySelector(".server-border").innerText = "美服";
+	} else if (server_name == "ru") {
+		document.querySelector(".server").style.color = "#FF0000";
+		document.querySelector(".server-border").innerText = "俄服";
+	}
+</script>
+
 </html>

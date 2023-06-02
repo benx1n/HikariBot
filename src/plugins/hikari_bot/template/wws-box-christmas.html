@@ -1,593 +1,595 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-	</head>
-	
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-		}
-		
-		.main-content {
-			width: 1600px;
-			font-size: 30px;
-			font-family: 'Microsoft YaHei';
-			font-family: "Microsoft YaHei";
-			font-weight: bold;
-		}
-		
-		.page-box {
-			width: 1600px;
-			display: flex;
-			flex-direction: column;
-		}
-		
-		.page-header {
-			display: flex;
-			flex-direction: column;
-		}
-		
-		.clan-user-server {
-			height: 120px;
-			text-align: center;
-			font-size: 45px;
-			line-height: 120px;
-		}
-		
-		.clan {
-			display: inline-block;
-			padding-right: 10px;
-			height: 120px;
-		}
-		
-		.user {
-			display: inline-block;
-			height: 120px;
-		}
-		
-		.server {
-			display: inline-block;
-			padding-left: 10px;
-		}
-		
-		.server-border {
-			width: 200px;
-			height: 50px;
-			line-height: 50px;
-			background-color: #F2F2F2;
-			border-radius: 25px;
-			font-size: 35px;
-		}
-		
-		.total-ship-row {
-			margin: 0 40px;
-			margin-top: 30px;
-			display: flex;
-			height: 300px;
-		}
-		
-		.total-ship {
-			margin: 0 10px;
-			background-color: #F2F2F2;
-			flex: 1;
-			border-radius: 16px;
-			display: flex;
-			flex-direction: column;
-		}
-		
-		.schedule {
-			margin: 0 10px;
-			background-color: #F2F2F2;
-			flex: 1;
-			border-radius: 16px;
-		}
-		
-		.total-ship .up {
-			font-size: 80px;
-			font-weight: normal;
-			color: #767171;
-			flex: 1;
-			line-height: 150px;
-			text-align: center;
-		}
-		
-		.total-ship .under {
-			flex: 1;
-			display: flex;
-			text-align: center;
-		}
-		
-		.inbox-col {
-			flex: 2;
-			display: flex;
-			flex-direction: column;
-		}
-		
-		.in-port-col {
-			flex: 2;
-			display: flex;
-			flex-direction: column;
-		}
-		
-		.mini-title {
-			font-weight: normal;
-			font-size: 40px;
-			color: #767171;
-		}
-		
-		.in-port {
-			font-size: 60px;
-			color: #92D050;
-		}
-		
-		.inbox {
-			font-size: 60px;
-			color: #E60000;
-		}
-		
-		.sch-box {
-			margin: 30px;
-		}
-		
-		.sch-box .text {
-			font-weight: normal;
-			color: #767171;
-			font-size: 40px;
-		}
-		
-		.pr {
-			display: flex;
-			height: 60px;
-			font-weight: bold;
-			line-height: 60px;
-		}
-		
-		.pr-bar-bg {
-			position: relative;
-			flex: 1;
-			line-height: 60px;
-			background-color: #A6A6A6;
-			height: 60px;
-			border-radius: 30px;
-			margin-top: 10px;
-			text-align: center;
-			color: #FFFFFF;
-		}
-		
-		.pr-bar {
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 60px;
-			z-index: 1;
-			border-radius: 30px;
-		}
-		
-		.pr-number {
-			z-index: 99;
-			position: absolute;
-			left: 0px;
-			right: 0px;
-			font-size: 35px;
-			font-weight: bold;
-		}
-		
-		.footer {
-			line-height: 30px;
-			margin-top: 70px;
-			text-align: center;
-			font-weight: bold;
-			font-size: 20px;
-			color: #909399;
-		}
-		
-		.rare-row {
-			margin: 0 50px;
-			margin-top: 30px;
-			display: flex;
-			background-color: #F2F2F2;
-			border-radius: 16px;
-			min-height: 300px;
-		}
-		
-		.rare-row .left {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex: 1;
-		}
-		
-		.rare-row .right {
-			flex: 2;
-			max-width: 1000px;
-			display: flex;
-			flex-flow: row;
-			flex-wrap: wrap;
-		
-		}
-		
-		.ship-item {
-			min-width: 333px;
-			max-width: 333px;
-			height: 60px;
-			line-height: 60px;
-			font-weight: normal;
-		}
-		
-		.tips {
-			padding: 10px 0;
-			margin: 0 50px;
-			margin-top: 30px;
-			background-color: #F2F2F2;
-			border-radius: 16px;
-			font-weight: normal;
-			text-align: center;
-			color: #909399;
-		}
-		
-		.auth-status {
-			color: #767171;
-			margin: 0 50px;
-			height: 60px;
-			background-color: #F2F2F2;
-			border-radius: 16px;
-			line-height: 60px;
-			font-weight: normal;
-			text-align: center;
-		}
-		
-		.status {
-			font-weight: bold;
-		}
-		
-	</style>
-	
-	<body>
-		<div class="main-content">
-			<div class="page-box">
-				<div class="page-header">
-					<div class="clan-user-server">
-						{% if data['clanInfo']['tag'] %}
-						<div class="clan" style="color: {{ data['clanInfo']['colorRgb'] }};">[{{ data['clanInfo']['tag'] }}]</div>
-						{% endif %}
-						<div class="user">{{ data['userName'] }}</div>
-						<div class="server">
-							<div class="server-border">
-								{{ data['serverName'] }}
+
+<head>
+	<meta charset="utf-8">
+</head>
+
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	.main-content {
+		width: 1600px;
+		font-size: 30px;
+		font-family: 'Microsoft YaHei';
+		font-family: "Microsoft YaHei";
+		font-weight: bold;
+	}
+
+	.page-box {
+		width: 1600px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.page-header {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.clan-user-server {
+		height: 120px;
+		text-align: center;
+		font-size: 45px;
+		line-height: 120px;
+	}
+
+	.clan {
+		display: inline-block;
+		padding-right: 10px;
+		height: 120px;
+	}
+
+	.user {
+		display: inline-block;
+		height: 120px;
+	}
+
+	.server {
+		display: inline-block;
+		padding-left: 10px;
+	}
+
+	.server-border {
+		width: 200px;
+		height: 50px;
+		line-height: 50px;
+		background-color: #F2F2F2;
+		border-radius: 25px;
+		font-size: 35px;
+	}
+
+	.total-ship-row {
+		margin: 0 40px;
+		margin-top: 30px;
+		display: flex;
+		height: 300px;
+	}
+
+	.total-ship {
+		margin: 0 10px;
+		background-color: #F2F2F2;
+		flex: 1;
+		border-radius: 16px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.schedule {
+		margin: 0 10px;
+		background-color: #F2F2F2;
+		flex: 1;
+		border-radius: 16px;
+	}
+
+	.total-ship .up {
+		font-size: 80px;
+		font-weight: normal;
+		color: #767171;
+		flex: 1;
+		line-height: 150px;
+		text-align: center;
+	}
+
+	.total-ship .under {
+		flex: 1;
+		display: flex;
+		text-align: center;
+	}
+
+	.inbox-col {
+		flex: 2;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.in-port-col {
+		flex: 2;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.mini-title {
+		font-weight: normal;
+		font-size: 40px;
+		color: #767171;
+	}
+
+	.in-port {
+		font-size: 60px;
+		color: #92D050;
+	}
+
+	.inbox {
+		font-size: 60px;
+		color: #E60000;
+	}
+
+	.sch-box {
+		margin: 30px;
+	}
+
+	.sch-box .text {
+		font-weight: normal;
+		color: #767171;
+		font-size: 40px;
+	}
+
+	.pr {
+		display: flex;
+		height: 60px;
+		font-weight: bold;
+		line-height: 60px;
+	}
+
+	.pr-bar-bg {
+		position: relative;
+		flex: 1;
+		line-height: 60px;
+		background-color: #A6A6A6;
+		height: 60px;
+		border-radius: 30px;
+		margin-top: 10px;
+		text-align: center;
+		color: #FFFFFF;
+	}
+
+	.pr-bar {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 60px;
+		z-index: 1;
+		border-radius: 30px;
+	}
+
+	.pr-number {
+		z-index: 99;
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		font-size: 35px;
+		font-weight: bold;
+	}
+
+	.footer {
+		line-height: 30px;
+		margin-top: 70px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 20px;
+		color: #909399;
+	}
+
+	.rare-row {
+		margin: 0 50px;
+		margin-top: 30px;
+		display: flex;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		min-height: 300px;
+	}
+
+	.rare-row .left {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+	}
+
+	.rare-row .right {
+		flex: 2;
+		max-width: 1000px;
+		display: flex;
+		flex-flow: row;
+		flex-wrap: wrap;
+
+	}
+
+	.ship-item {
+		min-width: 333px;
+		max-width: 333px;
+		height: 60px;
+		line-height: 60px;
+		font-weight: normal;
+	}
+
+	.tips {
+		padding: 10px 0;
+		margin: 0 50px;
+		margin-top: 30px;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		font-weight: normal;
+		text-align: center;
+		color: #909399;
+	}
+
+	.auth-status {
+		color: #767171;
+		margin: 0 50px;
+		height: 60px;
+		background-color: #F2F2F2;
+		border-radius: 16px;
+		line-height: 60px;
+		font-weight: normal;
+		text-align: center;
+	}
+
+	.status {
+		font-weight: bold;
+	}
+</style>
+
+<body>
+	<div class="main-content">
+		<div class="page-box">
+			<div class="page-header">
+				<div class="clan-user-server">
+					{% if data['clanInfo']['tag'] %}
+					<div class="clan" style="color: {{ data['clanInfo']['colorRgb'] }};">[{{ data['clanInfo']['tag'] }}]
+					</div>
+					{% endif %}
+					<div class="user">{{ data['userName'] }}</div>
+					<div class="server">
+						<div class="server-border">
+							{{ data['serverName'] }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="auth-status">
+				{%if data['auth'] %}
+				<span>授权状态：</span><span style="color: #47A123; font-weight: bold;">已授权</span>
+				{% else %}
+				<span>授权状态：</span><span style="color: #E60000; font-weight: bold;">未授权</span>
+				{% endif %}
+			</div>
+
+			<div class="total-ship-row">
+				<div class="total-ship">
+					<div class="up">
+						总船只
+					</div>
+					<div class="under">
+						<div style="flex: 1;"></div>
+						<div class="inbox-col">
+							<span class="mini-title">圣诞箱中</span>
+							<span class="inbox">{{ data['count']}}</span>
+						</div>
+						<div class="in-port-col">
+							<span class="mini-title" style="color: #DF9B2D;">已拥有</span>
+							<span class="in-port">{{ data['have']}}</span>
+						</div>
+						<div style="flex: 1;"></div>
+					</div>
+				</div>
+				<div class="schedule">
+					<div class="sch-box">
+						<div class="text">收集进度</div>
+						<div class="pr">
+							<div class="pr-bar-bg">
+								<span class="pr-number"><span class="pr-text"></span></span>
+								<div class="pr-bar" style="background-color: #92D050;"></div>
+								<div class="footer">
+									<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
+									<p>https://github.com/benx1n/HikariBot</p>
+									<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
+									<p>Design By 冷眠 H5 Converted By C1ystal</p>
+									<p>赞助鸣谢：男人们的定远号、科长、海上最速暴毙传说</p>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				
-				<div class="auth-status">
-					{%if data['auth'] %}
-					<span>授权状态：</span><span style="color: #47A123; font-weight: bold;">已授权</span>
-					{% else %}
-					<span>授权状态：</span><span style="color: #E60000; font-weight: bold;">未授权</span>
-					{% endif %}
-				</div>
-				
-				<div class="total-ship-row">
+			</div>
+
+			<div class="rare-row">
+				<div class="left">
 					<div class="total-ship">
 						<div class="up">
-							总船只
+							稀有池
 						</div>
 						<div class="under">
 							<div style="flex: 1;"></div>
 							<div class="inbox-col">
-								<span class="mini-title">圣诞箱中</span>
-								<span class="inbox">{{ data['count']}}</span>
+								<span class="mini-title">总船只</span>
+								<span class="inbox">{{ data['rareCount']}}</span>
 							</div>
 							<div class="in-port-col">
 								<span class="mini-title" style="color: #DF9B2D;">已拥有</span>
-								<span class="in-port">{{ data['have']}}</span>
+								<span class="in-port">{{ data['rareHave']}}</span>
 							</div>
 							<div style="flex: 1;"></div>
 						</div>
 					</div>
-					<div class="schedule">
-						<div class="sch-box">
-							<div class="text">收集进度</div>
-							<div class="pr">
-								<div class="pr-bar-bg">
-									<span class="pr-number"><span class="pr-text"></span></span>
-									<div class="pr-bar" style="background-color: #92D050;"></div>
-									<div class="footer">
-										<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
-										<p>https://github.com/benx1n/HikariBot</p>
-										<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
-										<p>Design By 冷眠 H5 Converted By C1ystal</p>
-										<p>赞助鸣谢：男人们的定远号、Wishing、科长</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
-				
-				<div class="rare-row">
-					<div class="left">
-						<div class="total-ship">
-							<div class="up">
-								稀有池
-							</div>
-							<div class="under">
-								<div style="flex: 1;"></div>
-								<div class="inbox-col">
-									<span class="mini-title">总船只</span>
-									<span class="inbox">{{ data['rareCount']}}</span>
-								</div>
-								<div class="in-port-col">
-									<span class="mini-title" style="color: #DF9B2D;">已拥有</span>
-									<span class="in-port">{{ data['rareHave']}}</span>
-								</div>
-								<div style="flex: 1;"></div>
-							</div>
-						</div>
+
+				<div class="right">
+					{% for haveData in data['rareHaveList'] %}
+					{% if haveData['level'] == 10 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
 					</div>
-					
-					<div class="right">
-						{% for haveData in data['rareHaveList'] %}
-							{% if haveData['level'] == 10 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for haveData in data['rareHaveList'] %}
-							{% if haveData['level'] == 9 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for haveData in data['rareHaveList'] %}
-							{% if haveData['level'] == 8 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for haveData in data['rareHaveList'] %}
-							{% if haveData['level'] == 7 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for haveData in data['rareHaveList'] %}
-							{% if haveData['level'] == 6 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for haveData in data['rareHaveList'] %}
-							{% if haveData['level'] == 5 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						
-						{% for unHave in data['rareList'] %}
-							{% if unHave['level'] == 10 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for unHave in data['rareList'] %}
-							{% if unHave['level'] == 9 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for unHave in data['rareList'] %}
-							{% if unHave['level'] == 8 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for unHave in data['rareList'] %}
-							{% if unHave['level'] == 7 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for unHave in data['rareList'] %}
-							{% if unHave['level'] == 6 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for unHave in data['rareList'] %}
-							{% if unHave['level'] == 5 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
+					{% endif %}
+					{% endfor %}
+					{% for haveData in data['rareHaveList'] %}
+					{% if haveData['level'] == 9 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
 					</div>
-				</div>
-				
-				<div class="rare-row">
-					<div class="left">
-						<div class="total-ship">
-							<div class="up">
-								普通池
-							</div>
-							<div class="under">
-								<div style="flex: 1;"></div>
-								<div class="inbox-col">
-									<span class="mini-title">总船只</span>
-									<span class="inbox">{{ data['dataCount']}}</span>
-								</div>
-								<div class="in-port-col">
-									<span class="mini-title" style="color: #DF9B2D;">已拥有</span>
-									<span class="in-port">{{ data['dataHave']}}</span>
-								</div>
-								<div style="flex: 1;"></div>
-							</div>
-						</div>
+					{% endif %}
+					{% endfor %}
+					{% for haveData in data['rareHaveList'] %}
+					{% if haveData['level'] == 8 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
 					</div>
-					
-					<div class="right">
-						{% for haveData in data['dataHaveList'] %}
-							{% if haveData['level'] == 9 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for haveData in data['dataHaveList'] %}
-							{% if haveData['level'] == 8 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for haveData in data['dataHaveList'] %}
-							{% if haveData['level'] == 7 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for haveData in data['dataHaveList'] %}
-							{% if haveData['level'] == 6 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for haveData in data['dataHaveList'] %}
-							{% if haveData['level'] == 5 %}
-							<div class="ship-item" style="color: #DF9B2D;">
-								<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ haveData['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						
-						{% for unHave in data['dataList'] %}
-							{% if unHave['level'] == 9 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for unHave in data['dataList'] %}
-							{% if unHave['level'] == 8 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for unHave in data['dataList'] %}
-							{% if unHave['level'] == 7 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for unHave in data['dataList'] %}
-							{% if unHave['level'] == 6 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
-						{% for unHave in data['dataList'] %}
-							{% if unHave['level'] == 5 %}
-							<div class="ship-item">
-								<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
-								<span class="ship-name">{{ unHave['nameCn'] }}</span>
-							</div>
-							{% endif %}
-						{% endfor %}
+					{% endif %}
+					{% endfor %}
+					{% for haveData in data['rareHaveList'] %}
+					{% if haveData['level'] == 7 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
 					</div>
+					{% endif %}
+					{% endfor %}
+					{% for haveData in data['rareHaveList'] %}
+					{% if haveData['level'] == 6 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for haveData in data['rareHaveList'] %}
+					{% if haveData['level'] == 5 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+
+					{% for unHave in data['rareList'] %}
+					{% if unHave['level'] == 10 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for unHave in data['rareList'] %}
+					{% if unHave['level'] == 9 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for unHave in data['rareList'] %}
+					{% if unHave['level'] == 8 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for unHave in data['rareList'] %}
+					{% if unHave['level'] == 7 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for unHave in data['rareList'] %}
+					{% if unHave['level'] == 6 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for unHave in data['rareList'] %}
+					{% if unHave['level'] == 5 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
 				</div>
-				
-				{% if not data['auth'] %}
-				<div class="tips">
-					<span>tips：未授权数据不准确，仅支持统计已战斗过的舰船</span><br />
-					<span>如需统计更精准数据请前往网页版授权。</span><br />
-					<span>网页版地址：https://wows.mgaia.top/</span>
-				</div>
-				{% else %}
-				<div class="tips">
-					<span>tips：没出过港的船只不会被统计在内</span>
-				</div>
-				{% endif %}
-				
-				<div style="height: 30px;"></div>
 			</div>
+
+			<div class="rare-row">
+				<div class="left">
+					<div class="total-ship">
+						<div class="up">
+							普通池
+						</div>
+						<div class="under">
+							<div style="flex: 1;"></div>
+							<div class="inbox-col">
+								<span class="mini-title">总船只</span>
+								<span class="inbox">{{ data['dataCount']}}</span>
+							</div>
+							<div class="in-port-col">
+								<span class="mini-title" style="color: #DF9B2D;">已拥有</span>
+								<span class="in-port">{{ data['dataHave']}}</span>
+							</div>
+							<div style="flex: 1;"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="right">
+					{% for haveData in data['dataHaveList'] %}
+					{% if haveData['level'] == 9 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for haveData in data['dataHaveList'] %}
+					{% if haveData['level'] == 8 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for haveData in data['dataHaveList'] %}
+					{% if haveData['level'] == 7 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for haveData in data['dataHaveList'] %}
+					{% if haveData['level'] == 6 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for haveData in data['dataHaveList'] %}
+					{% if haveData['level'] == 5 %}
+					<div class="ship-item" style="color: #DF9B2D;">
+						<span class="level">{{ haveData['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ haveData['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+
+					{% for unHave in data['dataList'] %}
+					{% if unHave['level'] == 9 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for unHave in data['dataList'] %}
+					{% if unHave['level'] == 8 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for unHave in data['dataList'] %}
+					{% if unHave['level'] == 7 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for unHave in data['dataList'] %}
+					{% if unHave['level'] == 6 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% for unHave in data['dataList'] %}
+					{% if unHave['level'] == 5 %}
+					<div class="ship-item">
+						<span class="level">{{ unHave['level'] }}</span>&nbsp;&nbsp;
+						<span class="ship-name">{{ unHave['nameCn'] }}</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+
+			{% if not data['auth'] %}
+			<div class="tips">
+				<span>tips：未授权数据不准确，仅支持统计已战斗过的舰船</span><br />
+				<span>如需统计更精准数据请前往网页版授权。</span><br />
+				<span>网页版地址：https://wows.mgaia.top/</span>
+			</div>
+			{% else %}
+			<div class="tips">
+				<span>tips：没出过港的船只不会被统计在内</span>
+			</div>
+			{% endif %}
+
+			<div style="height: 30px;"></div>
 		</div>
-	</body>
-	<script>
-		let ship_count = document.querySelector(".in-port").innerText;
-		let bar_width = document.querySelector(".pr-bar-bg").clientWidth;
-		let inbox_count = document.querySelector(".inbox").innerText;
-		let sch = (ship_count/inbox_count) * 100;
-		sch = sch.toFixed(2);
-		// 防止收集进度过低导致进图条异常
-		if (ship_count < 11) {
-			document.querySelector('.pr-bar').style.width = (11/inbox_count) * bar_width + "px";
-		} else {
-			document.querySelector('.pr-bar').style.width = (ship_count/inbox_count) * bar_width + "px";
-		}
-		document.querySelector(".pr-text").innerText = sch + "%";
-	</script>
-	
-	<script>
-		// 服务器字体颜色自动填充
-		let server_name = document.querySelector(".server").innerText;
-		if (server_name == "亚服") {
-			document.querySelector(".server").style.color = "#92D050";
-		} else if (server_name == "国服") {
-			document.querySelector(".server").style.color = "#BF9000";
-		} else if (server_name == "欧服") {
-			document.querySelector(".server").style.color = "#009664";
-		} else if (server_name == "美服") {
-			document.querySelector(".server").style.color = "#6872C4";
-		} else if (server_name == "俄服") {
-			document.querySelector(".server").style.color = "#FF0000";
-		}
-	</script>
-	
-	<script>
-		let ship_level_doc = document.getElementsByClassName('level');
-		let level_number = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
-		let level_roma = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "★"];
-		for(let k=0;k<ship_level_doc.length;k++) {
-			ship_level_doc[k].innerText = level_roma[level_number.indexOf(ship_level_doc[k].innerText)];
-		}
-	</script>
+	</div>
+</body>
+<script>
+	let ship_count = document.querySelector(".in-port").innerText;
+	let bar_width = document.querySelector(".pr-bar-bg").clientWidth;
+	let inbox_count = document.querySelector(".inbox").innerText;
+	let sch = (ship_count / inbox_count) * 100;
+	sch = sch.toFixed(2);
+	// 防止收集进度过低导致进图条异常
+	if (ship_count < 11) {
+		document.querySelector('.pr-bar').style.width = (11 / inbox_count) * bar_width + "px";
+	} else {
+		document.querySelector('.pr-bar').style.width = (ship_count / inbox_count) * bar_width + "px";
+	}
+	document.querySelector(".pr-text").innerText = sch + "%";
+</script>
+
+<script>
+	// 服务器字体颜色自动填充
+	let server_name = document.querySelector(".server").innerText;
+	if (server_name == "亚服") {
+		document.querySelector(".server").style.color = "#92D050";
+	} else if (server_name == "国服") {
+		document.querySelector(".server").style.color = "#BF9000";
+	} else if (server_name == "欧服") {
+		document.querySelector(".server").style.color = "#009664";
+	} else if (server_name == "美服") {
+		document.querySelector(".server").style.color = "#6872C4";
+	} else if (server_name == "俄服") {
+		document.querySelector(".server").style.color = "#FF0000";
+	}
+</script>
+
+<script>
+	let ship_level_doc = document.getElementsByClassName('level');
+	let level_number = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
+	let level_roma = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "★"];
+	for (let k = 0; k < ship_level_doc.length; k++) {
+		ship_level_doc[k].innerText = level_roma[level_number.indexOf(ship_level_doc[k].innerText)];
+	}
+</script>
+
 </html>

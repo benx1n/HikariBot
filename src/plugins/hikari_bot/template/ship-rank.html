@@ -1,182 +1,188 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<link rel="stylesheet" href="css.css" />
-	</head>
-	<style>
-		* {
-			padding: 0;
-			margin: 0;
-		}
 
-		.flex-2 {
-			flex: 2;
-		}
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" href="css.css" />
+</head>
+<style>
+	* {
+		padding: 0;
+		margin: 0;
+	}
 
-		.flex-3 {
-			flex: 3;
-		}
+	.flex-2 {
+		flex: 2;
+	}
 
-		.flex-5 {
-			flex: 5;
-		}
+	.flex-3 {
+		flex: 3;
+	}
 
-		.flex-10 {
-			flex: 10;
-		}
+	.flex-5 {
+		flex: 5;
+	}
 
-		.main-content {
-			width: 2160px;
-			font-size: 30px;
-			font-family: 'Microsoft YaHei';
-			font-family: "Microsoft YaHei";
-			font-weight: bold;
-		}
+	.flex-10 {
+		flex: 10;
+	}
 
-		.page-box {
-			width: 2160px;
-			display: flex;
-			flex-direction: column;
-		}
+	.main-content {
+		width: 2160px;
+		font-size: 30px;
+		font-family: 'Microsoft YaHei';
+		font-family: "Microsoft YaHei";
+		font-weight: bold;
+	}
 
-		.ship-level {
-			display: inline-block;
-			text-align: center;
-			margin-right: 60px;
-		}
+	.page-box {
+		width: 2160px;
+		display: flex;
+		flex-direction: column;
+	}
 
-		.ship-name {
-			display: inline-block;
-		}
+	.ship-level {
+		display: inline-block;
+		text-align: center;
+		margin-right: 60px;
+	}
 
-		.page-header {
-			text-align: center;
-			font-size: 55px;
-			height: 120px;
-			line-height: 120px;
-		}
+	.ship-name {
+		display: inline-block;
+	}
+
+	.page-header {
+		text-align: center;
+		font-size: 55px;
+		height: 120px;
+		line-height: 120px;
+	}
 
 
-		.rank-header {
-			margin: 0px 50px;
-			display: flex;
-			text-align: center;
-			color: #008272;
-			font-weight: normal;
-			height: 100px;
-			line-height: 100px;
-			border-bottom: #008272 solid 5px;
-		}
+	.rank-header {
+		margin: 0px 50px;
+		display: flex;
+		text-align: center;
+		color: #008272;
+		font-weight: normal;
+		height: 100px;
+		line-height: 100px;
+		border-bottom: #008272 solid 5px;
+	}
 
-		.rank-header .hest-frag,
-		.rank-header .ar-frag,
-		.rank-header .max-ar-frag {
-			line-height: 50px;
-		}
+	.rank-header .hest-frag,
+	.rank-header .ar-frag,
+	.rank-header .max-ar-frag {
+		line-height: 50px;
+	}
 
-		.rank-item {
-			margin: 0px 50px;
-			display: flex;
-			text-align: center;
-			height: 80px;
-			line-height: 80px;
-		}
-		.player-name {
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-		}
-		.footer {
-			margin-top: 30px;
-			text-align: center;
-			font-weight: bold;
-			font-size: 24px;
-			color: #909399;
-			margin-bottom: 20px;
-		}
-	</style>
-	<body>
-		<div class="main-content">
-			<div class="page-box">
-				<div class="page-header">
-					<div class="ship-level">
-						{{ shipInfo['tier'] }}
-					</div>
-					<div class="ship-name">
-						{{ shipInfo['shipNameCn'] }}
-					</div>
+	.rank-item {
+		margin: 0px 50px;
+		display: flex;
+		text-align: center;
+		height: 80px;
+		line-height: 80px;
+	}
+
+	.player-name {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.footer {
+		margin-top: 30px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 24px;
+		color: #909399;
+		margin-bottom: 20px;
+	}
+</style>
+
+<body>
+	<div class="main-content">
+		<div class="page-box">
+			<div class="page-header">
+				<div class="ship-level">
+					{{ shipInfo['tier'] }}
 				</div>
-				<div class="rank-header">
-					<div class="ranks flex-2 col">排名</div>
-					<div class="player-name flex-10 col">ID</div>
-					<div class="battles flex-2 col">场次</div>
-					<div class="pr flex-3 col">PR</div>
-					<div class="wins flex-3 col">胜率</div>
-					<div class="frag flex-2 col">击杀</div>
-					<div class="hest-frag flex-2 col">最多击杀</div>
-					<div class="avg-dmg flex-5 col">场均</div>
-					<div class="max-dmg flex-5 col">最大伤害</div>
-					<div class="xp flex-3 col">经验</div>
-					<div class="max-xp flex-3 col">最大经验</div>
-					<div class="ar-frag flex-2 col">击落飞机</div>
-					<div class="max-ar-frag flex-2 col">最大击落</div>
+				<div class="ship-name">
+					{{ shipInfo['shipNameCn'] }}
 				</div>
-				{% for rank in data %}
-				<div class="rank-item">
-					{% if rank['index'] %}
-					<div class="ranks flex-2 col">{{ rank['index'] }}</div>
-					{% else %}
-					<div class="ranks flex-2 col">{{ rank['sortValue'] }}</div>
-					{% endif %}
-					{% if rank['tag'] != null %}
-					<div class="player-name flex-10 col">[{{ rank['tag'] }}]{{ rank['userName'] }}</div>
-					{% else %}
-					<div class="player-name flex-10 col">{{ rank['userName'] }}</div>
-					{% endif %}
-					<div class="battles flex-2 col">{{ rank['battles'] }}</div>
-					<div class="pr flex-3 col" style="color: {{ rank['prColor'] }};">{{ rank['pr'] }}</div>
-					<div class="wins flex-3 col" style="color: {{ rank['winsColor'] }};">{{ rank['wins'] }}%</div>
-					<div class="frag flex-2 col" style="color: {{ rank['fragsColor'] }};">{{ rank['frags'] }}</div>
-					<div class="hest-frag flex-2 col">{{ rank['maxFrags'] }}</div>
-					<div class="avg-dmg flex-5 col" style="color: {{ rank['damageColor'] }};">{{ rank['damage'] }}</div>
-					<div class="max-dmg flex-5 col">{{ rank['maxDamage'] }}</div>
-					<div class="xp flex-3 col">{{ rank['xp'] }}</div>
-					<div class="max-xp flex-3 col">{{ rank['maxXp'] }}</div>
-					<div class="ar-frag flex-2 col" style="color: {{ rank['planesDestroyedColor'] }};">{{ rank['planesDestroyed'] }}</div>
-					<div class="max-ar-frag flex-2 col">{{ rank['maxPlanesDestroyed'] }}</div>
-				</div>
-				{% endfor %}
-				
-				<div class="footer">
-					<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
-					<p>https://github.com/benx1n/HikariBot</p>
-					<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
-					<p>Design By 冷眠 H5 Converted By C1ystal</p>
-					<p>赞助鸣谢：男人们的定远号、Wishing、科长</p>
-				</div>
-
-				<div style="margin: 0 50px; border-bottom: #008272 solid 5px; margin-bottom:20px;"></div>
 			</div>
+			<div class="rank-header">
+				<div class="ranks flex-2 col">排名</div>
+				<div class="player-name flex-10 col">ID</div>
+				<div class="battles flex-2 col">场次</div>
+				<div class="pr flex-3 col">PR</div>
+				<div class="wins flex-3 col">胜率</div>
+				<div class="frag flex-2 col">击杀</div>
+				<div class="hest-frag flex-2 col">最多击杀</div>
+				<div class="avg-dmg flex-5 col">场均</div>
+				<div class="max-dmg flex-5 col">最大伤害</div>
+				<div class="xp flex-3 col">经验</div>
+				<div class="max-xp flex-3 col">最大经验</div>
+				<div class="ar-frag flex-2 col">击落飞机</div>
+				<div class="max-ar-frag flex-2 col">最大击落</div>
+			</div>
+			{% for rank in data %}
+			<div class="rank-item">
+				{% if rank['index'] %}
+				<div class="ranks flex-2 col">{{ rank['index'] }}</div>
+				{% else %}
+				<div class="ranks flex-2 col">{{ rank['sortValue'] }}</div>
+				{% endif %}
+				{% if rank['tag'] != null %}
+				<div class="player-name flex-10 col">[{{ rank['tag'] }}]{{ rank['userName'] }}</div>
+				{% else %}
+				<div class="player-name flex-10 col">{{ rank['userName'] }}</div>
+				{% endif %}
+				<div class="battles flex-2 col">{{ rank['battles'] }}</div>
+				<div class="pr flex-3 col" style="color: {{ rank['prColor'] }};">{{ rank['pr'] }}</div>
+				<div class="wins flex-3 col" style="color: {{ rank['winsColor'] }};">{{ rank['wins'] }}%</div>
+				<div class="frag flex-2 col" style="color: {{ rank['fragsColor'] }};">{{ rank['frags'] }}</div>
+				<div class="hest-frag flex-2 col">{{ rank['maxFrags'] }}</div>
+				<div class="avg-dmg flex-5 col" style="color: {{ rank['damageColor'] }};">{{ rank['damage'] }}</div>
+				<div class="max-dmg flex-5 col">{{ rank['maxDamage'] }}</div>
+				<div class="xp flex-3 col">{{ rank['xp'] }}</div>
+				<div class="max-xp flex-3 col">{{ rank['maxXp'] }}</div>
+				<div class="ar-frag flex-2 col" style="color: {{ rank['planesDestroyedColor'] }};">{{
+					rank['planesDestroyed'] }}</div>
+				<div class="max-ar-frag flex-2 col">{{ rank['maxPlanesDestroyed'] }}</div>
+			</div>
+			{% endfor %}
+
+			<div class="footer">
+				<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
+				<p>https://github.com/benx1n/HikariBot</p>
+				<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
+				<p>Design By 冷眠 H5 Converted By C1ystal</p>
+				<p>赞助鸣谢：男人们的定远号、科长、海上最速暴毙传说</p>
+			</div>
+
+			<div style="margin: 0 50px; border-bottom: #008272 solid 5px; margin-bottom:20px;"></div>
 		</div>
-	</body>
-	
-	<script>
-		let ship_level_doc = document.getElementsByClassName('ship-level');
-		let level_number = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
-		let level_roma = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "★"];
-		for(let k=0;k<ship_level_doc.length;k++) {
-			ship_level_doc[k].innerText = level_roma[level_number.indexOf(ship_level_doc[k].innerText)];
+	</div>
+</body>
+
+<script>
+	let ship_level_doc = document.getElementsByClassName('ship-level');
+	let level_number = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
+	let level_roma = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "★"];
+	for (let k = 0; k < ship_level_doc.length; k++) {
+		ship_level_doc[k].innerText = level_roma[level_number.indexOf(ship_level_doc[k].innerText)];
+	}
+</script>
+
+<script>
+	let arr_information = document.getElementsByClassName('rank-item');
+	for (let i = 0; i < arr_information.length; i++) {
+		if (i % 2 == 0) {
+			arr_information[i].style.backgroundColor = "#E4E4E4";
 		}
-	</script>
-	
-	<script>
-		let arr_information = document.getElementsByClassName('rank-item');
-		for(let i=0;i<arr_information.length;i++) {
-			if(i%2 == 0) {
-				arr_information[i].style.backgroundColor = "#E4E4E4";
-			}
-		}
-	</script>
+	}
+</script>
+
 </html>
