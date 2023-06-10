@@ -12,13 +12,17 @@
 战舰世界水表BOT
 <!-- prettier-ignore-end -->
 
-
-
 <p align="center">
   <a href="https://pypi.python.org/pypi/hikari-bot">
     <img src="https://img.shields.io/pypi/v/hikari-bot" alt="pypi">
   </a>
   <img src="https://img.shields.io/badge/python-3.8.0+-blue" alt="python">
+  <a href="http://hits.dwyl.com/benx1n/HikariBot">
+    <img src="https://hits.dwyl.com/benx1n/HikariBot.svg?style=flat-square" alt="hits">
+  </a>
+  <a href="https://github.com/benx1n/HikariBot/stargazers"><img src="https://img.shields.io/github/stars/benx1n/HikariBot" alt="GitHub stars"style="max-width: 100%;">
+  </a>
+  <br/>
   <a href="https://jq.qq.com/?_wv=1027&k=S2WcTKi5">
     <img src="https://img.shields.io/badge/QQ%E7%BE%A4-967546463-orange?style=flat-square" alt="QQ Chat Group">
   </a>
@@ -88,7 +92,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 
   </details>
 ## 在Windows系统上快速部署
->点我查看[视频教程](https://www.bilibili.com/video/BV1r5411X7pr)
+>点我查看[视频教程](https://www.bilibili.com/video/BV1XP411U7rC)
 
   `windows安装python版本请勿大于3.11,建议版本3.9`
 
@@ -114,7 +118,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 ## Linux一键脚本
 > 仅支持Debian、CentOS、Ubuntu
 ```
-wget -qO - http://www.dddns.icu/installHikari.sh | bash
+wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | bash
 ```
 
 
@@ -236,6 +240,7 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
     ocr_on = true                   #是否开启ocr(识图指令)
     ocr_offline = false             #是否只使用hash验证，即设置为true后只能识别服务器已记录的图片，如果群较多(>300)导致响应延迟较高可以开启
     ocr_url = http://mc.youthnp.cn:23338/OCR/           #默认ocr地址，一般不用动
+    http2 = true                    #是否开启http2，默认开启，如果有问题请设置为false
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
@@ -266,6 +271,24 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
+
+### 23-05-07    v0.3.9
+- [+]重构代码
+- [#]替换默认OCR接口
+
+### 23-04-07    v0.3.8
+- [+]新增国服封号记录查询，指令wws ban/wws 封号记录
+- [#]修复了上次修复排行榜新产生的bug
+
+### 23-04-04    v0.3.7
+- [+]添加获取随机表情包，指令wws 随机表情包
+- [+]更新船只选择界面
+- [#]更新Linux脚本托管
+
+### 23-02-22    v0.3.6.4
+- [+]添加随机嘴臭，概率千分之一
+- [+]添加ocr启动报错提示
+- [#]修复一键包及Docker依赖问题 [@94Bo](https://github.com/94Bo) [@12hydrogen](https://github.com/12hydrogen)
 
 ### 22-11-18    v0.3.6  包含配置项更新，请添加`env.prod-example`中新增的配置
 - [+]新增噗噗（已于0.3.5.2实装）
@@ -440,9 +463,9 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
 1. 下载 go-cqhttp 至合适的文件夹
 
-    - github 发布页：https://github.com/Mrs4s/go-cqhttp/releases
+    - github 发布页：https://github.com/Mrs4s/go-cqhttp/releases/latest
 
-    > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_386.exe](https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc1/go-cqhttp_windows_386.exe)
+    > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_amd64.exe](https://github.com/Mrs4s/go-cqhttp/releases/latest/download/go-cqhttp_windows_amd64.exe)
 
 2. 双击go-cqhttp，提示释出bat，重新运行bat，选择websocket反向代理，go-cqhttp将会在同文件夹内自动创建一个`config.yml`，右键使用notepad++打开，根据注释填写QQ账号密码，并将以下内容写入文件结尾（需替换原有的ws-reverse节点）：
 
@@ -458,6 +481,9 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
 3. 启动go-cqhttp，按照提示登录。
 
+    > 此处如出现异地登陆保护，请尝试
+    > - 在本地电脑使用go-cqhttp登录成功后，将会在exe同级目录下生成`session.token`和`device.json`两个文件
+    > - 将这两个文件复制到服务器对应go-cqhttp目录下并重启
 
 4. 修改Hikari文件夹下.env.prod中`USE_PLUGIN_GO_CQHTTP`的值为`false`
     ```
@@ -518,16 +544,19 @@ wget -qO - http://www.dddns.icu/installHikari.sh | bash
 
 1. 下载 go-cqhttp
 
-    - github 发布页：https://github.com/Mrs4s/go-cqhttp/releases
+    - github 发布页：https://github.com/Mrs4s/go-cqhttp/releases/latest
 
-    > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_386.exe](https://github.com/Mrs4s/go-cqhttp/releases/download/v1.0.0-rc1/go-cqhttp_windows_386.exe)
+    > 您需要根据自己的机器架构选择版本，Windows一般为x86/64架构，通常选择[go-cqhttp_windows_amd64.exe](https://github.com/Mrs4s/go-cqhttp/releases/latest/download/go-cqhttp_windows_amd64.exe)
 
 2. 重命名为`go-cqhttp.*`(*为所选择版本后缀,如windowx就是go-cqhttp.exe)并放入`HikariBot\accounts\binary`文件夹下
 
 3. 重新启动Hikari
 
+## 贡献代码
 
-## 贡献
+请向dev分支提交PR
+
+## 鸣谢
 
 感谢以下开发者及项目做出的贡献与支持
 

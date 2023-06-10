@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		
+		.main-content {
+			font-family: 'Microsoft YaHei';
+			font-size: 30px;
+			font-weight: bold;
+			width: 900px;
+			text-align: center;
+		}
+		.header {
+			display: flex;
+			flex-direction: column;
+			margin-top: 15px;
+		}
+		
+		.server {
+			position: absolute;
+			top: 40px;
+			right: 30px;
+		}
+		
+		.server-border {
+			width: 150px;
+			height: 40px;
+			line-height: 40px;
+			background-color: #F2F2F2;
+			border-radius: 25px;
+			font-size: 30px;
+		}
+		
+		.clan-tag {
+			height: 45px;
+			line-height: 45px;
+			font-size: 30px;
+			color: #909399;
+			display: inline-block;
+		}
+		
+		.username {
+			height: 45px;
+			line-height: 45px;
+			display: inline-block;
+		}
+		
+		.aid {
+			height: 45px;
+			line-height: 45px;
+			color: #909399;
+		}
+		
+		.warnning {
+			margin: 0 30px;
+			margin-top: 15px;
+			background-color: #F2F2F2;
+			padding: 10px 20px;
+			border-radius: 16px;
+			text-align: center;
+			color: #606266;
+			font-size: 18px;
+			line-height: 30px;
+		}
+		
+		.ban {
+			margin: 0 30px;
+			margin-top: 15px;
+			font-size: 20px;
+		}
+		
+		.title {
+			text-align: left;
+			margin-left: 30px;
+		}
+		
+		.ban-item {
+			display: flex;
+			margin-top: 10px;
+			border-radius: 16px;
+			border: #FF0000 3px solid;
+		}
+		
+		.ban-left {
+			display: flex;
+			flex-direction: column;
+			flex: 3;
+			margin: 10px 0px 10px 30px;
+			border-right: #FF0000 3px solid;
+		}
+		
+		.ban-col {
+			display: flex;
+			height: 40px;
+			line-height: 40px;
+		}
+		
+		.ban-date {
+			color: #FF0000;
+		}
+		
+		.ban-username {
+			color: #FF0000;
+		}
+		
+		.ban-right {
+			flex: 2;
+			display: flex;
+			margin: 10px 0px 10px 30px;
+			line-height: 120px;
+			font-size: 30px;
+			text-align: center;
+		}
+		
+		.mate-count {
+			flex: 1;
+			font-size: 60px;
+		}
+		
+		.footer {
+			margin-top: 30px;
+			text-align: center;
+			font-weight: bold;
+			font-size: 24px;
+			color: #909399;
+			margin-bottom: 20px;
+		}
+		
+		.ban-tip {
+			height: 75px;
+			line-height: 75px;
+			font-size: 40px;
+			margin-top: 10px;
+			border-radius: 16px;
+			border: 3px #A9D18E solid;
+			color: #A9D18E;
+		}
+	</style>
+	
+	<body>
+		<div class="main-content">
+			<div class="header">
+				<div class="clan">
+					{% if data['clanInfo'] %}
+					<div class="clan-tag" style="color: {{ data['clanInfo']['colorRgb'] }};">[{{ data['clanInfo']['tag'] }}]</div>
+					{% endif %}
+					<div class="username">{{ data['userName'] }}</div>
+					<div class="server">
+						<div class="server-border">
+							{{ data['serverName'] }}
+						</div>
+					</div>
+				</div>
+				<div class="aid">AID:{{ data['accountId'] }}</div>
+			</div>
+			<div class="warnning">
+				<div>yuyuko仅对官方公布的打码封号名单（仅三方插件）进行了模糊匹配，提供匹配记录</div>
+				<div>相似用户数为同时满足匹配规则的用户数量，比如_**_,有可能是_11_,也有可能是_22_</div>
+				<div>假如相似用户数为5，则说明5人中可能存在1人被封禁</div>
+				<div>由于数据库并未收录全用户名，且官方并未公布打码规则，故相似用户数即使为1也不能确定被封号</div>
+				<div>当前匹配规则：**代表替换了2-3个字符，***代表替换了3-4个字符，以此类推</div>
+				<div>免责申明：本页面所有信息均不作为评判封号的证据，不支持用于鉴挂等行为，请大家理性讨论</div>
+			</div>
+			<div class="ban">
+				<div class="title">可能符合条件的历史记录</div>
+				{% if data['voList'] %}
+				{% for ban in data['voList'] %}
+				<div class="ban-item">
+					<div class="ban-left">
+						<div class="ban-col">
+							<div style="margin-right: 20px;">封禁日期</div>
+							<div class="ban-date">{{ ban['banTime'] }}</div>
+						</div>
+						<div class="ban-col">
+							<div style="margin-right: 20px;">官方封禁名</div>
+							<div class="ban-name">{{ ban['banName'] }}</div>
+						</div>
+						<div class="ban-col">
+							<div style="margin-right: 20px;">历史用户名</div>
+							<div class="ban-username">{{ ban['userName'] }}</div>
+						</div>
+					</div>
+					<div class="ban-right">
+						<div>相似用户数</div>
+						<div class="mate-count">{{ ban['banNameNamesake'] }}</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% else %}
+				<div class="ban-tip">未在官方封禁历史中匹配到该用户</div>
+				{% endif %}
+			</div>
+			<div class="footer">
+				<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
+				<p>https://github.com/benx1n/HikariBot</p>
+				<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
+				<p>Design By 冷眠 H5 Converted By C1ystal</p>
+				<p>赞助鸣谢：男人们的定远号、Wishing、科长</p>
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		// 服务器字体颜色自动填充
+		let server_name = document.querySelector(".server").innerText;
+		if (server_name == "asia") {
+			document.querySelector(".server").style.color = "#92D050";
+			document.querySelector(".server-border").innerText = "亚服";
+		} else if (server_name == "cn" || server_name == "国服") {
+			document.querySelector(".server").style.color = "#BF9000";
+			document.querySelector(".server-border").innerText = "国服";
+		} else if (server_name == "eu") {
+			document.querySelector(".server").style.color = "#009664";
+			document.querySelector(".server-border").innerText = "欧服";
+		} else if (server_name == "na") {
+			document.querySelector(".server").style.color = "#6872C4";
+			document.querySelector(".server-border").innerText = "美服";
+		} else if (server_name == "ru") {
+			document.querySelector(".server").style.color = "#FF0000";
+			document.querySelector(".server-border").innerText = "俄服";
+		}
+	</script>
+	
+	<script>
+		//ban信息外框颜色设置
+		let itemBorderDoc = document.getElementsByClassName('ban-item');
+		let itemLeftBorderDoc = document.getElementsByClassName('ban-left');
+		let mateCountDoc = document.getElementsByClassName('mate-count');
+		for(let i=0; i<mateCountDoc.length; i++) {
+			if(Number(mateCountDoc[i].innerText) > 0 && Number(mateCountDoc[i].innerText) < 2) {
+				itemBorderDoc[i].style.border = '3px solid #FF0000';
+				itemLeftBorderDoc[i].style.borderRight = '3px solid #FF0000';
+				mateCountDoc[i].style.color = '#FF0000';
+			} else if(Number(mateCountDoc[i].innerText) > 1 && Number(mateCountDoc[i].innerText) < 6) {
+				itemBorderDoc[i].style.border = '3px solid #FF8B8B';
+				itemLeftBorderDoc[i].style.borderRight = '3px solid #FF8B8B';
+				mateCountDoc[i].style.color = '#FF8B8B';
+			} else if(Number(mateCountDoc[i].innerText) > 5 && Number(mateCountDoc[i].innerText) < 11) {
+				itemBorderDoc[i].style.border = '3px solid #FED71A';
+				itemLeftBorderDoc[i].style.borderRight = '3px solid #FED71A';
+				mateCountDoc[i].style.color = '#FED71A';
+			} else {
+				itemBorderDoc[i].style.border = '3px solid #85A703';
+				itemLeftBorderDoc[i].style.borderRight = '3px solid #85A703';
+				mateCountDoc[i].style.color = '#85A703';
+			}
+		}
+	</script>
+</html>

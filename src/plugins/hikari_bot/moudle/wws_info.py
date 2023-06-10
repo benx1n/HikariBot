@@ -7,7 +7,7 @@ from typing import List
 import jinja2
 import orjson
 from httpx import ConnectTimeout
-from nonebot import get_driver
+from nonebot.adapters.onebot.v11 import ActionFailed, Bot, MessageSegment
 from nonebot.log import logger
 from nonebot_plugin_htmlrender import html_to_pic
 
@@ -20,8 +20,8 @@ from ..data_source import (
     template_path,
 )
 from ..HttpClient_pool import client_yuyuko
-from ..moudle.publicAPI import get_AccountIdByName
 from ..utils import match_keywords
+from .publicAPI import check_yuyuko_cache, get_AccountIdByName
 
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(template_path), enable_async=True
@@ -36,12 +36,10 @@ env.globals.update(
     enumerate=enumerate,
 )
 
-async def check_christmas_box(server_type, info, bot, ev):
+async def get_AccountInfo(server_type, info, bot:Bot, ev):
     try:
         url, params = "", ""
         if isinstance(info, List):
-            if len(info) == 0:
-                params = {"server": "QQ", "accountId": int(ev.user_id)}
             for i in info:
                 if str(i).lower() == "me":
                     params = {"server": server_type, "accountId": int(ev.user_id)}
@@ -68,12 +66,17 @@ async def check_christmas_box(server_type, info, bot, ev):
                 return "您似乎准备用游戏昵称查询，请检查参数中是否包含服务器和游戏昵称，以空格区分，如果您准备查询单船战绩，请带上ship参数"
         else:
             return "参数似乎出了问题呢"
-        url = "https://api.wows.shinoaki.com/public/wows/christmas/ship/box"
+        is_cache = await check_yuyuko_cache(params["server"], params["accountId"])
+        if is_cache:
+            logger.success("上报数据成功")
+        else:
+            logger.success("跳过上报数据，直接请求")
+        url = "https://api.wows.shinoaki.com/public/wows/account/user/info"
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         logger.success(f"本次请求总耗时{resp.elapsed.total_seconds()*1000}，服务器计算耗时:{result['queryTime']}")
         if result["code"] == 200 and result["data"]:
-            template = env.get_template("wws-box-christmas.html")
+            template = env.get_template("wws-info.html")
             template_data = await set_infoparams(result["data"])
             content = await template.render_async(template_data)
             return await html_to_pic(

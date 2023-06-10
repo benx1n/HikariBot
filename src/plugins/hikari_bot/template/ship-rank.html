@@ -1,191 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<style>
-    .td-strong {
-        font-weight: bold;
-    }
-    .td-strong span,
-    .td-strong small.hint {
-        white-space: nowrap;
-    }
-    .td-strong span small {
-        white-space: normal;
-    }
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="css.css" />
+	</head>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
 
-    html {
-        position: relative;
-        min-height: 100%;
-    }
+		.flex-2 {
+			flex: 2;
+		}
 
-    .ranking-table th {
-        vertical-align: middle ! important;
-    }
-    .cells-middle td {
-        vertical-align: middle ! important;
-    }
-    .th-middle th {
-        vertical-align: middle ! important;
-    }
+		.flex-3 {
+			flex: 3;
+		}
 
-    .ranking-table td {
-        line-height: 30px ! important;
-    }
+		.flex-5 {
+			flex: 5;
+		}
 
-    html {
-        font-family: sans-serif;
-        -ms-text-size-adjust: 100%;
-        -webkit-text-size-adjust: 100%; }
+		.flex-10 {
+			flex: 10;
+		}
 
-    body {
-        margin: 0; }
+		.main-content {
+			width: 2160px;
+			font-size: 30px;
+			font-family: 'Microsoft YaHei';
+			font-family: "Microsoft YaHei";
+			font-weight: bold;
+		}
 
-    table {
-        border-collapse: collapse;
-        text-align: center;
-        border-spacing: 0; }
+		.page-box {
+			width: 2160px;
+			display: flex;
+			flex-direction: column;
+		}
 
-    td,
-    th {
-        padding: 0; }
+		.ship-level {
+			display: inline-block;
+			text-align: center;
+			margin-right: 60px;
+		}
 
-    html {
-        font-size: 10px;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+		.ship-name {
+			display: inline-block;
+		}
 
-    body {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 14px;
-        line-height: 1.42857;
-        color: #333333;
-        background-color: #fff; }
+		.page-header {
+			text-align: center;
+			font-size: 55px;
+			height: 120px;
+			line-height: 120px;
+		}
 
-    a {
-        color: #337ab7;
-        text-decoration: none; }
-    a:hover, a:focus {
-        color: #23527c;
-        text-decoration: underline; }
-    a:focus {
-        outline: 5px auto -webkit-focus-ring-color;
-        outline-offset: -2px; }
 
-    table {
-        background-color: transparent; }
-    table col[class*="col-"] {
-        position: static;
-        display: table-column;
-        float: none; }
-    table td[class*="col-"],
-    table th[class*="col-"] {
-        position: static;
-        display: table-cell;
-        float: none; }
+		.rank-header {
+			margin: 0px 50px;
+			display: flex;
+			text-align: center;
+			color: #008272;
+			font-weight: normal;
+			height: 100px;
+			line-height: 100px;
+			border-bottom: #008272 solid 5px;
+		}
 
-    th {
-        text-align: left; }
+		.rank-header .hest-frag,
+		.rank-header .ar-frag,
+		.rank-header .max-ar-frag {
+			line-height: 50px;
+		}
 
-    .table {
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 20px; }
-    .table > thead > tr > th,
-    .table > thead > tr > td,
-    .table > tbody > tr > th,
-    .table > tbody > tr > td,
-    .table > tfoot > tr > th,
-    .table > tfoot > tr > td {
-        padding: 8px;
-        line-height: 1.42857;
-        vertical-align: top;
-        border-top: 1px solid #ddd; }
-    .table > thead > tr > th {
-        vertical-align: bottom;
-        border-bottom: 2px solid #ddd; }
-    .table > caption + thead > tr:first-child > th,
-    .table > caption + thead > tr:first-child > td,
-    .table > colgroup + thead > tr:first-child > th,
-    .table > colgroup + thead > tr:first-child > td,
-    .table > thead:first-child > tr:first-child > th,
-    .table > thead:first-child > tr:first-child > td {
-        border-top: 0; }
-    .table > tbody + tbody {
-        border-top: 2px solid #ddd; }
-    .table .table {
-        background-color: #fff; }
+		.rank-item {
+			margin: 0px 50px;
+			display: flex;
+			text-align: center;
+			height: 80px;
+			line-height: 80px;
+		}
+		.player-name {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		.footer {
+			margin-top: 30px;
+			text-align: center;
+			font-weight: bold;
+			font-size: 24px;
+			color: #909399;
+			margin-bottom: 20px;
+		}
+	</style>
+	<body>
+		<div class="main-content">
+			<div class="page-box">
+				<div class="page-header">
+					<div class="ship-level">
+						{{ shipInfo['tier'] }}
+					</div>
+					<div class="ship-name">
+						{{ shipInfo['shipNameCn'] }}
+					</div>
+				</div>
+				<div class="rank-header">
+					<div class="ranks flex-2 col">排名</div>
+					<div class="player-name flex-10 col">ID</div>
+					<div class="battles flex-2 col">场次</div>
+					<div class="pr flex-3 col">PR</div>
+					<div class="wins flex-3 col">胜率</div>
+					<div class="frag flex-2 col">击杀</div>
+					<div class="hest-frag flex-2 col">最多击杀</div>
+					<div class="avg-dmg flex-5 col">场均</div>
+					<div class="max-dmg flex-5 col">最大伤害</div>
+					<div class="xp flex-3 col">经验</div>
+					<div class="max-xp flex-3 col">最大经验</div>
+					<div class="ar-frag flex-2 col">击落飞机</div>
+					<div class="max-ar-frag flex-2 col">最大击落</div>
+				</div>
+				{% for rank in data %}
+				<div class="rank-item">
+					{% if rank['index'] %}
+					<div class="ranks flex-2 col">{{ rank['index'] }}</div>
+					{% else %}
+					<div class="ranks flex-2 col">{{ rank['sortValue'] }}</div>
+					{% endif %}
+					{% if rank['tag'] != null %}
+					<div class="player-name flex-10 col">[{{ rank['tag'] }}]{{ rank['userName'] }}</div>
+					{% else %}
+					<div class="player-name flex-10 col">{{ rank['userName'] }}</div>
+					{% endif %}
+					<div class="battles flex-2 col">{{ rank['battles'] }}</div>
+					<div class="pr flex-3 col" style="color: {{ rank['prColor'] }};">{{ rank['pr'] }}</div>
+					<div class="wins flex-3 col" style="color: {{ rank['winsColor'] }};">{{ rank['wins'] }}%</div>
+					<div class="frag flex-2 col" style="color: {{ rank['fragsColor'] }};">{{ rank['frags'] }}</div>
+					<div class="hest-frag flex-2 col">{{ rank['maxFrags'] }}</div>
+					<div class="avg-dmg flex-5 col" style="color: {{ rank['damageColor'] }};">{{ rank['damage'] }}</div>
+					<div class="max-dmg flex-5 col">{{ rank['maxDamage'] }}</div>
+					<div class="xp flex-3 col">{{ rank['xp'] }}</div>
+					<div class="max-xp flex-3 col">{{ rank['maxXp'] }}</div>
+					<div class="ar-frag flex-2 col" style="color: {{ rank['planesDestroyedColor'] }};">{{ rank['planesDestroyed'] }}</div>
+					<div class="max-ar-frag flex-2 col">{{ rank['maxPlanesDestroyed'] }}</div>
+				</div>
+				{% endfor %}
+				
+				<div class="footer">
+					<p>©西行寺雨季&nbsp;&nbsp;©本心</p>
+					<p>https://github.com/benx1n/HikariBot</p>
+					<p>QQ频道搜索”yuyuko”即可使用稳定的腾讯官方机器人~</p>
+					<p>Design By 冷眠 H5 Converted By C1ystal</p>
+					<p>赞助鸣谢：男人们的定远号、Wishing、科长</p>
+				</div>
 
-    .table-condensed > thead > tr > th,
-    .table-condensed > thead > tr > td,
-    .table-condensed > tbody > tr > th,
-    .table-condensed > tbody > tr > td,
-    .table-condensed > tfoot > tr > th,
-    .table-condensed > tfoot > tr > td {
-        padding: 5px; }
-
-    .table-bordered {
-        border: 1px solid #ddd; }
-    .table-bordered > thead > tr > th,
-    .table-bordered > thead > tr > td,
-    .table-bordered > tbody > tr > th,
-    .table-bordered > tbody > tr > td,
-    .table-bordered > tfoot > tr > th,
-    .table-bordered > tfoot > tr > td {
-        border: 1px solid #ddd; }
-    .table-bordered > thead > tr > th,
-    .table-bordered > thead > tr > td {
-        border-bottom-width: 2px; }
-
-    .table-striped > tbody > tr:nth-of-type(odd) {
-        background-color: #f9f9f9; }
-</style>
-<body>
-    <div class="table-responsive" style="clear:both;">
-        <table class="table table-bordered ranking-table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>玩家</th>
-                    <th style="text-align: center;">场次</th>
-                    <th style="text-align: center;">PR</th>
-                    <th style="text-align: center;">胜率</th>
-                    <th style="text-align: center;">场均击杀</th>
-                    <th style="text-align: center;">最高击杀</th>
-                    <th style="text-align: center;">场均伤害</th>
-                    <th style="text-align: center;">最高伤害</th>
-                    <th style="text-align: center;">场均经验</th>
-                    <th style="text-align: center;">最高经验</th>
-                    <th style="text-align: center;">场均击落</th>
-                    <th style="text-align: center;">最高击落</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for each in data %}
-                <tr class="cells-middle"">
-                    <td>{{ each['index'] }}</td>
-                    <td style="text-align: left;  ">
-                        {% if each['tag'] %}
-                            <a>[{{ each['tag'] }}]</a>
-                        {% endif %}
-                        <a>{{ each['userName'] }}</a>
-                    </td> 
-                    <td class="td-strong"><span>{{ each['battles'] }}</span></td>
-                    <td><span style="color: {{ each['prColor'] }}; font-weight: bold;">{{ each['pr'] }}</span></td>
-                    <td class="td-strong"><span style="color: {{ each['winsColor'] }};">{{ each['wins'] }}%</span></td>
-                    <td class="td-strong"><span style="color: {{ each['fragsColor'] }};">{{ each['frags'] }}</span></td>
-                    <td class="td-strong"><span>{{ each['maxFrags'] }}</span></td>
-                    <td class="td-strong"><span style="color: {{ each['damageColor'] }};">{{ each['damage'] }}</span></td>
-                    <td class="td-strong"><span>{{ each['maxDamage'] }}</span></td>
-                    <td class="td-strong"><span>{{ each['xp'] }}</span></td>
-                    <td class="td-strong"><span>{{ each['maxXp'] }}</span></td>
-                    <td class="td-strong"><span style="color: {{ each['planesDestroyedColor'] }};">{{ each['planesDestroyed'] }}</span></td>
-                    <td class="td-strong"><span>{{ each['maxPlanesDestroyed'] }}</span></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</body>
+				<div style="margin: 0 50px; border-bottom: #008272 solid 5px; margin-bottom:20px;"></div>
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		let ship_level_doc = document.getElementsByClassName('ship-level');
+		let level_number = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
+		let level_roma = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "★"];
+		for(let k=0;k<ship_level_doc.length;k++) {
+			ship_level_doc[k].innerText = level_roma[level_number.indexOf(ship_level_doc[k].innerText)];
+		}
+	</script>
+	
+	<script>
+		let arr_information = document.getElementsByClassName('rank-item');
+		for(let i=0;i<arr_information.length;i++) {
+			if(i%2 == 0) {
+				arr_information[i].style.backgroundColor = "#E4E4E4";
+			}
+		}
+	</script>
 </html>
