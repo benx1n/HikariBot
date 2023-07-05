@@ -485,6 +485,8 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
     > - 在本地电脑使用go-cqhttp登录成功后，将会在exe同级目录下生成`session.token`和`device.json`两个文件
     > - 将这两个文件复制到服务器对应go-cqhttp目录下并重启
 
+    > 此处如出现Code:45，请参考[该视频](https://www.bilibili.com/video/BV14X4y1i7cc)配置签名服务
+
 4. 修改Hikari文件夹下.env.prod中`USE_PLUGIN_GO_CQHTTP`的值为`false`
     ```
     USE_PLUGIN_GO_CQHTTP = false
