@@ -44,8 +44,7 @@ RUN cd /home \
 RUN pip install nb-cli hikari-bot nonebot2[fastapi]\
 && nb plugin install nonebot-plugin-apscheduler \
 && nb plugin install nonebot-plugin-gocqhttp \
-&& playwright install chromium \
-&& playwright install firefox
+&& playwright install chromium
 RUN cd /home/HikariBot\
 && mkdir -p accounts/binary \
 && cd accounts/binary \
