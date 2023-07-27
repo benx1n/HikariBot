@@ -99,7 +99,7 @@ async def get_RecentInfo(server_type, info, bot:Bot, ev):
         resp = await client_yuyuko.get(url, params=params, timeout=None)
         result = orjson.loads(resp.content)
         if result["code"] == 200:
-            if result["data"]["shipData"]:
+            if result["data"]["shipData"][0]["shipData"]:
                 template = env.get_template("wws-info-recent.html")
                 template_data = await set_recentparams(result["data"])
                 content = await template.render_async(template_data)
