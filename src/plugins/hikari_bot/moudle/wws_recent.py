@@ -100,15 +100,12 @@ async def get_RecentInfo(server_type, info, bot:Bot, ev):
         result = orjson.loads(resp.content)
         if result["code"] == 200:
             if result["data"]["shipData"]:
-                if result["data"]["shipData"][0]["shipData"]:
-                    template = env.get_template("wws-info-recent.html")
-                    template_data = await set_recentparams(result["data"])
-                    content = await template.render_async(template_data)
-                    return await html_to_pic(
-                        content, wait=0, viewport={"width": 1200, "height": 100}
-                    )
-                else:
-                    return "该日期数据记录不存在"
+                template = env.get_template("wws-info-recent.html")
+                template_data = await set_recentparams(result["data"])
+                content = await template.render_async(template_data)
+                return await html_to_pic(
+                    content, wait=0, viewport={"width": 1200, "height": 100}
+                )
             else:
                 return "该日期数据记录不存在"
         elif result["code"] == 403:
