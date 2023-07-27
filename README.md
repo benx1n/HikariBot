@@ -239,7 +239,7 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
     proxy = http://localhost:7890   #代理地址，如果上面选项开启，这边替换为你本地的
     ocr_on = true                   #是否开启ocr(识图指令)
     ocr_offline = false             #是否只使用hash验证，即设置为true后只能识别服务器已记录的图片，如果群较多(>300)导致响应延迟较高可以开启
-    ocr_url = http://mc.youthnp.cn:23338/OCR/           #默认ocr地址，一般不用动
+    ocr_url = http://ocr.benx1n.com:23338           #默认ocr地址，一般不用动
     http2 = true                    #是否开启http2，默认开启，如果有问题请设置为false
     ```
     >一般来说该文件为.env.dev
@@ -484,6 +484,8 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
     > 此处如出现异地登陆保护，请尝试
     > - 在本地电脑使用go-cqhttp登录成功后，将会在exe同级目录下生成`session.token`和`device.json`两个文件
     > - 将这两个文件复制到服务器对应go-cqhttp目录下并重启
+
+    > 此处如出现Code:45，请参考[该视频](https://www.bilibili.com/video/BV14X4y1i7cc)配置签名服务
 
 4. 修改Hikari文件夹下.env.prod中`USE_PLUGIN_GO_CQHTTP`的值为`false`
     ```

@@ -47,3 +47,35 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile = "black"
+
+[tool.black]
+line-length = 150
+skip-string-normalization = true
+
+[tool.ruff]
+line-length = 150
+respect-gitignore = true
+ignore-init-module-imports = true
+select = [
+    'F',  # pyflakes
+    'E',  # pycodestyle errors
+    'W',  # pycodestyle warnings
+    'I',  # isort
+    'C',  # flake8-comprehensions
+    'B',  # flake8-bugbear
+    'Q',  # flake8-quotes
+    'PL',  # pylint
+    'RUF',  # Ruff-specific rules
+]
+ignore = [
+    'E501',
+    "RUF001",
+    "RUF002",
+    "RUF003",
+    "PLR2004",
+    "C901",
+    "PLR0912",
+    "PLR0911",
+    "PLW0603"
+]
+flake8-quotes = {inline-quotes = 'single', multiline-quotes = 'double'}
