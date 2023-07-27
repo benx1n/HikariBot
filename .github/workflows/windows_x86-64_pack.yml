@@ -37,7 +37,7 @@ jobs:
         python -m pip install nonebot-plugin-apscheduler
         python -m pip install nonebot-plugin-gocqhttp
         python -m pip install nonebot-plugin-guild-patch
-        python -m pip install fastapi == 0.96.0
+        python -m pip install fastapi==0.96.0
         set PLAYWRIGHT_BROWSERS_PATH=0
         python -m playwright install chromium
         call %CONDA%/condabin/conda.bat deactivate
