@@ -7,7 +7,6 @@ import traceback
 from collections import defaultdict, namedtuple
 
 import httpx
-import orjson
 from hikari_core import callback_hikari, init_hikari, set_hikari_config
 from hikari_core.game.help import check_version
 from hikari_core.model import Hikari_Model
