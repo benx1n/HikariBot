@@ -28,9 +28,9 @@ async def find_and_replace_keywords(match_list, Lists):
         for kw in List.keywords:
             for i, match_kw in enumerate(match_list):
                 if match_kw.find(kw) + 1:
-                    match_list[i] = str(match_kw).replace(kw, "")
-                    if match_list[i] == "":
-                        match_list.remove("")
+                    match_list[i] = str(match_kw).replace(kw, '')
+                    if match_list[i] == '':
+                        match_list.remove('')
                     return List.match_keywords, match_list
     return None, match_list
 
@@ -38,7 +38,7 @@ async def find_and_replace_keywords(match_list, Lists):
 def encode_gzip(bytes):
     buf = io.BytesIO(bytes)
     gf = gzip.GzipFile(fileobj=buf)
-    return gf.read().decode("utf-8")
+    return gf.read().decode('utf-8')
 
 
 class FreqLimiter:
@@ -57,7 +57,7 @@ class FreqLimiter:
 
 
 class DailyNumberLimiter:
-    tz = pytz.timezone("Asia/Shanghai")
+    tz = pytz.timezone('Asia/Shanghai')
 
     def __init__(self, max_num):
         self.today = -1
@@ -93,18 +93,18 @@ def get_bot() -> Optional[Bot]:
         return None
 
 
-async def download(url, path, proxy={}):
-    async with httpx.AsyncClient(proxies=proxy) as client:
+async def download(url, path, proxy={}):  # noqa: B006
+    async with httpx.AsyncClient(proxies=proxy, verify=False) as client:
         try:
             resp = await client.get(url, timeout=None)
             if resp.status_code == 200:
                 content = resp.read()
-                content = content.replace(b"\n", b"\r\n")
-                with open(path, "wb") as f:
+                content = content.replace(b'\n', b'\r\n')
+                with open(path, 'wb') as f:
                     f.write(content)
             else:
-                print(f"fastgit请求失败{resp.status_code}")
-        except:
+                print(f'fastgit请求失败{resp.status_code}')
+        except Exception:
             print(traceback.format_exc())
 
 
