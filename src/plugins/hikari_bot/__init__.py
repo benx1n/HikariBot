@@ -53,10 +53,14 @@ bot_listen = on_message(priority=5, block=False)
 ocr_listen = on_message(priority=6, block=False)
 driver = get_driver()
 
+_proxy = None
+if driver.config.proxy_on:
+    _proxy = driver.config.proxy
+
 set_hikari_config(
     use_broswer=driver.config.htmlrender_browser,
     http2=driver.config.http2,
-    proxy=driver.config.proxy,
+    proxy=_proxy,
     token=driver.config.api_token,
     game_path=str(dir_path / 'game'),
 )
