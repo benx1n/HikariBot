@@ -33,7 +33,7 @@ jobs:
         call %CONDA%/condabin/conda.bat create --prefix .\pyenv python
         call %CONDA%/condabin/conda.bat activate .\pyenv
         python -m pip install --upgrade pip
-        python -m pip install nb-cli hikari-bot nonebot2[fastapi]
+        python -m pip install nb-cli hikari-bot nonebot2[fastapi] hikari-core
         python -m pip install nonebot-plugin-apscheduler
         python -m pip install nonebot-plugin-gocqhttp
         python -m pip install nonebot-plugin-guild-patch
