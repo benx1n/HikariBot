@@ -227,8 +227,9 @@ async def update_Hikari(ev: MessageEvent, bot: Bot):
             #    *[download(each["url"], f"{driver.config.nb2_path}\{each['name']}") for each in nb2_file]
             # )
         logger.info(f'当前解释器路径{sys.executable}')
-        os.system(f'{sys.executable} -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade hikari-bot hikari-core --user')
-        os.system(f'{sys.executable} -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade nonebot-plugin-gocqhttp --user')
+        os.system(f'{sys.executable} -m pip install hikari-bot -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade --user')
+        os.system(f'{sys.executable} -m pip install hikari-core -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade --user')
+        os.system(f'{sys.executable} -m pip install nonebot-plugin-gocqhttp -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade --user')
         Reloader.reload(delay=1)
     except RuntimeError:
         if str(platform.system()).lower() == 'linux':
