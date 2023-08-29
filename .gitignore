@@ -146,3 +146,5 @@ logs
 pyenv
 echarts.js
 src/plugins/hikari_bot/game/ocr_data.json
+account_data
+listen_config.json
