@@ -32,9 +32,9 @@ black = {version = "^23.1a1", allow-prereleases = true}
 isort = "^5.12.0"
 
 [tool.nonebot]
-plugins = ["nonebot_plugin_apscheduler","nonebot_plugin_guild_patch"]
-#plugins = ["nonebot_plugin_apscheduler","nonebot_plugin_guild_patch","hikari_bot"]
-plugin_dirs = ["src/plugins"]
+#plugins = ["nonebot_plugin_apscheduler","nonebot_plugin_guild_patch"]
+plugins = ["nonebot_plugin_apscheduler","nonebot_plugin_guild_patch","hikari_bot"]
+#plugin_dirs = ["src/plugins"]
 
 [[tool.poetry.source]]
 name = "tsinghua"
