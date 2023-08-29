@@ -226,12 +226,13 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
 3. 在环境文件中加入以下配置项
     ```
     API_TOKEN = xxxxxxxxxxxx
-    SUPERUSERS=["QQ号"]
+    SUPERUSERS=["QQ号"]             #超级管理员，填写你需要控制机器人的QQ号
     private = false                 #开启私聊
     group = true                    #开启群聊
     channel = false                 #开启频道
     all_channel = false             #是否全频道生效，无论此项配置如何，channel_list中的频道一定会开启
     channel_list = []               #频道列表白名单，数组形式，可在控制台中获取相应的channel_id
+    admin_list = []                 #管理员列表，可以添加删除监控等权限，但无法控制机器人
     ban_group_list = [967546463]    #群列表黑名单，默认屏蔽了开发者交流群
     pupu = true                     #是否开启噗噗
     check_cache = true              #是否开启缓存上报,可降低高峰期延迟,如果错误日志中频繁报错上报url:XXXXXXXX,请关闭此项或配置代理
@@ -271,6 +272,11 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
       - 群聊默认开启，默认屏蔽官方交流群
 
 ## 最近的更新日志
+
+### 23-08-29    v1.0.0
+- [!]本次为重要版本更新，请重新下载一键包或配置Hikari
+- [+]重构代码，功能更新移至hikari-core
+- [+]添加监控功能
 
 ### 23-05-07    v0.3.9
 - [+]重构代码
