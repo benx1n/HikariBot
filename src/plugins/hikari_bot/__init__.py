@@ -8,6 +8,7 @@ from collections import defaultdict, namedtuple
 
 import httpx
 from hikari_core import callback_hikari, init_hikari, set_hikari_config
+from hikari_core.data_source import __version__
 from hikari_core.game.help import check_version
 from hikari_core.model import Hikari_Model
 from hikari_core.moudle.wws_real_game import get_diff_ship
@@ -43,7 +44,7 @@ EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__version__ = '1.0.1.6'
+__bot_version__ = '1.0.2'
 
 bot_get_random_pic = on_fullmatch('wws 随机表情包', block=True, priority=5)
 bot_update = on_command('wws 更新Hikari', priority=5, block=True, permission=SUPERUSER)
@@ -270,7 +271,7 @@ async def remind(bot: Bot):
     superid = driver.config.superusers
     await bot.get_login_info()
     for each in superid:
-        await bot.send_private_msg(user_id=int(each), message=f'Hikari已上线，当前版本{__version__}')
+        await bot.send_private_msg(user_id=int(each), message=f'Hikari已上线，当前BOT版本{__bot_version__},内核版本{__version__}')
 
 
 async def startup_download(url, name):
