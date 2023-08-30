@@ -243,6 +243,7 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
     ocr_url = http://ocr.benx1n.com:23338           #默认ocr地址，一般不用动
     http2 = true                    #是否开启http2，默认开启，如果有问题请设置为false
     battle_listen_time = 1          #监控刷新时间，分钟级，如果性能或流量不够可以适当延长，推荐在5分钟以内
+    htmlrender_browser = "chromium"         #默认使用chromium启动，出现问题了请改为"firefox"尝试
     ```
     >一般来说该文件为.env.dev
     >也有可能是.env.pord，具体需要看.env中是否有指定
