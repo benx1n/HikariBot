@@ -585,3 +585,8 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
 ## 开源相关
 MIT
 修改、分发代码时请保留原作者相关信息
+
+## 赞助
+<p align="left">
+  <a href="https://afdian.net/a/JustOneSummer?tab=home"><img src="https://hikari-resource.oss-cn-shanghai.aliyuncs.com/%E7%88%B1%E5%8F%91%E7%94%B5.png" alt="afdian" ></a>
+</p>
