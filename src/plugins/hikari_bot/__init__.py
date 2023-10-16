@@ -100,12 +100,12 @@ async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):  #
         superuser_command_list = ['重置监控']
         adminuser_command_list = ['添加监控', '删除监控']
         for each in superuser_command_list:
-            if each in str(ev.message) and str(qqid) not in driver.config.superusers:
+            if (each in str(ev.message) or each in matchmsg) and str(qqid) not in driver.config.superusers:
                 await bot.send(ev, '该命令仅限超级管理员使用')
                 return
         if str(qqid) not in driver.config.superusers:
             for each in adminuser_command_list:
-                if each in str(ev.message) and qqid not in driver.config.admin_list:
+                if (each in str(ev.message) or each in matchmsg) and qqid not in driver.config.admin_list:
                     await bot.send(ev, '请联系机器人搭建者添加权限')
                     return
         hikari = await init_hikari(platform=server_type, PlatformId=str(qqid), command_text=str(matchmsg), GroupId=group_id)
