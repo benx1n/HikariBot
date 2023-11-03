@@ -47,7 +47,7 @@ _flmt = FreqLimiter(3)
 __bot_version__ = '1.0.2.1'
 
 bot_get_random_pic = on_fullmatch('wws 随机表情包', block=True, priority=5)
-bot_update = on_command('wws 更新Hikari', priority=5, block=True, permission=SUPERUSER)
+bot_update = on_fullmatch('wws 更新Hikari', priority=5, block=True, permission=SUPERUSER)
 bot = on_command('wws', block=False, aliases={'WWS'}, priority=54)
 bot_pupu = on_fullmatch('噗噗', block=False, priority=5)
 bot_listen = on_message(priority=5, block=False)
