@@ -1,25 +1,21 @@
-name: Build windows x86-64
+name: Build windows x86-64 and Python AppImage
 
 on:
   push:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  buildWindows:
+    name: Build windows x86-64
     runs-on: windows-latest
     strategy:
       fail-fast: false
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: HikariBot
         ref: 'master'
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.10
     - name: Latest-tag
       run: |
         cd HikariBot
@@ -61,3 +57,35 @@ jobs:
           }
           const { data: { id } } = await github.rest.repos.createRelease({ owner, repo, tag_name: "Latest", name: "Latest Release" })
           await github.rest.repos.uploadReleaseAsset({ owner, repo, release_id: id, name: "release_windows.zip", data: await fs.readFile("release.zip") })
+
+  appimage:
+    name: Build python 3.9 AppImage
+    needs: buildWindows
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: niess/python-appimage
+        ref: 'master'
+    - name: Build
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      run: |
+        python -m python_appimage build manylinux \
+         2014_x86_64 cp39-cp39
+        mv python3*.AppImage python3.9-cp39-cp39-manylinux2014_x86_64.AppImage
+  
+    - name: Upload Appimage
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require("fs").promises;
+          const { owner, repo } = context.repo
+          const { data } = await github.rest.repos.listReleases({ owner, repo })
+          if ( data.length > 0){
+            const { data: { id } } = await github.rest.repos.getLatestRelease({ owner, repo })
+            await github.rest.repos.uploadReleaseAsset({ owner, repo, release_id: id, name: "python3.9-cp39-cp39-manylinux2014_x86_64.AppImage", data: await fs.readFile("python3.9-cp39-cp39-manylinux2014_x86_64.AppImage") })
+          }
