@@ -40,7 +40,9 @@ get_distribution() {
 
 download_python_appimage() {
     #url_python_AppImage=$(wget --quiet https://api.github.com/repos/niess/python-appimage/releases -O- | grep browser_download_url | grep python3.9 | grep manylinux2014_x86_64 | sed 's_^.*"\(https.*\)"$_\1_g' | sed 's/github.com/ghdown.obfs.dev/g')
-    url_python_AppImage="https://ghdown.obfs.dev/niess/python-appimage/releases/download/python3.9/python3.9.16-cp39-cp39-manylinux2014_x86_64.AppImage"
+    url_python_AppImage="https://ghdown.obfs.dev/niess/python-appimage/releases/download/python3.9/python3.9.18-cp39-cp39-manylinux2014_x86_64.AppImage"
+    url_python_AppImage="https://ghdown.obfs.dev/benx1n/HikariBot/releases/download/Latest/python3.9-cp39-cp39-manylinux2014_x86_64.AppImage"
+    #TODO add multi url try?
     if command_exists curl; then
         curl "${url_python_AppImage}" --location --output python.AppImage
     else
