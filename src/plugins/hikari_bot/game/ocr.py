@@ -51,11 +51,11 @@ async def upload_OcrResult(result_text, filename):
             'md5': filename,
             'text': b64encode(result_text.encode('utf-8')).decode('utf-8'),
         }
-        async with httpx.AsyncClient(headers=headers, timeout=5) as client:
-            resp = await client.post(upload_url, json=params)
-            result = orjson.loads(resp.content)
-            if result['code'] == 200:
-                await downlod_OcrResult()
+        client = await get_client_yuyuko()
+        resp = await client.post(upload_url, json=params)
+        result = orjson.loads(resp.content)
+        if result['code'] == 200:
+            await downlod_OcrResult()
     except Exception:
         logger.error(traceback.format_exc())
 
