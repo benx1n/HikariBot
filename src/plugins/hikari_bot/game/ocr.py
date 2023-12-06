@@ -14,8 +14,8 @@ ocr_url = config.ocr_url
 dir_path = Path(__file__).parent.parent
 game_path = Path(__file__).parent
 ocr_data_path = game_path / 'ocr_data.json'
-upload_url = 'https://api.wows.shinoaki.com/api/wows/cache/image/ocr'
-download_url = 'https://api.wows.shinoaki.com/api/wows/cache/image/ocr'
+upload_url = 'https://v3-api.wows.shinoaki.com:8443/api/wows/cache/image/ocr'
+download_url = 'https://v3-api.wows.shinoaki.com:8443/api/wows/cache/image/ocr'
 
 headers = {'Authorization': config.api_token}
 
