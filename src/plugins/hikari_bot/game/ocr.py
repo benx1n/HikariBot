@@ -5,6 +5,7 @@ from pathlib import Path
 
 import httpx
 import orjson
+from hikari_core.HttpClient_Pool import get_client_yuyuko
 from httpx import TimeoutException
 from nonebot.log import logger
 
@@ -62,16 +63,17 @@ async def upload_OcrResult(result_text, filename):
 async def downlod_OcrResult():
     try:
         global ocr_filename_data
-        async with httpx.AsyncClient(headers=headers, timeout=10) as client:
-            resp = await client.get(download_url)
-            result = orjson.loads(resp.content)
-            with open(ocr_data_path, 'w', encoding='UTF-8') as f:
-                if result['code'] == 200 and result['data']:
-                    f.write(orjson.dumps(result['data']).decode())
-                    ocr_filename_data = result['data']
-                else:
-                    with open(ocr_data_path, 'rb') as f:  # noqa: PLW2901
-                        ocr_filename_data = orjson.loads(f.read())
+        client = await get_client_yuyuko()
+        resp = await client.get(download_url)
+        result = orjson.loads(resp.content)
+        with open(ocr_data_path, 'w', encoding='UTF-8') as f:
+            if result['code'] == 200 and result['data']:
+                f.write(orjson.dumps(result['data']).decode())
+                ocr_filename_data = result['data']
+            else:
+                logger.error(result)
+                with open(ocr_data_path, 'rb') as f:  # noqa: PLW2901
+                    ocr_filename_data = orjson.loads(f.read())
         return
     except Exception:
         logger.error('请检查token是否配置正确，如无问题请尝试重启，可能是网络波动或服务器原因')
