@@ -98,7 +98,7 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
 ## 在Windows系统上快速部署
 >点我查看[视频教程](https://www.bilibili.com/video/BV1XP411U7rC)
 
-  `windows安装python版本请勿大于3.11,建议版本3.9`
+  `windows安装python版本请勿大于3.11,建议版本3.10`
 
 1. 下载Hikari的[最新Release](https://github.com/benx1n/HikariBot/releases/download/Latest/release_windows.zip)并解压到合适文件夹
 2. 复制一份`.env.prod-example`文件，并将其重命名为`.env.prod`,打开并按其中注释编辑
@@ -111,13 +111,9 @@ QQ频道官方机器人已上线，请点击上方链接加入体验~
    - 从0.3.2.2版本开始，您没有填写的配置将按.env文件中的默认配置执行，具体逻辑为
       - 私聊、频道默认禁用
       - 群聊默认开启，默认屏蔽官方交流群
-      - 默认WEB登录账号密码为admin/admin，如有需要请自行修改，无需设置密码请删除env.prod中的配置项
-
-3. 双击`启动.bat`
-    - 页面加载不出请尝试刷新一下，已知IE浏览器可能存在一些问题
-    - 此时若没有报错，您可以在打开的页面`http://127.0.0.1:8080/go-cqhttp/`中
-      点击左侧添加账号，重启bot即可在网页上看到相应信息（大概率需要扫码）
-    - 如果重启后go-cqhhtp一直卡在扫码或无限重启，请跳转[无法使用内嵌go-cqhttp登录](https://github.com/benx1n/HikariBot#%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E5%86%85%E5%B5%8Cgo-cqhttp%E7%99%BB%E5%BD%95bot)
+   - 从2024-04-23开始，不再推荐使用go-cqhttp作为无头协议端，请参考下方配置LLOneBot
+3. 参考[LLOneBot配置教程](https://llonebot.github.io/zh-CN/guide/getting-started)，配置NoneBot+LLOneBot的端口号及连接token，记得点击保存
+4. 双击`启动.bat`
 
 ## Linux一键脚本
 > 仅支持Debian、CentOS、Ubuntu
@@ -159,7 +155,7 @@ wget -qO - https://fastly.jsdelivr.net/gh/benx1n/HikariBot@master/install.sh | b
 - 将配置文件与容器分离
   使用volume在宿主机保存相关账号信息，更新时按照相关步骤继承volume即可
 
-## 在Windows系统上完整部署
+## 在Windows系统上完整部署（gocq部分已过时）
 1. 下载[Git](https://git-scm.com/download/win)、[Python](https://www.python.org/downloads/windows/)并安装
     >Python版本需>3.8，或参考[Hoshino版插件](https://github.com/benx1n/wows-stats-bot)中使用Conda虚拟环境
     >
