@@ -23,7 +23,7 @@ async def get_rep(wows_rep_file_base64: str, bot: Bot, ev: NoticeEvent):
     upload_url = driver.config.minimap_renderer_url + "/upload_replays_video_url"
     with open(wowsrepla_file, 'rb') as file:
         files = {'file': file}
-        response = requests.post(upload_url, files=files, auth=HTTPBasicAuth("yuyuko", "yuyuko"))
+        response = requests.post(upload_url, files=files, auth=HTTPBasicAuth(driver.config.minimap_renderer_user_name, driver.config.minimap_renderer_password))
         if response.status_code == 200:
             await send_video(bot, ev, response.text)
         else:
