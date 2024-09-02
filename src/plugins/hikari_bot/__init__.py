@@ -81,8 +81,7 @@ async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):  #
         if isinstance(ev, PrivateMessageEvent) and (
                 driver.config.private or str(ev.user_id) in driver.config.superusers):  # 私聊事件,superusers默认不受影响
             server_type = 'QQ'
-        elif isinstance(ev,
-                        GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:  # 群聊事件
+        elif isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:  # 群聊事件
             server_type = 'QQ'
         elif isinstance(ev, GuildMessageEvent) and driver.config.channel:  # 频道事件
             if driver.config.all_channel or ev.channel_id in driver.config.channel_list:
@@ -114,8 +113,7 @@ async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):  #
                 if (each in str(ev.message) or each in matchmsg) and qqid not in driver.config.admin_list:
                     await bot.send(ev, '请联系机器人搭建者添加权限')
                     return
-        hikari = await init_hikari(platform=server_type, PlatformId=str(qqid), command_text=str(matchmsg),
-                                   GroupId=group_id)
+        hikari = await init_hikari(platform=server_type, PlatformId=str(qqid), command_text=str(matchmsg), GroupId=group_id)
         if hikari.Status == 'success':
             if isinstance(hikari.Output.Data, bytes):
                 await bot.send(ev, MessageSegment.image(hikari.Output.Data))
@@ -257,8 +255,7 @@ async def update_Hikari(ev: MessageEvent, bot: Bot):
         logger.info(f'当前解释器路径{sys.executable}')
         os.system(f'{sys.executable} -m pip install hikari-bot -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade')
         os.system(f'{sys.executable} -m pip install hikari-core -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade')
-        os.system(
-            f'{sys.executable} -m pip install nonebot-plugin-gocqhttp -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade')
+        os.system(f'{sys.executable} -m pip install nonebot-plugin-gocqhttp -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade')
         Reloader.reload(delay=1)
     except RuntimeError:
         if str(platform.system()).lower() == 'linux':
@@ -299,8 +296,7 @@ async def remind(bot: Bot):
     superid = driver.config.superusers
     await bot.get_login_info()
     for each in superid:
-        await bot.send_private_msg(user_id=int(each),
-                                   message=f'Hikari已上线，当前BOT版本{__bot_version__},内核版本{__version__}')
+        await bot.send_private_msg(user_id=int(each), message=f'Hikari已上线，当前BOT版本{__bot_version__},内核版本{__version__}')
 
 
 async def startup_download(url, name):
@@ -337,8 +333,7 @@ scheduler.add_job(job_listen_battle, 'interval', minutes=driver.config.battle_li
 @bot_pupu.handle()
 async def send_pupu_msg(ev: MessageEvent, bot: Bot):
     try:
-        if driver.config.pupu and isinstance(ev,
-                                             GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:
+        if driver.config.pupu and isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:
             msg = await get_pupu_msg()
             await bot.send(ev, msg)
     except ActionFailed:
