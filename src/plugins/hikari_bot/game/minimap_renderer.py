@@ -20,10 +20,11 @@ async def get_rep(wows_rep_file_base64: str, bot: Bot, ev: NoticeEvent):
     if not os.path.exists(wowsrepla_file):
         with open(wowsrepla_file, 'wb') as f:
             f.write(file_bytes)
+    await bot.send(ev, MessageSegment.text("正在处理replays文件.预计耗时1分钟"))
     upload_url = driver.config.minimap_renderer_url + "/upload_replays_video_url"
     with open(wowsrepla_file, 'rb') as file:
         files = {'file': file}
-        response = requests.post(upload_url, files=files, auth=HTTPBasicAuth(driver.config.minimap_renderer_user_name, driver.config.minimap_renderer_password))
+        response = requests.post(upload_url, files=files, auth=HTTPBasicAuth(driver.config.minimap_renderer_user_name, driver.config.minimap_renderer_password), timeout=600)
         if response.status_code == 200:
             await send_video(bot, ev, response.text)
         else:
@@ -32,5 +33,5 @@ async def get_rep(wows_rep_file_base64: str, bot: Bot, ev: NoticeEvent):
 
 async def send_video(bot: Bot, ev: NoticeEvent, url: str):
     # 构造视频文件消息
-    data = str(driver.config.minimap_renderer_url + "/video_url?file_name=" + url.replace("\"",""))
+    data = str(driver.config.minimap_renderer_url + "/video_url?file_name=" + url.replace("\"", ""))
     await  bot.send(ev, MessageSegment.video(data))
