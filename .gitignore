@@ -148,3 +148,6 @@ echarts.js
 src/plugins/hikari_bot/game/ocr_data.json
 src/plugins/hikari_bot/game/account_data
 src/plugins/hikari_bot/game/listen_config.json
+.idea/
+minimap_renderer_temp/
+poetry.lock

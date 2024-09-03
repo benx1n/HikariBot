@@ -47,7 +47,7 @@ EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__bot_version__ = '1.0.6'
+__bot_version__ = '1.0.7'
 
 bot_get_random_pic = on_fullmatch('wws 随机表情包', block=True, priority=5)
 bot_update = on_fullmatch('wws 更新Hikari', priority=5, block=True, permission=SUPERUSER)
