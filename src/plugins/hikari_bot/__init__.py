@@ -19,8 +19,8 @@ from nonebot.adapters.onebot.v11 import (
     GroupMessageEvent,
     Message,
     MessageEvent,
-    MessageSegment,
     NoticeEvent,
+    MessageSegment,
     PrivateMessageEvent,
 )
 from nonebot.log import logger
@@ -30,7 +30,7 @@ from nonebot.plugin.on import on_notice
 from nonebot_plugin_guild_patch import GuildMessageEvent
 
 from .data_source import dir_path, nb2_file, template_path
-from .game.minimap_renderer import get_rep
+from .game.minimap_renderer import get_rep, get_file
 from .game.ocr import (
     downlod_OcrResult,
     get_Random_Ocr_Pic,
@@ -79,8 +79,7 @@ async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):  #
     try:
         server_type = None
         if isinstance(ev, PrivateMessageEvent) and (
-            driver.config.private or str(ev.user_id) in driver.config.superusers
-        ):  # 私聊事件,superusers默认不受影响
+                driver.config.private or str(ev.user_id) in driver.config.superusers):  # 私聊事件,superusers默认不受影响
             server_type = 'QQ'
         elif isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:  # 群聊事件
             server_type = 'QQ'
@@ -187,14 +186,22 @@ async def GROUP_FILE_listen(bot: Bot, ev: NoticeEvent):
         noticeType = str(ev.notice_type)
         if not noticeType == 'group_upload':
             return
-        if not str(ev.file.name).endswith('.wowsreplay'):
+        if not str(ev).__contains__('.wowsreplay'):
             return
-        base64_file = await bot.get_image(file=ev.file.id)
-        # 调用接口转换
-        await get_rep(base64_file['base64'], bot, ev)
+        #
+        if str(ev).__contains__("'url':"):
+            base64_file = get_file(ev.file.url)
+            await get_rep(base64_file, bot, ev)
+        else:
+            base64_file = await bot.get_image(file=ev.file.id)
+            if not str(base64_file).__contains__("'base64':"):
+                await get_rep(base64_file['url'], bot, ev)
+            else:
+                # 带编码格式处理
+                await get_rep(base64_file['base64'], bot, ev)
     except Exception:
         logger.error(traceback.format_exc())
-        await bot.send(ev, MessageSegment.text('请求minimap_renderer服务异常'))
+        await bot.send(ev, MessageSegment.text("请求minimap_renderer服务异常"))
         return
 
 
