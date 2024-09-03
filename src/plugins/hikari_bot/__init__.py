@@ -19,8 +19,8 @@ from nonebot.adapters.onebot.v11 import (
     GroupMessageEvent,
     Message,
     MessageEvent,
-    NoticeEvent,
     MessageSegment,
+    NoticeEvent,
     PrivateMessageEvent,
 )
 from nonebot.log import logger
@@ -30,7 +30,7 @@ from nonebot.plugin.on import on_notice
 from nonebot_plugin_guild_patch import GuildMessageEvent
 
 from .data_source import dir_path, nb2_file, template_path
-from .game.minimap_renderer import get_rep, get_file
+from .game.minimap_renderer import get_file, get_rep
 from .game.ocr import (
     downlod_OcrResult,
     get_Random_Ocr_Pic,
@@ -47,7 +47,7 @@ EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__bot_version__ = '1.0.7'
+__bot_version__ = '1.0.8'
 
 bot_get_random_pic = on_fullmatch('wws 随机表情包', block=True, priority=5)
 bot_update = on_fullmatch('wws 更新Hikari', priority=5, block=True, permission=SUPERUSER)
@@ -79,7 +79,8 @@ async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):  #
     try:
         server_type = None
         if isinstance(ev, PrivateMessageEvent) and (
-                driver.config.private or str(ev.user_id) in driver.config.superusers):  # 私聊事件,superusers默认不受影响
+            driver.config.private or str(ev.user_id) in driver.config.superusers
+        ):  # 私聊事件,superusers默认不受影响
             server_type = 'QQ'
         elif isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:  # 群聊事件
             server_type = 'QQ'
@@ -188,7 +189,6 @@ async def GROUP_FILE_listen(bot: Bot, ev: NoticeEvent):
             return
         if not str(ev).__contains__('.wowsreplay'):
             return
-        #
         if str(ev).__contains__("'url':"):
             base64_file = get_file(ev.file.url)
             await get_rep(base64_file, bot, ev)
@@ -201,7 +201,7 @@ async def GROUP_FILE_listen(bot: Bot, ev: NoticeEvent):
                 await get_rep(base64_file['base64'], bot, ev)
     except Exception:
         logger.error(traceback.format_exc())
-        await bot.send(ev, MessageSegment.text("请求minimap_renderer服务异常"))
+        await bot.send(ev, MessageSegment.text('请求minimap_renderer服务异常'))
         return
 
 
