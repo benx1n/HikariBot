@@ -19,15 +19,18 @@ from nonebot.adapters.onebot.v11 import (
     GroupMessageEvent,
     Message,
     MessageEvent,
+    NoticeEvent,
     MessageSegment,
     PrivateMessageEvent,
 )
 from nonebot.log import logger
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
+from nonebot.plugin.on import on_notice
 from nonebot_plugin_guild_patch import GuildMessageEvent
 
 from .data_source import dir_path, nb2_file, template_path
+from .game.minimap_renderer import get_rep
 from .game.ocr import (
     downlod_OcrResult,
     get_Random_Ocr_Pic,
@@ -52,6 +55,7 @@ bot = on_command('wws', block=False, aliases={'WWS'}, priority=54)
 bot_pupu = on_fullmatch('噗噗', block=False, priority=5)
 bot_listen = on_message(priority=5, block=False)
 ocr_listen = on_message(priority=6, block=False)
+group_file_listen = on_notice(priority=6, block=False)
 driver = get_driver()
 
 _proxy = None
@@ -74,7 +78,8 @@ SecletProcess = defaultdict(lambda: SlectState(False, None, None))
 async def main(bot: Bot, ev: MessageEvent, matchmsg: Message = CommandArg()):  # noqa: B008, PLR0915
     try:
         server_type = None
-        if isinstance(ev, PrivateMessageEvent) and (driver.config.private or str(ev.user_id) in driver.config.superusers):  # 私聊事件,superusers默认不受影响
+        if isinstance(ev, PrivateMessageEvent) and (
+                driver.config.private or str(ev.user_id) in driver.config.superusers):  # 私聊事件,superusers默认不受影响
             server_type = 'QQ'
         elif isinstance(ev, GroupMessageEvent) and driver.config.group and ev.group_id not in driver.config.ban_group_list:  # 群聊事件
             server_type = 'QQ'
@@ -171,6 +176,26 @@ async def wait_to_select(hikari):
     else:
         SecletProcess[hikari.UserInfo.PlatformId] = SlectState(False, None, None)
         return hikari.error('已超时退出')
+
+
+@group_file_listen.handle()
+async def GROUP_FILE_listen(bot: Bot, ev: NoticeEvent):
+    try:
+        if not driver.config.minimap_renderer_on:
+            return
+        noticeType = str(ev.notice_type)
+        if not noticeType == 'group_upload':
+            return
+        if not str(ev.file.name).endswith('.wowsreplay'):
+            return
+        #
+        base64_file = await bot.get_image(file=ev.file.id)
+        # 调用接口转换
+        await get_rep(base64_file['base64'], bot, ev)
+    except Exception:
+        logger.error(traceback.format_exc())
+        await bot.send(ev, MessageSegment.text("请求minimap_renderer服务异常"))
+        return
 
 
 @ocr_listen.handle()
