@@ -189,7 +189,15 @@ async def GROUP_FILE_listen(bot: Bot, ev: NoticeEvent):
             return
         if not str(ev).__contains__('.wowsreplay'):
             return
-        if str(ev).__contains__("'url':"):
+        #此项兼容docker部署协议端下载replay文件，自行前往协议端配置base64
+        if hasattr(ev.file, 'url') and ev.file.url and ev.file.url.startswith('file://'):
+            base64_file = await bot.get_image(file=ev.file.id)
+            if not str(base64_file).__contains__("'base64':"):
+                await get_rep(base64_file['url'], bot, ev)
+            else:
+                # 带编码格式处理
+                await get_rep(base64_file['base64'], bot, ev)
+        elif str(ev).__contains__("'url':"):
             base64_file = get_file(ev.file.url)
             await get_rep(base64_file, bot, ev)
         else:
