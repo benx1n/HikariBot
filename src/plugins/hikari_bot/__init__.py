@@ -47,7 +47,7 @@ EXCEED_NOTICE = f'您今天已经冲过{_max}次了，请明早5点后再来！'
 is_first_run = True
 _nlmt = DailyNumberLimiter(_max)
 _flmt = FreqLimiter(3)
-__bot_version__ = '1.0.8'
+__bot_version__ = '1.0.9'
 
 bot_get_random_pic = on_fullmatch('wws 随机表情包', block=True, priority=5)
 bot_update = on_fullmatch('wws 更新Hikari', priority=5, block=True, permission=SUPERUSER)
@@ -189,7 +189,7 @@ async def GROUP_FILE_listen(bot: Bot, ev: NoticeEvent):
             return
         if not str(ev).__contains__('.wowsreplay'):
             return
-        #此项兼容docker部署协议端下载replay文件，自行前往协议端配置base64
+        # 此项兼容docker部署协议端下载replay文件，自行前往协议端配置base64
         if hasattr(ev.file, 'url') and ev.file.url and ev.file.url.startswith('file://'):
             base64_file = await bot.get_image(file=ev.file.id)
             if not str(base64_file).__contains__("'base64':"):
